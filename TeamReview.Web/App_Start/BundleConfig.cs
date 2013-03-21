@@ -19,7 +19,7 @@ namespace TeamReview.Web {
 			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
 				"~/Scripts/modernizr-*"));
 
-			bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/layout.css"));			
+			bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/layout.css"));
 		}
 	}
 }
