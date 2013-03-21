@@ -1,3 +1,11 @@
 <h1>Welcome to TeamReview!</h1>
 
-@Html.ActionLink("Register", "LogOn", "LogOn")
+<div class="panel">
+    <h2>Review Yourself, Your Peers and Your Team's Performance</h2>
+    <p>TeamReview is simple little tool that let's you give regular and scheduled reviews.</p>
+    <p>You can create your own categories that you want to review such as: Productivity, Skill, Teamwork, Creativity.</p>
+</div>
+<div class="panel">    
+    @Html.ActionLink("Register", "LogOn", "LogOn", new { @class = "button" })
+</div>
+
