@@ -1,11 +1,74 @@
 <h1>Welcome to TeamReview!</h1>
 
-<div class="panel">
+<div class="well">
     <h2>Review Yourself, Your Peers and Your Team's Performance</h2>
     <p>TeamReview is simple little tool that let's you give regular and scheduled reviews.</p>
     <p>You can create your own categories that you want to review such as: Productivity, Skill, Teamwork, Creativity.</p>
 </div>
-<div class="panel">    
-    @Html.ActionLink("Register", "LogOn", "LogOn", new { @class = "button" })
+<div class="well">    
+    <h2>Step 1: Register</h2>
+    <p>@Html.ActionLink("Register", "LogOn", "LogOn", new { @class = "btn btn-success" })</p>
 </div>
-
+<div class="well">
+    <h2>Step 2: Create a new Review</h2>
+    <p>@Html.ActionLink("Create Review", "CreateReview", "CreateReview", new { @class = "btn btn-success" })</p>
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="inputReviewName">Review Name</label>
+            <div class="controls">
+                <input type="text" id="inputReviewName" placeholder="for example: mycompany myteam review">
+            </div>
+        </div>
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Save Review</button>
+        </div>
+    </form>
+</div>
+<div class="well">
+    <h2>Step 3: Create Categories</h2>
+    <p>@Html.ActionLink("Add Category", "AddCategory", "AddCategory", new { @class = "btn btn-success" })</p>
+    
+    <p class="info">Advice: Think about what behaviour you want to encourage in your team.</p>
+    <p class="info">If you need some inspiration, <a href="http://assets.sbnation.com/assets/1074301/Valve_Handbook_LowRes.pdf" target="_blank">check out the valve handbook (pages 25-33)</a>. They have four categories: Skill, Productivty, Group Contribution and Product Contribution.</p>
+    
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="inputCategoryName">Category Name</label>
+            <div class="controls">
+                <input type="text" id="inputCategoryName" placeholder="for example: productivity, skills...">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputCategoryDescription">Category Description</label>
+            <div class="controls">
+                <textarea rows="5" class="input-xxlarge" type="text" id="inputCategoryDescription" placeholder="How much work do you get done in a certain amount of time..."></textarea>
+            </div>
+        </div>
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Save Category</button>
+        </div>
+    </form>
+    <h2>Step 3.1: Create More Categories</h2>
+</div>
+<div class="well">
+    <h2>Invite Peers for Reviewing</h2>
+    <p class="info">Invite your co-workers, colleagues, team mates - whoever you want to participate in your review.</p>
+    <form class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="inputUserName">User Name</label>
+            <div class="controls">
+                <input type="text" id="inputUserName" placeholder="for example: Larissa, Bill Gates, Jombowombo...">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="inputUserEmail">Email</label>
+            <div class="controls">
+                <input type="text" id="inputUserEmail" placeholder="name@company.com" />
+            </div>
+        </div>
+        <div class="controls">
+            <button type="submit" class="btn btn-success">Save Peer</button>
+        </div>
+    </form>
+    <h2>Step 4.1: Invite more Peers</h2>
+</div>

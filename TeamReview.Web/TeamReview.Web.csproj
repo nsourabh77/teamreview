@@ -172,42 +172,6 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\foundation\components\_alert-boxes.scss" />
-    <None Include="Content\foundation\components\_block-grid.scss" />
-    <None Include="Content\foundation\components\_breadcrumbs.scss" />
-    <None Include="Content\foundation\components\_button-groups.scss" />
-    <None Include="Content\foundation\components\_buttons.scss" />
-    <None Include="Content\foundation\components\_clearing.scss" />
-    <None Include="Content\foundation\components\_custom-forms.scss" />
-    <None Include="Content\foundation\components\_dropdown-buttons.scss" />
-    <None Include="Content\foundation\components\_dropdown.scss" />
-    <None Include="Content\foundation\components\_flex-video.scss" />
-    <None Include="Content\foundation\components\_forms.scss" />
-    <None Include="Content\foundation\components\_global.scss" />
-    <None Include="Content\foundation\components\_grid.scss" />
-    <None Include="Content\foundation\components\_inline-lists.scss" />
-    <None Include="Content\foundation\components\_joyride.scss" />
-    <None Include="Content\foundation\components\_keystrokes.scss" />
-    <None Include="Content\foundation\components\_labels.scss" />
-    <None Include="Content\foundation\components\_magellan.scss" />
-    <None Include="Content\foundation\components\_orbit.scss" />
-    <None Include="Content\foundation\components\_pagination.scss" />
-    <None Include="Content\foundation\components\_panels.scss" />
-    <None Include="Content\foundation\components\_pricing-tables.scss" />
-    <None Include="Content\foundation\components\_progress-bars.scss" />
-    <None Include="Content\foundation\components\_reveal.scss" />
-    <None Include="Content\foundation\components\_section.scss" />
-    <None Include="Content\foundation\components\_side-nav.scss" />
-    <None Include="Content\foundation\components\_split-buttons.scss" />
-    <None Include="Content\foundation\components\_sub-nav.scss" />
-    <None Include="Content\foundation\components\_switch.scss" />
-    <None Include="Content\foundation\components\_tables.scss" />
-    <None Include="Content\foundation\components\_thumbs.scss" />
-    <None Include="Content\foundation\components\_tooltips.scss" />
-    <None Include="Content\foundation\components\_top-bar.scss" />
-    <None Include="Content\foundation\components\_type.scss" />
-    <None Include="Content\foundation\components\_visibility.scss" />
-    <None Include="Content\foundation\_foundation-global.scss" />
     <None Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <PropertyGroup>
