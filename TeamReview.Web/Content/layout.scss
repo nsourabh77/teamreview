@@ -88,7 +88,7 @@ body {padding-top:0; background:#fefefe;}
 	
 	/* typography */
 	
-		h1, h2, h3, h4, h5, h6, legend, .brand {font-family: 'Open Sans', sans serif; font-weight:normal;}
+		h1, h2, h3, h4, h5, h6, legend, .brand {font-family: 'Carter One', sans serif; font-weight:normal;}
 	
 		a {color:#007ACC;}
 		a:hover {cursor:pointer;}
@@ -211,7 +211,7 @@ body {padding-top:0; background:#fefefe;}
 /* general */
 
 /* header */
-	header {@include gradient(#333, #222); border-bottom:solid 1px #111;}
+	header {@include gradient(#333, #222); border-bottom:solid 1px #111; margin-bottom:20px;}
 	header a {color:#eee;}
 	.logo {font-size:1.2em; float:left; display:block; padding:12px; margin-right:32px;}
 	.nav {float:left; margin:0; list-style:none;}
