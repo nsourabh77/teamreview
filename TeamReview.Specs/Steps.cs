@@ -7,6 +7,16 @@ using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 
 namespace TeamReview.Specs {
+	internal class Databases {
+		private static readonly string DbsFolder =
+			Path.Combine(new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.FullName, "scenario-dbs");
+
+		/// <summary>
+		/// DB with one user account: "Tester" hooked up to "test@teamaton.com" at Google Apps
+		/// </summary>
+		public static string WithTesterAccount = Path.Combine(DbsFolder, "TeamReview-TesterHasAccount.sdf");
+	}
+
 	[Binding]
 	public class Steps : IDisposable {
 		private static IisExpressProcess _iisExpress;
@@ -74,6 +84,7 @@ namespace TeamReview.Specs {
 				ProcessHelper.StartInteractive("cmd").WaitForExit();
 #endif
 			}
+			ProcessHelper.StartInteractive("cmd").WaitForExit();
 		}
 
 		[AfterTestRun]
@@ -157,7 +168,7 @@ namespace TeamReview.Specs {
 
 		[Then(@"a new account was created with my Google address")]
 		public void ThenANewAccountWasCreatedWithMyGoogleAddress() {
-			//
+			//Database.
 		}
 
 		[Then(@"I am logged in")]
@@ -176,6 +187,18 @@ namespace TeamReview.Specs {
 					throw new ArgumentOutOfRangeException("pageName", "No mapping from '{0}' to concrete url path exists!");
 			}
 			Assert.That(_browser.Location.AbsolutePath, Is.EqualTo(path));
+		}
+
+		[Given(@"I have an account at TeamReview")]
+		public void GivenIHaveAnAccountAtTeamReview() {
+			File.Copy(Databases.WithTesterAccount, DbPath, true);
+		}
+
+		[When(@"I log in using my Google account")]
+		public void WhenILogInUsingMyGoogleAccount()
+		{
+			_browser.Visit("/Account/Login");
+			WhenIUseMyGoogleAccount();
 		}
 
 		#region Helpers
