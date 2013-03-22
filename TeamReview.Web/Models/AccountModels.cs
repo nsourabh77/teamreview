@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Web.Mvc;
+using DataAnnotationsExtensions;
 
 namespace TeamReview.Web.Models {
 	public class UsersContext : DbContext {
@@ -19,12 +20,18 @@ namespace TeamReview.Web.Models {
 		public int UserId { get; set; }
 
 		public string UserName { get; set; }
+		public string Email { get; set; }
 	}
 
 	public class RegisterExternalLoginModel {
 		[Required]
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
+
+		[Required]
+		[Email]
+		[Display(Name = "Email address")]
+		public string EmailAddress { get; set; }
 
 		public string ExternalLoginData { get; set; }
 	}

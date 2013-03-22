@@ -205,12 +205,22 @@ namespace TeamReview.Web.Controllers {
 				return RedirectToLocal(returnUrl);
 			}
 			else {
-				// User is new, ask for their desired membership name
+				// User is new, ask for their desired membership name and contact email address
+				string email;
+				result.ExtraData.TryGetValue("email", out email);
+				var userName = result.UserName;
+				var indexOfAt = userName.IndexOf('@');
+				if (indexOfAt > 0) userName = userName.Substring(0, indexOfAt);
 				var loginData = OAuthWebSecurity.SerializeProviderUserId(result.Provider, result.ProviderUserId);
 				ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
 				ViewBag.ReturnUrl = returnUrl;
 				return View("ExternalLoginConfirmation",
-				            new RegisterExternalLoginModel { UserName = result.UserName, ExternalLoginData = loginData });
+				            new RegisterExternalLoginModel
+				            	{
+				            		EmailAddress = email,
+				            		UserName = userName,
+				            		ExternalLoginData = loginData
+				            	});
 			}
 		}
 
@@ -221,8 +231,8 @@ namespace TeamReview.Web.Controllers {
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
 		public ActionResult ExternalLoginConfirmation(RegisterExternalLoginModel model, string returnUrl) {
-			string provider = null;
-			string providerUserId = null;
+			string provider;
+			string providerUserId;
 
 			if (User.Identity.IsAuthenticated ||
 			    !OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId)) {
@@ -233,19 +243,25 @@ namespace TeamReview.Web.Controllers {
 				// Insert a new user into the database
 				using (var db = new UsersContext()) {
 					var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
-					// Check if user already exists
-					if (user == null) {
-						// Insert name into the profile table
-						db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
-						db.SaveChanges();
-
-						OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-						OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
-						return RedirectToLocal(returnUrl);
+					if (user != null) {
+						ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
 					}
 					else {
-						ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
+						user = db.UserProfiles.FirstOrDefault(u => u.Email.ToLower() == model.EmailAddress.ToLower());
+						if (user != null) {
+							ModelState.AddModelError("Email", "Email address already exists. Please enter a different email address.");
+						}
+							// Check if user already exists
+						else {
+							// Insert name into the profile table
+							db.UserProfiles.Add(new UserProfile { UserName = model.UserName, Email = model.EmailAddress });
+							db.SaveChanges();
+
+							OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
+							OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
+
+							return RedirectToLocal(returnUrl);
+						}
 					}
 				}
 			}
