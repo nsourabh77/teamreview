@@ -12,15 +12,30 @@ namespace TeamReview.Specs {
 		private static IisExpressProcess _iisExpress;
 		private static BrowserSession _browser;
 		private static SeleniumServerProcess _seleniumServer;
-		private static string _webPath;
 		private static bool _dbRestored;
+
+		private static readonly string WebPath = Path.Combine(
+			new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName, "TeamReview.Web");
+
+		private static string _dbPath;
+
+		private static string DbPath {
+			get {
+				return _dbPath ??
+				       (_dbPath = Path.Combine(WebPath, "App_Data", GetDbName()));
+			}
+		}
+
+		private static string DbBkpPath {
+			get { return DbPath + ".bak"; }
+		}
 
 		#region IDisposable Members
 
 		public void Dispose() {
 			Console.WriteLine("Disposing...");
 			if (!_dbRestored) {
-				RestoreExistingDatabase(_webPath);
+				RestoreExistingDatabase();
 			}
 		}
 
@@ -28,16 +43,14 @@ namespace TeamReview.Specs {
 
 		[BeforeTestRun]
 		public static void BeforeTestRun() {
-			_webPath = Path.Combine(
-				new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName, "TeamReview.Web");
-			Assert.That(Directory.Exists(_webPath), _webPath + " not found!");
+			Assert.That(Directory.Exists(WebPath), WebPath + " not found!");
 
-			BackupExistingDatabase(_webPath);
+			BackupExistingDatabase();
 
 			_seleniumServer = new SeleniumServerProcess();
 			_seleniumServer.Start();
 
-			_iisExpress = new IisExpressProcess(_webPath);
+			_iisExpress = new IisExpressProcess(WebPath);
 			_iisExpress.Start();
 			var sessionConfiguration = new SessionConfiguration
 			                           	{
@@ -83,7 +96,7 @@ namespace TeamReview.Specs {
 				}
 			}
 			finally {
-				RestoreExistingDatabase(_webPath);
+				RestoreExistingDatabase();
 			}
 		}
 
@@ -118,13 +131,15 @@ namespace TeamReview.Specs {
 
 		[When(@"I use my Google account")]
 		public void WhenIUseMyGoogleAccount() {
-			var email = ScenarioContext.Current.Get<Email>();
 			_browser.ClickButton("Google");
+
 			// Google login page
+			var email = ScenarioContext.Current.Get<Email>();
 			_browser.FillIn("Email").With(email.Address);
 			_browser.FillIn("Passwd").With(email.Password);
 			_browser.Uncheck("PersistentCookie"); // don't remember me
 			_browser.FindId("signIn").Click(); // sign in to Google
+			
 			// Google OpenID acceptance page
 			_browser.Uncheck("remember_choices_checkbox"); // don't remember my choice
 			_browser.FindId("approve_button").Click(); // sign in to Google
@@ -165,38 +180,33 @@ namespace TeamReview.Specs {
 
 		#region Helpers
 
-		private static void BackupExistingDatabase(string webPath) {
-			var dbName = GetDbName(webPath);
-			Console.WriteLine("Database name: " + dbName);
-			var dbPath = Path.Combine(webPath, "App_Data", dbName);
-			if (!File.Exists(dbPath)) {
-				Console.WriteLine(string.Format("INFO: {0} does not exist", dbPath));
+		private static void BackupExistingDatabase() {
+			if (!File.Exists(DbPath)) {
+				Console.WriteLine(string.Format("INFO: {0} does not exist", DbPath));
 			}
 			else {
-				File.Copy(dbPath, dbPath + "." + DateTime.Now.ToString("yyyyMMdd-HHmmss"), true);
-				if (File.Exists(dbPath + ".bak")) {
-					File.Delete(dbPath + ".bak");
+				File.Copy(DbPath, DbPath + "." + DateTime.Now.ToString("yyyyMMdd-HHmmss"), true);
+				if (File.Exists(DbBkpPath)) {
+					File.Delete(DbBkpPath);
 				}
-				File.Move(dbPath, dbPath + ".bak");
+				File.Move(DbPath, DbBkpPath);
 			}
 		}
 
-		private static void RestoreExistingDatabase(string webPath) {
-			var dbName = GetDbName(webPath);
-			var dbPath = Path.Combine(webPath, "App_Data", dbName);
-			if (File.Exists(dbPath + ".bak")) {
-				if (File.Exists(dbPath)) {
-					File.Delete(dbPath);
+		private static void RestoreExistingDatabase() {
+			if (File.Exists(DbBkpPath)) {
+				if (File.Exists(DbPath)) {
+					File.Delete(DbPath);
 				}
-				File.Move(dbPath + ".bak", dbPath);
+				File.Move(DbBkpPath, DbPath);
 			}
-			Assert.That(File.Exists(dbPath));
+			Assert.That(File.Exists(DbPath));
 			_dbRestored = true;
 		}
 
-		private static string GetDbName(string webPath) {
-			var webConfigPath = Path.Combine(webPath, "web.config");
-			Assert.That(File.Exists(webConfigPath), string.Format("The web.config could not be found in '{0}'.", webPath));
+		private static string GetDbName() {
+			var webConfigPath = Path.Combine(WebPath, "web.config");
+			Assert.That(File.Exists(webConfigPath), string.Format("The web.config could not be found in '{0}'.", WebPath));
 			var dbNameMarker = @"connectionString=""Data Source=|DataDirectory|\";
 			var webConfigText = File.ReadAllText(webConfigPath);
 			var dbNameIndex = webConfigText.IndexOf(dbNameMarker) + dbNameMarker.Length;
