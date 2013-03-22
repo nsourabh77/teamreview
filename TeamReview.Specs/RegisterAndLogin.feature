@@ -6,8 +6,10 @@ Feature: Register and login
 Scenario: Register using Google account
 	Given I own a Google account
 		And I am not logged into TeamReview
-	When I to register a new account
-		And I register using my Google account
+	When I register a new account
+		And I use my Google account
+		And I fill in a user name
+		And I finish registering
 	Then a new account was created with my Google address
 		And I am logged in
 		And I am on the "Dashboard"

@@ -108,3 +108,4 @@ Backup*/
 UpgradeLog*.XML
 
 TeamReview.Web/.sass-cache
+TeamReview.Web/App_Data/TeamReview.sdf.*
