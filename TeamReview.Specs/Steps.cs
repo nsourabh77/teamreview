@@ -201,6 +201,7 @@ namespace TeamReview.Specs {
 
 		[When(@"I log in using my Google account")]
 		public void WhenILogInUsingMyGoogleAccount() {
+			GivenIOwnAGoogleAccount();
 			_browser.Visit("/Account/Login");
 			WhenIUseMyGoogleAccount();
 		}
