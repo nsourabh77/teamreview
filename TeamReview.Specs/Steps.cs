@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using Coypu;
 using Coypu.Drivers;
+using Massive;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
@@ -28,6 +29,8 @@ namespace TeamReview.Specs {
 			new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName, "TeamReview.Web");
 
 		private static string _dbPath;
+
+		private static readonly string ConnectionString = string.Format("Data Source={0};Persist Security Info=False;", DbPath);
 
 		private static string DbPath {
 			get {
@@ -84,7 +87,7 @@ namespace TeamReview.Specs {
 				ProcessHelper.StartInteractive("cmd").WaitForExit();
 #endif
 			}
-			ProcessHelper.StartInteractive("cmd").WaitForExit();
+			DeleteTestDatabase();
 		}
 
 		[AfterTestRun]
@@ -150,7 +153,7 @@ namespace TeamReview.Specs {
 			_browser.FillIn("Passwd").With(email.Password);
 			_browser.Uncheck("PersistentCookie"); // don't remember me
 			_browser.FindId("signIn").Click(); // sign in to Google
-			
+
 			// Google OpenID acceptance page
 			_browser.Uncheck("remember_choices_checkbox"); // don't remember my choice
 			_browser.FindId("approve_button").Click(); // sign in to Google
@@ -168,7 +171,9 @@ namespace TeamReview.Specs {
 
 		[Then(@"a new account was created with my Google address")]
 		public void ThenANewAccountWasCreatedWithMyGoogleAddress() {
-			//Database.
+			var emailAddress = ScenarioContext.Current.Get<Email>().Address;
+			var user = new UserTable().Single("EmailAddress = @0", new[] { emailAddress });
+			Assert.That(user, Is.Not.Null);
 		}
 
 		[Then(@"I am logged in")]
@@ -195,8 +200,7 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I log in using my Google account")]
-		public void WhenILogInUsingMyGoogleAccount()
-		{
+		public void WhenILogInUsingMyGoogleAccount() {
 			_browser.Visit("/Account/Login");
 			WhenIUseMyGoogleAccount();
 		}
@@ -216,14 +220,23 @@ namespace TeamReview.Specs {
 			}
 		}
 
-		private static void RestoreExistingDatabase() {
-			if (File.Exists(DbBkpPath)) {
-				if (File.Exists(DbPath)) {
-					File.Delete(DbPath);
-				}
-				File.Move(DbBkpPath, DbPath);
+		private static void DeleteTestDatabase() {
+			if (File.Exists(DbPath)) {
+				File.Delete(DbPath);
 			}
-			Assert.That(File.Exists(DbPath));
+		}
+
+		private static void RestoreExistingDatabase() {
+			DeleteTestDatabase();
+			if (File.Exists(DbBkpPath)) {
+				File.Move(DbBkpPath, DbPath);
+				Assert.That(File.Exists(DbPath),
+				            "The original DB file should have been restored but hasn't been! Try to restore it manually (in TeamReview.Web\\App_Data).");
+			}
+			else {
+				Assert.That(!File.Exists(DbPath),
+				            "The original DB file should not exist since it didn't exist when Specs were started!");
+			}
 			_dbRestored = true;
 		}
 
@@ -237,6 +250,18 @@ namespace TeamReview.Specs {
 			            "The database name could not be found in the web.config! Please provide one in the connectionString.");
 			var dbNameLength = webConfigText.IndexOf(';', dbNameIndex) - dbNameIndex;
 			return webConfigText.Substring(dbNameIndex, dbNameLength);
+		}
+
+		#endregion
+
+		#region Nested type: UserTable
+
+		private class UserTable : DynamicModel {
+			public UserTable()
+				: base("DefaultConnection", "UserProfile", "UserId") {
+				Console.WriteLine("UserTable: setting connection string to '{0}'", ConnectionString);
+				SetConnectionString(ConnectionString);
+			}
 		}
 
 		#endregion
