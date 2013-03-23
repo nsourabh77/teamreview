@@ -71,12 +71,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MassiveSqlCeTest.cs" />
-    <Compile Include="Massive.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TeamReview.Core\TeamReview.Core.csproj">
+      <Project>{41CAD1D6-E29B-4C69-93BE-47F9617E482A}</Project>
+      <Name>TeamReview.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

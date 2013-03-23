@@ -11,8 +11,9 @@ namespace TeamReview.Tests {
 			var dbPath = Path.Combine(new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName,
 			                          "TeamReview.Web", "App_Data", "TeamReview.sdf");
 			var connectionString = string.Format("Data Source={0};Persist Security Info=False;", dbPath);
-			var database = new DynamicModel(true, connectionString, "UserProfile", "UserId");
-			foreach (var result in database.Query("SELECT UserName FROM UserProfile")) {
+			var database = new DynamicModel("DefaultConnection", "UserProfile", "UserId").SetConnectionString(connectionString);
+			var results = database.Query("SELECT UserName FROM UserProfile");
+			foreach (var result in results) {
 				Console.WriteLine(result);
 			}
 		}

@@ -112,25 +112,14 @@ namespace Massive {
 	/// A class that wraps your database table in Dynamic Funtime
 	/// </summary>
 	public class DynamicModel : DynamicObject {
-		private readonly string ConnectionString;
 		private readonly DbProviderFactory _factory;
+		private string ConnectionString;
 		public IList<string> Errors = new List<string>();
 
 		/// <summary>
 		/// List out all the schema bits for use with ... whatever
 		/// </summary>
 		private IEnumerable<dynamic> _schema;
-
-		public DynamicModel(bool egal, string connectionString, string tableName = "",
-		                    string primaryKeyField = "") {
-			TableName = tableName == "" ? GetType().Name : tableName;
-			PrimaryKeyField = string.IsNullOrEmpty(primaryKeyField) ? "ID" : primaryKeyField;
-			DescriptorField = "";
-			var _providerName = ConfigurationManager.ConnectionStrings["DefaultConnection"].ProviderName ?? "System.Data.SqlClient";
-
-			_factory = DbProviderFactories.GetFactory(_providerName);
-			ConnectionString = connectionString;
-		}
 
 		public DynamicModel(string connectionStringName, string tableName = "",
 		                    string primaryKeyField = "", string descriptorField = "") {
@@ -174,6 +163,11 @@ namespace Massive {
 
 		public virtual string PrimaryKeyField { get; set; }
 		public virtual string TableName { get; set; }
+
+		public DynamicModel SetConnectionString(string connectionString) {
+			ConnectionString = connectionString;
+			return this;
+		}
 
 		public static DynamicModel Open(string connectionStringName) {
 			dynamic dm = new DynamicModel(connectionStringName);
