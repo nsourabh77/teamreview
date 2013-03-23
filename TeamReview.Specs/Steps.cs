@@ -13,17 +13,21 @@ namespace TeamReview.Specs {
 			Path.Combine(new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.FullName, "scenario-dbs");
 
 		/// <summary>
+		/// DB with the needed tables but all of them empty.
+		/// </summary>
+		public static string Empty = Path.Combine(DbsFolder, "TeamReview-EmptyTables.sdf");
+
+		/// <summary>
 		/// DB with one user account: "Tester" hooked up to "test@teamaton.com" at Google Apps
 		/// </summary>
 		public static string WithTesterAccount = Path.Combine(DbsFolder, "TeamReview-TesterHasAccount.sdf");
 	}
 
 	[Binding]
-	public class Steps : IDisposable {
+	public class Steps {
 		private static IisExpressProcess _iisExpress;
 		private static BrowserSession _browser;
 		private static SeleniumServerProcess _seleniumServer;
-		private static bool _dbRestored;
 
 		private static readonly string WebPath = Path.Combine(
 			new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.Parent.FullName, "TeamReview.Web");
@@ -42,17 +46,6 @@ namespace TeamReview.Specs {
 		private static string DbBkpPath {
 			get { return DbPath + ".bak"; }
 		}
-
-		#region IDisposable Members
-
-		public void Dispose() {
-			Console.WriteLine("Disposing...");
-			if (!_dbRestored) {
-				RestoreExistingDatabase();
-			}
-		}
-
-		#endregion
 
 		[BeforeTestRun]
 		public static void BeforeTestRun() {
@@ -77,6 +70,12 @@ namespace TeamReview.Specs {
 			_browser = new BrowserSession(sessionConfiguration);
 		}
 
+		[BeforeScenario]
+		public void BeforeScenario() {
+			File.Copy(Databases.Empty, DbPath, true);
+			((IWebDriver) _browser.Driver.Native).Manage().Cookies.DeleteAllCookies();
+		}
+
 		[AfterScenario]
 		public void AfterScenario() {
 			if (ScenarioContext.Current.TestError != null) {
@@ -92,25 +91,21 @@ namespace TeamReview.Specs {
 
 		[AfterTestRun]
 		public static void AfterTestRun() {
+			RestoreExistingDatabase();
 			try {
-				try {
-					_browser.Dispose();
-				}
-				catch {
-				}
-				try {
-					_iisExpress.Dispose();
-				}
-				catch {
-				}
-				try {
-					_seleniumServer.Dispose();
-				}
-				catch {
-				}
+				_browser.Dispose();
 			}
-			finally {
-				RestoreExistingDatabase();
+			catch {
+			}
+			try {
+				_iisExpress.Dispose();
+			}
+			catch {
+			}
+			try {
+				_seleniumServer.Dispose();
+			}
+			catch {
 			}
 		}
 
@@ -213,11 +208,9 @@ namespace TeamReview.Specs {
 				Console.WriteLine(string.Format("INFO: {0} does not exist", DbPath));
 			}
 			else {
+				// second backup copy with timestamp in case something goes wrong
 				File.Copy(DbPath, DbPath + "." + DateTime.Now.ToString("yyyyMMdd-HHmmss"), true);
-				if (File.Exists(DbBkpPath)) {
-					File.Delete(DbBkpPath);
-				}
-				File.Move(DbPath, DbBkpPath);
+				File.Copy(DbPath, DbBkpPath, true);
 			}
 		}
 
@@ -230,6 +223,7 @@ namespace TeamReview.Specs {
 		private static void RestoreExistingDatabase() {
 			DeleteTestDatabase();
 			if (File.Exists(DbBkpPath)) {
+				Console.WriteLine("Restoring original DB from Backup.");
 				File.Move(DbBkpPath, DbPath);
 				Assert.That(File.Exists(DbPath),
 				            "The original DB file should have been restored but hasn't been! Try to restore it manually (in TeamReview.Web\\App_Data).");
@@ -238,7 +232,6 @@ namespace TeamReview.Specs {
 				Assert.That(!File.Exists(DbPath),
 				            "The original DB file should not exist since it didn't exist when Specs were started!");
 			}
-			_dbRestored = true;
 		}
 
 		private static string GetDbName() {
