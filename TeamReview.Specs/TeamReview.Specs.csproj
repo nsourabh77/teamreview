@@ -106,6 +106,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="scenario-dbs\TeamReview-EmptyTables.sdf" />
     <Content Include="scenario-dbs\TeamReview-TesterHasAccount.sdf" />
     <Content Include="selenium-server-standalone-2.31.0.jar">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
