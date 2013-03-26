@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Web.Mvc;
@@ -11,6 +12,35 @@ namespace TeamReview.Web.Models {
 		}
 
 		public DbSet<UserProfile> UserProfiles { get; set; }
+	}
+
+	public class ReviewsContext : DbContext {
+		public ReviewsContext()
+			: base("DefaultConnection") {
+		}
+
+		public DbSet<ReviewConfiguration> ReviewConfigurations { get; set; }
+	}
+
+	[Table("ReviewConfiguration")]
+	public class ReviewConfiguration
+	{
+		[Key]
+		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+		public int ReviewId { get; set; }
+
+		public bool Active { get; set; }
+		public ICollection<ReviewCategory> Categories { get; set; }
+	}
+
+	[Table("ReviewCategory")]
+	public class ReviewCategory {
+		[Key]
+		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+		public int CatId { get; set; }
+
+		public string Name { get; set; }
+		public string Description { get; set; }
 	}
 
 	[Table("UserProfile")]
