@@ -1,0 +1,22 @@
+﻿@model TeamReview.Web.Models.ReviewConfiguration
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>ReviewConfiguration</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Active)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Active)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ReviewId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
