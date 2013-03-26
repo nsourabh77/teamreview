@@ -25,6 +25,7 @@ Scenario: Login as non-existing user using Google account
 	Given I own a Google account
 		And I don't have an account at TeamReview
 	When I log in using my Google account
+		And I finish registering
 	Then a new account was created with my Google address
 		And I am logged in
 		And I am on the "Dashboard"
@@ -32,5 +33,5 @@ Scenario: Login as non-existing user using Google account
 Scenario: Log out of TeamReview
 	Given I am logged into TeamReview
 	When I log out
-	Then I am logged out of TeamReview
+	Then I am not logged into TeamReview
 		And I am on the login page

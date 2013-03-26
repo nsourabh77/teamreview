@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Linq;
+using System.Threading;
 using Coypu;
 using Coypu.Drivers;
 using Massive;
@@ -126,11 +128,14 @@ namespace TeamReview.Specs {
 				new Email { Address = "test@teamaton.com", Password = "9c60026e5467eeeee49c7d2b491dd6d2" });
 		}
 
-		[Given(@"I am not logged into TeamReview")]
+		[StepDefinition(@"I am not logged into TeamReview")]
 		public void GivenIAmNotLoggedIntoTeamReview() {
-			_browser.Visit("/");
+			// in case we haven't visited any other resource yet
+			Console.WriteLine("Currently on " + _browser.Location);
+			if (_browser.Location.ToString() == "about:blank") {
+				_browser.Visit("/");
+			}
 			Assert.That(_browser.HasCss("#loginLink"));
-			Assert.That(_browser.HasCss("#registerLink"));
 		}
 
 		[When(@"I register a new account")]
@@ -167,8 +172,9 @@ namespace TeamReview.Specs {
 		[Then(@"a new account was created with my Google address")]
 		public void ThenANewAccountWasCreatedWithMyGoogleAddress() {
 			var emailAddress = ScenarioContext.Current.Get<Email>().Address;
+			Thread.Sleep(1000);
 			var user = new UserTable().Single("EmailAddress = @0", new[] { emailAddress });
-			Assert.That(user, Is.Not.Null);
+			Assert.That((object) user, Is.Not.Null);
 		}
 
 		[Then(@"I am logged in")]
@@ -190,14 +196,12 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I create a new review")]
-		public void WhenICreateANewReview()
-		{
+		public void WhenICreateANewReview() {
 			_browser.Visit("/Review/Create");
 		}
 
 		[Given(@"I am logged in")]
-		public void GivenIAmLoggedIn()
-		{
+		public void GivenIAmLoggedIn() {
 			GivenIHaveAnAccountAtTeamReview();
 			WhenILogInUsingMyGoogleAccount();
 		}
@@ -212,6 +216,29 @@ namespace TeamReview.Specs {
 			GivenIOwnAGoogleAccount();
 			_browser.Visit("/Account/Login");
 			WhenIUseMyGoogleAccount();
+		}
+
+		[Given(@"I don't have an account at TeamReview")]
+		public void GivenIDonTHaveAnAccountAtTeamReview() {
+			Assert.That(new UserTable().All().Count(), Is.EqualTo(0));
+		}
+
+		[Given(@"I am logged into TeamReview")]
+		public void GivenIAmLoggedIntoTeamReview() {
+			GivenIHaveAnAccountAtTeamReview();
+			GivenIOwnAGoogleAccount();
+			WhenILogInUsingMyGoogleAccount();
+		}
+
+		[When(@"I log out")]
+		public void WhenILogOut() {
+			_browser.FindId("logoffLink").Click();
+		}
+
+		[Then(@"I am on the login page")]
+		public void ThenIAmOnTheLoginPage() {
+			Assert.That(_browser.Location.AbsolutePath, Is.EqualTo("/Account/Login"),
+			            "Should be on the login page but am on " + _browser.Location);
 		}
 
 		#region Helpers
