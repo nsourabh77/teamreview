@@ -5,18 +5,23 @@ using System.Data.Entity;
 using System.Web.Mvc;
 using DataAnnotationsExtensions;
 
-namespace TeamReview.Web.Models {
-	public class UsersContext : DbContext {
+namespace TeamReview.Web.Models
+{
+	public class UsersContext : DbContext
+	{
 		public UsersContext()
-			: base("DefaultConnection") {
+			: base("DefaultConnection")
+		{
 		}
 
 		public DbSet<UserProfile> UserProfiles { get; set; }
 	}
 
-	public class ReviewsContext : DbContext {
+	public class ReviewsContext : DbContext
+	{
 		public ReviewsContext()
-			: base("DefaultConnection") {
+			: base("DefaultConnection")
+		{
 		}
 
 		public DbSet<ReviewConfiguration> ReviewConfigurations { get; set; }
@@ -25,16 +30,23 @@ namespace TeamReview.Web.Models {
 	[Table("ReviewConfiguration")]
 	public class ReviewConfiguration
 	{
+		public ReviewConfiguration()
+		{
+			Categories = new List<ReviewCategory>();
+		}
+
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int ReviewId { get; set; }
 
+		public string Name { get; set; }
 		public bool Active { get; set; }
 		public ICollection<ReviewCategory> Categories { get; set; }
 	}
 
 	[Table("ReviewCategory")]
-	public class ReviewCategory {
+	public class ReviewCategory
+	{
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int CatId { get; set; }
@@ -44,7 +56,8 @@ namespace TeamReview.Web.Models {
 	}
 
 	[Table("UserProfile")]
-	public class UserProfile {
+	public class UserProfile
+	{
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int UserId { get; set; }
@@ -53,7 +66,8 @@ namespace TeamReview.Web.Models {
 		public string EmailAddress { get; set; }
 	}
 
-	public class RegisterExternalLoginModel {
+	public class RegisterExternalLoginModel
+	{
 		[Required]
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
@@ -66,7 +80,8 @@ namespace TeamReview.Web.Models {
 		public string ExternalLoginData { get; set; }
 	}
 
-	public class LocalPasswordModel {
+	public class LocalPasswordModel
+	{
 		[Required]
 		[DataType(DataType.Password)]
 		[Display(Name = "Current password")]
@@ -84,7 +99,8 @@ namespace TeamReview.Web.Models {
 		public string ConfirmPassword { get; set; }
 	}
 
-	public class LoginModel {
+	public class LoginModel
+	{
 		[Required]
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
@@ -98,7 +114,8 @@ namespace TeamReview.Web.Models {
 		public bool RememberMe { get; set; }
 	}
 
-	public class RegisterModel {
+	public class RegisterModel
+	{
 		[Required]
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
@@ -115,7 +132,8 @@ namespace TeamReview.Web.Models {
 		public string ConfirmPassword { get; set; }
 	}
 
-	public class ExternalLogin {
+	public class ExternalLogin
+	{
 		public string Provider { get; set; }
 		public string ProviderDisplayName { get; set; }
 		public string ProviderUserId { get; set; }

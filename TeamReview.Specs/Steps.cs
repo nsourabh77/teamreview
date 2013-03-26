@@ -189,6 +189,19 @@ namespace TeamReview.Specs {
 			Assert.That(_browser.Location.AbsolutePath, Is.EqualTo(path));
 		}
 
+		[When(@"I create a new review")]
+		public void WhenICreateANewReview()
+		{
+			_browser.Visit("/Review/Create");
+		}
+
+		[Given(@"I am logged in")]
+		public void GivenIAmLoggedIn()
+		{
+			GivenIHaveAnAccountAtTeamReview();
+			WhenILogInUsingMyGoogleAccount();
+		}
+
 		[Given(@"I have an account at TeamReview")]
 		public void GivenIHaveAnAccountAtTeamReview() {
 			File.Copy(Databases.WithTesterAccount, DbPath, true);

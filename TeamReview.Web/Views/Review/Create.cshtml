@@ -1,4 +1,5 @@
 ﻿@model TeamReview.Web.Models.ReviewConfiguration
+@using TeamReview.Web.Models
 
 @{
     ViewBag.Title = "Create";
@@ -6,19 +7,24 @@
 
 <h2>Create</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>ReviewConfiguration</legend>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Active)
+            @Html.LabelFor(model => model.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Active)
-            @Html.ValidationMessageFor(model => model.Active)
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
         </div>
+
+        <div id="categories">
+        </div>
+        @Html.ActionLink("Add Category", "AddCategory", null, new { id = "addCategory"})
 
         <p>
             <input type="submit" value="Create" />
@@ -30,6 +36,18 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            $("#addCategory").on('click', function (ev) {
+                ev.preventDefault();
+                $.ajax({
+                    url: this.href,
+                    cache: false
+                }).done(function (html) { $("#categories").append(html); });
+            });
+        });
+    </script>
 }
