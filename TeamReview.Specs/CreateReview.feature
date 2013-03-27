@@ -15,9 +15,9 @@ Scenario: Create a review with 2 categories
 		And I fill in a category description
 		And I save the review
 	Then my new review was created with those categories
-		And I am added to the review
-		And I am on the "Edit review" page for my review
-		And I see the message "Review has been saved"
+		#And I am added to the review
+		#And I am on the "Edit review" page for my review
+		#And I see the message "Review has been saved"
 
 Scenario: Add category to existing Review
 	Given I am logged in

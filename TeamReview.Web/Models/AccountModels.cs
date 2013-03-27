@@ -41,7 +41,7 @@ namespace TeamReview.Web.Models
 
 		public string Name { get; set; }
 		public bool Active { get; set; }
-		public ICollection<ReviewCategory> Categories { get; set; }
+		public IList<ReviewCategory> Categories { get; set; }
 	}
 
 	[Table("ReviewCategory")]

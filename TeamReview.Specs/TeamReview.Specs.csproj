@@ -117,6 +117,10 @@
       <Project>{41CAD1D6-E29B-4C69-93BE-47F9617E482A}</Project>
       <Name>TeamReview.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TeamReview.Web\TeamReview.Web.csproj">
+      <Project>{1F6EDB28-33E9-4FD7-8DA2-A28C049A73C1}</Project>
+      <Name>TeamReview.Web</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

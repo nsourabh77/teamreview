@@ -7,6 +7,7 @@ using Coypu.Drivers;
 using Massive;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using TeamReview.Web.Models;
 using TechTalk.SpecFlow;
 
 namespace TeamReview.Specs {
@@ -196,7 +197,9 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I create a new review")]
-		public void WhenICreateANewReview() {
+		public void WhenICreateANewReview()
+		{
+			ScenarioContext.Current.Set(new ReviewConfiguration());
 			_browser.Visit("/Review/Create");
 		}
 
@@ -240,6 +243,55 @@ namespace TeamReview.Specs {
 			Assert.That(_browser.Location.AbsolutePath, Is.EqualTo("/Account/Login"),
 			            "Should be on the login page but am on " + _browser.Location);
 		}
+
+		[When(@"I fill in a review name")]
+		public void WhenIFillInAReviewName()
+		{
+			const string reviewName = "NewReview";
+			ScenarioContext.Current.Get<ReviewConfiguration>().Name = reviewName;
+			_browser.FillIn("Name").With(reviewName);
+		}
+
+		[When(@"I add (a|another) category")]
+		public void WhenIAddACategory()
+		{
+			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Add(new ReviewCategory());
+			_browser.FindId("addCategory").Click();
+		}
+
+		[When(@"I fill in a category name")]
+		public void WhenIFillInACategoryName()
+		{
+			var name = "cat-"+ new Random().Next(100,1000);
+			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Last().Name = name;
+			_browser.FindAllCss("section.category").Last().FillIn("Name").With(name);
+		}
+
+		[When(@"I fill in a category description")]
+		public void WhenIFillInACategoryDescription()
+		{
+			var description = "desc-" + new Guid();
+			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Last().Description = description;
+			_browser.FindAllCss("section.category").Last().FillIn("Description").With(description);
+		}
+
+		[When(@"I save the review")]
+		public void WhenISaveTheReview()
+		{
+			_browser.ClickButton("Save");
+		}
+
+		[Then(@"my new review was created with those categories")]
+		public void ThenMyNewReviewWasCreatedWithThoseCategories()
+		{
+			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
+			var table = new Reviews();
+			var reviews =
+				table.Query(
+					"SELECT Name FROM Reviews INNER JOIN ReviewCategories ON ReviewCategories.ReviewConfiguration_ReviewId = Reviews.ReviewId");
+			Assert.AreEqual(2, reviews.First().Categories.Count);
+		}
+
 
 		#region Helpers
 
@@ -294,6 +346,15 @@ namespace TeamReview.Specs {
 			public UserTable()
 				: base("DefaultConnection", "UserProfile", "UserId") {
 				Console.WriteLine("UserTable: setting connection string to '{0}'", ConnectionString);
+				SetConnectionString(ConnectionString);
+			}
+		}
+
+		private class Reviews : DynamicModel {
+			public Reviews()
+				: base("DefaultConnection", "ReviewConfiguration", "ReviewId")
+			{
+				Console.WriteLine("ReviewConfigurationTable: setting connection string to '{0}'", ConnectionString);
 				SetConnectionString(ConnectionString);
 			}
 		}

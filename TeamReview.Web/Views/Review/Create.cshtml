@@ -27,7 +27,7 @@
         @Html.ActionLink("Add Category", "AddCategory", null, new { id = "addCategory"})
 
         <p>
-            <input type="submit" value="Create" />
+            <input type="submit" value="Save" />
         </p>
     </fieldset>
 }
@@ -41,12 +41,23 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(function () {
+            var nextCategory = 0;
             $("#addCategory").on('click', function (ev) {
                 ev.preventDefault();
                 $.ajax({
                     url: this.href,
                     cache: false
-                }).done(function (html) { $("#categories").append(html); });
+                }).done(function (html) {
+                    var newName = 'Categories[' + nextCategory + '].Name';
+                    var newDescription = 'Categories[' + nextCategory + '].Description';
+                    var $modifiedHtml = $(html)
+                        .find('#Name').attr('name', newName).attr('id', newName).end()
+                        .find('#Description').attr('name', newDescription).attr('id', newDescription).end()
+                        .find('label[for=Name]').attr('for', newName).end()
+                        .find('label[for=Description]').attr('for', newDescription).end();
+                    $("#categories").append($modifiedHtml);
+                    nextCategory++;
+                });
             });
         });
     </script>
