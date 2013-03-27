@@ -159,7 +159,15 @@ namespace TeamReview.Specs {
 
 			// Google OpenID acceptance page
 			_browser.Uncheck("remember_choices_checkbox"); // don't remember my choice
-			_browser.FindId("approve_button").Click(); // sign in to Google
+			_browser.FindId("approve_button").Click(); // authenticate using Google
+
+			var user = new UserTable().Single("EmailAddress = @0", new[] { email.Address });
+			ScenarioContext.Current.Set(new UserProfile
+			                            	{
+			                            		EmailAddress = user.EmailAddress,
+			                            		UserName = user.UserName,
+			                            		UserId = user.UserId
+			                            	});
 		}
 
 		[When(@"I fill in a user name")]
@@ -280,6 +288,7 @@ namespace TeamReview.Specs {
 		[When(@"I save the review")]
 		public void WhenISaveTheReview()
 		{
+			ScenarioContext.Current.Get<ReviewConfiguration>().Peers.Add(ScenarioContext.Current.Get<UserProfile>());
 			_browser.ClickButton("Save");
 		}
 
@@ -298,10 +307,22 @@ namespace TeamReview.Specs {
 			Assert.That(new Reviews().All().First().Name as string, Is.EqualTo(review.Name));
 			var categories = new Categories().All();
 			Assert.That(categories.Count(), Is.EqualTo(2));
-			foreach (var category in categories) {
-				//review.Categories.
-				//Assert.That(category.Name,Is.EqualTo());
+			foreach (var category in categories)
+			{
+				var expectedCategory = review.Categories.First(c => c.Name == category.Name);
+				Assert.IsNotNull(expectedCategory);
+				Assert.AreEqual(expectedCategory.Description, category.Description);
 			}
+		}
+
+		[Then(@"I am added to the review")]
+		public void ThenIAmAddedToTheReview()
+		{
+			var peerId = new UserTable().All().First(u => u.Name == ScenarioContext.Current.Get<UserProfile>().UserName).UserId;
+			var reviewId = new Reviews().All().First(r => r.Name == ScenarioContext.Current.Get<ReviewConfiguration>().Name).ReviewId;
+			var reviewpeer = new ReviewsPeers().All().First();
+			Assert.AreEqual(reviewId, reviewpeer.ReviewId);
+			Assert.AreEqual(peerId, reviewpeer.PeerId);
 		}
 
 
@@ -385,6 +406,16 @@ namespace TeamReview.Specs {
 				: base("DefaultConnection", "ReviewCategory", "CatId")
 			{
 				Console.WriteLine("ReviewCategory: setting connection string to '{0}'", ConnectionString);
+				SetConnectionString(ConnectionString);
+			}
+		}
+
+		private class ReviewsPeers : DynamicModel
+		{
+			public ReviewsPeers()
+				: base("DefaultConnection", "ReviewsPeers")
+			{
+				Console.WriteLine("ReviewsPeers: setting connection string to '{0}'", ConnectionString);
 				SetConnectionString(ConnectionString);
 			}
 		}

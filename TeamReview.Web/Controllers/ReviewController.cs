@@ -9,6 +9,7 @@ using TeamReview.Web.Models;
 
 namespace TeamReview.Web.Controllers
 {
+	[Authorize]
 	public class ReviewController : Controller
 	{
 		private ReviewsContext db = new ReviewsContext();
@@ -36,7 +37,6 @@ namespace TeamReview.Web.Controllers
 
 		//
 		// GET: /Review/Create
-
 		public ActionResult Create()
 		{
 			return View();
@@ -50,6 +50,7 @@ namespace TeamReview.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				reviewconfiguration.Peers.Add(db.UserProfiles.First(user => user.UserName == User.Identity.Name));
 				db.ReviewConfigurations.Add(reviewconfiguration);
 				db.SaveChanges();
 				return RedirectToAction("Index");

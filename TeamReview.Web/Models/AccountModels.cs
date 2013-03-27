@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -7,16 +8,6 @@ using DataAnnotationsExtensions;
 
 namespace TeamReview.Web.Models
 {
-	public class UsersContext : DbContext
-	{
-		public UsersContext()
-			: base("DefaultConnection")
-		{
-		}
-
-		public DbSet<UserProfile> UserProfiles { get; set; }
-	}
-
 	public class ReviewsContext : DbContext
 	{
 		public ReviewsContext()
@@ -24,7 +15,22 @@ namespace TeamReview.Web.Models
 		{
 		}
 
+		public DbSet<UserProfile> UserProfiles { get; set; }
 		public DbSet<ReviewConfiguration> ReviewConfigurations { get; set; }
+
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
+			modelBuilder.Entity<ReviewConfiguration>()
+				.HasMany(s => s.Peers)
+				.WithMany(a => a.ReviewConfigurations)
+				.Map(m =>
+				{
+					m.MapLeftKey("ReviewId");
+					m.MapRightKey("PeerId");
+					m.ToTable("ReviewsPeers");
+				});
+		}
 	}
 
 	[Table("ReviewConfiguration")]
@@ -33,6 +39,7 @@ namespace TeamReview.Web.Models
 		public ReviewConfiguration()
 		{
 			Categories = new List<ReviewCategory>();
+			Peers = new List<UserProfile>();
 		}
 
 		[Key]
@@ -42,6 +49,7 @@ namespace TeamReview.Web.Models
 		public string Name { get; set; }
 		public bool Active { get; set; }
 		public IList<ReviewCategory> Categories { get; set; }
+		public IList<UserProfile> Peers { get; set; }
 	}
 
 	[Table("ReviewCategory")]
@@ -64,6 +72,8 @@ namespace TeamReview.Web.Models
 
 		public string UserName { get; set; }
 		public string EmailAddress { get; set; }
+
+		public ICollection<ReviewConfiguration> ReviewConfigurations { get; set; }
 	}
 
 	public class RegisterExternalLoginModel
