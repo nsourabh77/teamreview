@@ -71,26 +71,6 @@ namespace TeamReview.Specs
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create a review with 2 categories", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
-#line 7
- testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
- testRunner.When("I create a new review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 9
-  testRunner.And("I fill in a review name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
-  testRunner.And("I add a category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
-  testRunner.And("I fill in a category name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
-  testRunner.And("I fill in a category description", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
-  testRunner.And("I add another category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
-  testRunner.And("I fill in a category name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
-  testRunner.And("I fill in a category description", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
-  testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
  testRunner.Then("my new review was created with those categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

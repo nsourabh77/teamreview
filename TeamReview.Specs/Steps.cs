@@ -1,4 +1,6 @@
 using System;
+using System.Configuration;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -65,8 +67,8 @@ namespace TeamReview.Specs {
 			                           	{
 			                           		AppHost = "localhost",
 			                           		Port = _iisExpress.Port,
-			                           		//Browser = Browser.Firefox,
-			                           		Browser = Browser.HtmlUnitWithJavaScript,
+											Browser = Browser.Firefox,
+											//Browser = Browser.HtmlUnitWithJavaScript,
 			                           		Timeout = TimeSpan.FromSeconds(15),
 			                           		RetryInterval = TimeSpan.FromSeconds(1),
 			                           	};
@@ -252,7 +254,7 @@ namespace TeamReview.Specs {
 			_browser.FillIn("Name").With(reviewName);
 		}
 
-		[When(@"I add (a|another) category")]
+		[When(@"I add (?:a|another) category")]
 		public void WhenIAddACategory()
 		{
 			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Add(new ReviewCategory());
@@ -270,7 +272,7 @@ namespace TeamReview.Specs {
 		[When(@"I fill in a category description")]
 		public void WhenIFillInACategoryDescription()
 		{
-			var description = "desc-" + new Guid();
+			var description = "desc-" + Guid.NewGuid();
 			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Last().Description = description;
 			_browser.FindAllCss("section.category").Last().FillIn("Description").With(description);
 		}
@@ -284,12 +286,22 @@ namespace TeamReview.Specs {
 		[Then(@"my new review was created with those categories")]
 		public void ThenMyNewReviewWasCreatedWithThoseCategories()
 		{
+			//var destFileName = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "TeamReviewCopy.sdf"));
+			//File.Copy(DbPath, destFileName, true);
+			//Database.SetInitializer<ReviewsContext>(new CreateDatabaseIfNotExists<ReviewsContext>());
+			//using (var ctx = new ReviewsContext())
+			//{
+			//    Assert.That(ctx.ReviewConfigurations.First().Categories.Count, Is.EqualTo(2));
+			//}
+
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
-			var table = new Reviews();
-			var reviews =
-				table.Query(
-					"SELECT Name FROM Reviews INNER JOIN ReviewCategories ON ReviewCategories.ReviewConfiguration_ReviewId = Reviews.ReviewId");
-			Assert.AreEqual(2, reviews.First().Categories.Count);
+			Assert.That(new Reviews().All().First().Name as string, Is.EqualTo(review.Name));
+			var categories = new Categories().All();
+			Assert.That(categories.Count(), Is.EqualTo(2));
+			foreach (var category in categories) {
+				//review.Categories.
+				//Assert.That(category.Name,Is.EqualTo());
+			}
 		}
 
 
@@ -342,6 +354,15 @@ namespace TeamReview.Specs {
 
 		#region Nested type: UserTable
 
+		public class ReviewsSpecContext : DbContext
+		{
+			public ReviewsSpecContext() : base("CopyForSpecs")
+			{
+			}
+
+			public DbSet<ReviewConfiguration> Reviews { get; set; }
+		}
+
 		private class UserTable : DynamicModel {
 			public UserTable()
 				: base("DefaultConnection", "UserProfile", "UserId") {
@@ -354,7 +375,16 @@ namespace TeamReview.Specs {
 			public Reviews()
 				: base("DefaultConnection", "ReviewConfiguration", "ReviewId")
 			{
-				Console.WriteLine("ReviewConfigurationTable: setting connection string to '{0}'", ConnectionString);
+				Console.WriteLine("ReviewConfiguration: setting connection string to '{0}'", ConnectionString);
+				SetConnectionString(ConnectionString);
+			}
+		}
+
+		private class Categories : DynamicModel {
+			public Categories()
+				: base("DefaultConnection", "ReviewCategory", "CatId")
+			{
+				Console.WriteLine("ReviewCategory: setting connection string to '{0}'", ConnectionString);
 				SetConnectionString(ConnectionString);
 			}
 		}
