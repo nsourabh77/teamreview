@@ -53,7 +53,8 @@ namespace TeamReview.Web.Controllers
 				reviewconfiguration.Peers.Add(db.UserProfiles.First(user => user.UserName == User.Identity.Name));
 				db.ReviewConfigurations.Add(reviewconfiguration);
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				TempData["Message"] = "Review has been created";
+				return RedirectToAction("Edit", new {id = reviewconfiguration.ReviewId});
 			}
 
 			return View(reviewconfiguration);

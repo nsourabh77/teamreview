@@ -323,6 +323,19 @@ namespace TeamReview.Specs {
 			}
 		}
 
+		[Then(@"I am on the ""(.*)"" page for my review")]
+		public void ThenIAmOnThePageForMyReview(string pagename)
+		{
+			Assert.IsTrue(_browser.Title.Contains(pagename));
+		}
+
+		[Then(@"I see the message ""(.*)""")]
+		public void ThenISeeTheMessage(string message)
+		{
+			Assert.IsTrue(_browser.HasContent(message));
+		}
+
+
 		#region Helpers
 
 		private static void BackupExistingDatabase() {

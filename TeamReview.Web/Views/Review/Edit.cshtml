@@ -1,10 +1,14 @@
 ﻿@model TeamReview.Web.Models.ReviewConfiguration
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit review";
 }
 
-<h2>Edit</h2>
+@if (TempData["Message"] != null) { 
+    <p>@TempData["Message"]</p>
+}
+
+<h2>Edit review</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)

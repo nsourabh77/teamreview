@@ -95,6 +95,10 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("my new review was created with those categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 18
   testRunner.And("I am added to the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+  testRunner.And("I am on the \"Edit review\" page for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+  testRunner.And("I see the message \"Review has been created\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
