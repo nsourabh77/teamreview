@@ -1,35 +1,19 @@
 using System;
-using System.Configuration;
-using System.Data.Entity;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using Coypu;
 using Coypu.Drivers;
-using Massive;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using TeamReview.Web.Models;
 using TechTalk.SpecFlow;
 
 namespace TeamReview.Specs {
-	internal class Databases {
-		private static readonly string DbsFolder =
-			Path.Combine(new DirectoryInfo(Environment.CurrentDirectory).Parent.Parent.FullName, "scenario-dbs");
-
-		/// <summary>
-		/// DB with the needed tables but all of them empty.
-		/// </summary>
-		public static string Empty = Path.Combine(DbsFolder, "TeamReview-EmptyTables.sdf");
-
-		/// <summary>
-		/// DB with one user account: "Tester" hooked up to "test@teamaton.com" at Google Apps
-		/// </summary>
-		public static string WithTesterAccount = Path.Combine(DbsFolder, "TeamReview-TesterHasAccount.sdf");
-	}
-
 	[Binding]
 	public class Steps {
+		private const int _port = 12345;
 		private static IisExpressProcess _iisExpress;
 		private static BrowserSession _browser;
 		private static SeleniumServerProcess _seleniumServer;
@@ -58,17 +42,17 @@ namespace TeamReview.Specs {
 
 			BackupExistingDatabase();
 
+			AppDomain.CurrentDomain.SetData("DataDirectory", Path.GetFullPath(Path.Combine(WebPath, "App_Data")));
+
 			_seleniumServer = new SeleniumServerProcess();
 			_seleniumServer.Start();
 
-			_iisExpress = new IisExpressProcess(WebPath);
-			_iisExpress.Start();
 			var sessionConfiguration = new SessionConfiguration
 			                           	{
 			                           		AppHost = "localhost",
-			                           		Port = _iisExpress.Port,
-											Browser = Browser.Firefox,
-											//Browser = Browser.HtmlUnitWithJavaScript,
+			                           		Port = _port,
+			                           		Browser = Browser.Firefox,
+			                           		//Browser = Browser.HtmlUnitWithJavaScript,
 			                           		Timeout = TimeSpan.FromSeconds(15),
 			                           		RetryInterval = TimeSpan.FromSeconds(1),
 			                           	};
@@ -77,13 +61,22 @@ namespace TeamReview.Specs {
 
 		[BeforeScenario]
 		public void BeforeScenario() {
-			File.Copy(Databases.Empty, DbPath, true);
+			_iisExpress = new IisExpressProcess(WebPath, _port);
+			_iisExpress.Start();
+			DeleteAllCookies();
+		}
+
+		private static void DeleteAllCookies() {
 			((IWebDriver) _browser.Driver.Native).Manage().Cookies.DeleteAllCookies();
 		}
 
 		[AfterScenario]
 		public void AfterScenario() {
-			if (ScenarioContext.Current.TestError != null) {
+			var testError = ScenarioContext.Current.TestError;
+			if (testError != null) {
+				Console.WriteLine(testError.Message);
+				Console.WriteLine(testError.StackTrace);
+				Console.WriteLine(testError.InnerException);
 				Console.WriteLine("Error Html:" + Environment.NewLine +
 				                  ((IWebDriver) _browser.Driver.Native).PageSource);
 #if DEBUG
@@ -91,6 +84,7 @@ namespace TeamReview.Specs {
 				ProcessHelper.StartInteractive("cmd").WaitForExit();
 #endif
 			}
+			_iisExpress.Dispose();
 			DeleteTestDatabase();
 		}
 
@@ -138,6 +132,9 @@ namespace TeamReview.Specs {
 			if (_browser.Location.ToString() == "about:blank") {
 				_browser.Visit("/");
 			}
+			if (_browser.HasCss("#logoffLink")) {
+				WhenILogOut();
+			}
 			Assert.That(_browser.HasCss("#loginLink"));
 		}
 
@@ -160,14 +157,6 @@ namespace TeamReview.Specs {
 			// Google OpenID acceptance page
 			_browser.Uncheck("remember_choices_checkbox"); // don't remember my choice
 			_browser.FindId("approve_button").Click(); // authenticate using Google
-
-			var user = new UserTable().Single("EmailAddress = @0", new[] { email.Address });
-			ScenarioContext.Current.Set(new UserProfile
-			                            	{
-			                            		EmailAddress = user.EmailAddress,
-			                            		UserName = user.UserName,
-			                            		UserId = user.UserId
-			                            	});
 		}
 
 		[When(@"I fill in a user name")]
@@ -178,14 +167,21 @@ namespace TeamReview.Specs {
 		[When(@"I finish registering")]
 		public void WhenIFinishRegistering() {
 			_browser.FindId("Register").Click();
+			Thread.Sleep(1000);
+			using (var ctx = new ReviewsContext()) {
+				Console.WriteLine("Retrieving user from DB");
+				ScenarioContext.Current.Set(ctx.UserProfiles.Single());
+			}
 		}
 
 		[Then(@"a new account was created with my Google address")]
 		public void ThenANewAccountWasCreatedWithMyGoogleAddress() {
 			var emailAddress = ScenarioContext.Current.Get<Email>().Address;
 			Thread.Sleep(1000);
-			var user = new UserTable().Single("EmailAddress = @0", new[] { emailAddress });
-			Assert.That((object) user, Is.Not.Null);
+			using (var ctx = new ReviewsContext()) {
+				Console.WriteLine("Retrieving user from DB");
+				Assert.That(ctx.UserProfiles.Single().EmailAddress, Is.EqualTo(emailAddress));
+			}
 		}
 
 		[Then(@"I am logged in")]
@@ -207,21 +203,26 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I create a new review")]
-		public void WhenICreateANewReview()
-		{
-			ScenarioContext.Current.Set(new ReviewConfiguration());
+		public void WhenICreateANewReview() {
+			ScenarioContext.Current.Set(new ReviewConfiguration { Peers = { ScenarioContext.Current.Get<UserProfile>() } });
 			_browser.Visit("/Review/Create");
 		}
 
 		[Given(@"I am logged in")]
 		public void GivenIAmLoggedIn() {
-			GivenIHaveAnAccountAtTeamReview();
+			GivenIOwnAGoogleAccount();
 			WhenILogInUsingMyGoogleAccount();
+			WhenIFinishRegistering();
 		}
 
 		[Given(@"I have an account at TeamReview")]
 		public void GivenIHaveAnAccountAtTeamReview() {
-			File.Copy(Databases.WithTesterAccount, DbPath, true);
+			GivenIOwnAGoogleAccount();
+			WhenIRegisterANewAccount();
+			WhenIUseMyGoogleAccount();
+			WhenIFillInMyUserName();
+			WhenIFinishRegistering();
+			WhenILogOut();
 		}
 
 		[When(@"I log in using my Google account")]
@@ -233,19 +234,30 @@ namespace TeamReview.Specs {
 
 		[Given(@"I don't have an account at TeamReview")]
 		public void GivenIDonTHaveAnAccountAtTeamReview() {
-			Assert.That(new UserTable().All().Count(), Is.EqualTo(0));
+			using (var ctx = new ReviewsContext()) {
+				Console.WriteLine("Retrieving user from DB");
+				if (!ctx.Database.Exists())
+					Console.WriteLine("DB does not exist yet - no account exists");
+				else
+					Assert.That(ctx.UserProfiles.ToList(), Has.Count.EqualTo(0));
+			}
 		}
 
 		[Given(@"I am logged into TeamReview")]
 		public void GivenIAmLoggedIntoTeamReview() {
-			GivenIHaveAnAccountAtTeamReview();
-			GivenIOwnAGoogleAccount();
-			WhenILogInUsingMyGoogleAccount();
+			GivenIAmLoggedIn();
 		}
 
+		/// <summary>
+		/// Logs user out and deletes all Cookies.
+		/// </summary>
 		[When(@"I log out")]
 		public void WhenILogOut() {
+			_browser.Visit("https://www.google.com");
+			DeleteAllCookies();
+			_browser.Visit("/");
 			_browser.FindId("logoffLink").Click();
+			DeleteAllCookies();
 		}
 
 		[Then(@"I am on the login page")]
@@ -255,76 +267,61 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I fill in a review name")]
-		public void WhenIFillInAReviewName()
-		{
+		public void WhenIFillInAReviewName() {
 			const string reviewName = "NewReview";
 			ScenarioContext.Current.Get<ReviewConfiguration>().Name = reviewName;
 			_browser.FillIn("Name").With(reviewName);
 		}
 
 		[When(@"I add (?:a|another) category")]
-		public void WhenIAddACategory()
-		{
+		public void WhenIAddACategory() {
 			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Add(new ReviewCategory());
 			_browser.FindId("addCategory").Click();
 		}
 
 		[When(@"I fill in a category name")]
-		public void WhenIFillInACategoryName()
-		{
-			var name = "cat-"+ new Random().Next(100,1000);
+		public void WhenIFillInACategoryName() {
+			var name = "cat-" + new Random().Next(100, 1000);
 			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Last().Name = name;
 			_browser.FindAllCss("section.category").Last().FillIn("Name").With(name);
 		}
 
 		[When(@"I fill in a category description")]
-		public void WhenIFillInACategoryDescription()
-		{
+		public void WhenIFillInACategoryDescription() {
 			var description = "desc-" + Guid.NewGuid();
 			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Last().Description = description;
 			_browser.FindAllCss("section.category").Last().FillIn("Description").With(description);
 		}
 
 		[When(@"I save the review")]
-		public void WhenISaveTheReview()
-		{
-			ScenarioContext.Current.Get<ReviewConfiguration>().Peers.Add(ScenarioContext.Current.Get<UserProfile>());
+		public void WhenISaveTheReview() {
 			_browser.ClickButton("Save");
 		}
 
 		[Then(@"my new review was created with those categories")]
-		public void ThenMyNewReviewWasCreatedWithThoseCategories()
-		{
-			//var destFileName = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "TeamReviewCopy.sdf"));
-			//File.Copy(DbPath, destFileName, true);
-			//Database.SetInitializer<ReviewsContext>(new CreateDatabaseIfNotExists<ReviewsContext>());
-			//using (var ctx = new ReviewsContext())
-			//{
-			//    Assert.That(ctx.ReviewConfigurations.First().Categories.Count, Is.EqualTo(2));
-			//}
-
+		public void ThenMyNewReviewWasCreatedWithThoseCategories() {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
-			Assert.That(new Reviews().All().First().Name as string, Is.EqualTo(review.Name));
-			var categories = new Categories().All();
-			Assert.That(categories.Count(), Is.EqualTo(2));
-			foreach (var category in categories)
-			{
-				var expectedCategory = review.Categories.First(c => c.Name == category.Name);
-				Assert.IsNotNull(expectedCategory);
-				Assert.AreEqual(expectedCategory.Description, category.Description);
+			Thread.Sleep(1000);
+			using (var ctx = new ReviewsContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				var reviewFromDb = ctx.ReviewConfigurations.Include("Categories").Single();
+				Assert.AreEqual(review.Name, reviewFromDb.Name);
+				Assert.AreEqual(review.Categories.Count, reviewFromDb.Categories.Count);
+				Assert.That(reviewFromDb.Categories, Is.EqualTo(
+					review.Categories).AsCollection.Using(new CategoryComparer()));
 			}
 		}
 
 		[Then(@"I am added to the review")]
-		public void ThenIAmAddedToTheReview()
-		{
-			var peerId = new UserTable().All().First(u => u.Name == ScenarioContext.Current.Get<UserProfile>().UserName).UserId;
-			var reviewId = new Reviews().All().First(r => r.Name == ScenarioContext.Current.Get<ReviewConfiguration>().Name).ReviewId;
-			var reviewpeer = new ReviewsPeers().All().First();
-			Assert.AreEqual(reviewId, reviewpeer.ReviewId);
-			Assert.AreEqual(peerId, reviewpeer.PeerId);
+		public void ThenIAmAddedToTheReview() {
+			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
+			using (var ctx = new ReviewsContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				var reviewFromDb = ctx.ReviewConfigurations.Include("Peers").Single();
+				Assert.That(reviewFromDb.Peers.Count, Is.EqualTo(1));
+				Assert.That(reviewFromDb.Peers[0].UserId, Is.EqualTo(thisIsMe.UserId));
+			}
 		}
-
 
 		#region Helpers
 
@@ -372,59 +369,26 @@ namespace TeamReview.Specs {
 		}
 
 		#endregion
+	}
 
-		#region Nested type: UserTable
+	internal class Email {
+		public string Address { get; set; }
+		public string Password { get; set; }
+	}
 
-		public class ReviewsSpecContext : DbContext
-		{
-			public ReviewsSpecContext() : base("CopyForSpecs")
-			{
-			}
+	internal class CategoryComparer : IEqualityComparer<ReviewCategory> {
+		#region IEqualityComparer<ReviewCategory> Members
 
-			public DbSet<ReviewConfiguration> Reviews { get; set; }
+		public bool Equals(ReviewCategory x, ReviewCategory y) {
+			if (x == null && y == null) return true;
+			if (x == null || y == null) return false;
+			return x.Name == y.Name && x.Description == y.Description;
 		}
 
-		private class UserTable : DynamicModel {
-			public UserTable()
-				: base("DefaultConnection", "UserProfile", "UserId") {
-				Console.WriteLine("UserTable: setting connection string to '{0}'", ConnectionString);
-				SetConnectionString(ConnectionString);
-			}
-		}
-
-		private class Reviews : DynamicModel {
-			public Reviews()
-				: base("DefaultConnection", "ReviewConfiguration", "ReviewId")
-			{
-				Console.WriteLine("ReviewConfiguration: setting connection string to '{0}'", ConnectionString);
-				SetConnectionString(ConnectionString);
-			}
-		}
-
-		private class Categories : DynamicModel {
-			public Categories()
-				: base("DefaultConnection", "ReviewCategory", "CatId")
-			{
-				Console.WriteLine("ReviewCategory: setting connection string to '{0}'", ConnectionString);
-				SetConnectionString(ConnectionString);
-			}
-		}
-
-		private class ReviewsPeers : DynamicModel
-		{
-			public ReviewsPeers()
-				: base("DefaultConnection", "ReviewsPeers")
-			{
-				Console.WriteLine("ReviewsPeers: setting connection string to '{0}'", ConnectionString);
-				SetConnectionString(ConnectionString);
-			}
+		public int GetHashCode(ReviewCategory obj) {
+			return obj.GetHashCode();
 		}
 
 		#endregion
-	}
-
-	public class Email {
-		public string Address { get; set; }
-		public string Password { get; set; }
 	}
 }
