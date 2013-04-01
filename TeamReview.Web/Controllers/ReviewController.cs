@@ -70,11 +70,12 @@ namespace TeamReview.Web.Controllers
 
 		public ActionResult Edit(int id = 0)
 		{
-			ReviewConfiguration reviewconfiguration = db.ReviewConfigurations.Find(id);
+			var reviewconfiguration = db.ReviewConfigurations.Find(id);
 			if (reviewconfiguration == null)
 			{
 				return HttpNotFound();
 			}
+			db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
 			return View(reviewconfiguration);
 		}
 
@@ -86,9 +87,12 @@ namespace TeamReview.Web.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				db.Entry(reviewconfiguration).State = EntityState.Modified;
+				var dbReviewConfiguration = db.ReviewConfigurations.Find(reviewconfiguration.ReviewId);
+				db.Entry(dbReviewConfiguration).Collection(c => c.Categories).Load();
+				UpdateModel(dbReviewConfiguration);
 				db.SaveChanges();
-				return RedirectToAction("Index");
+				TempData["Message"] = "Review has been saved";
+				return RedirectToAction("Edit", new { id = reviewconfiguration.ReviewId });
 			}
 			return View(reviewconfiguration);
 		}

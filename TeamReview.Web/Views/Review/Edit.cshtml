@@ -1,31 +1,44 @@
 ﻿@model TeamReview.Web.Models.ReviewConfiguration
 
 @{
-    ViewBag.Title = "Edit review";
+    ViewBag.Title = "Edit review: " + Model.Name;
 }
 
 @if (TempData["Message"] != null) { 
     <p>@TempData["Message"]</p>
 }
 
-<h2>Edit review</h2>
+<h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm()) {
+@*@Html.RenderPartial("CreateOrEdit")*@
+
+@using (Html.BeginForm())
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
         <legend>ReviewConfiguration</legend>
-
+        
         @Html.HiddenFor(model => model.ReviewId)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Active)
+            @Html.LabelFor(model => model.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Active)
-            @Html.ValidationMessageFor(model => model.Active)
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
         </div>
 
+        <div id="categories">
+            @for (var i = 0; i < Model.Categories.Count; i++)
+            {
+                Html.RenderPartial("AddCategory", Model.Categories[i], new ViewDataDictionary
+                {
+                    TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Categories[" + i + "]" }
+                });
+            }
+        </div>
+        @Html.ActionLink("Add Category", "AddCategory", null, new { id = "addCategory" })
         <p>
             <input type="submit" value="Save" />
         </p>
@@ -38,4 +51,26 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(function () {
+            var nextCategory = '@Model.Categories.Count';
+            $("#addCategory").on('click', function (ev) {
+                ev.preventDefault();
+                $.ajax({
+                    url: this.href,
+                    cache: false
+                }).done(function (html) {
+                    var newName = 'Categories[' + nextCategory + '].Name';
+                    var newDescription = 'Categories[' + nextCategory + '].Description';
+                    var $modifiedHtml = $(html)
+                        .find('#Name').attr('name', newName).attr('id', newName).end()
+                        .find('#Description').attr('name', newDescription).attr('id', newDescription).end()
+                        .find('label[for=Name]').attr('for', newName).end()
+                        .find('label[for=Description]').attr('for', newDescription).end();
+                    $("#categories").append($modifiedHtml);
+                    nextCategory++;
+                });
+            });
+        });
+    </script>
 }

@@ -208,11 +208,32 @@ namespace TeamReview.Specs {
 			_browser.Visit("/Review/Create");
 		}
 
+		[When(@"I edit my review")]
+		public void WhenIEditMyReview()
+		{
+			var reviewId = ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId;
+			_browser.Visit("/Review/Edit/"+reviewId);
+		}
+
 		[Given(@"I am logged in")]
 		public void GivenIAmLoggedIn() {
 			GivenIOwnAGoogleAccount();
 			WhenILogInUsingMyGoogleAccount();
 			WhenIFinishRegistering();
+		}
+
+		[Given(@"I own a review")]
+		public void GivenIOwnAReview()
+		{
+			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
+			var reviewConfiguration = new ReviewConfiguration { Name = "NewReview", Peers = { thisIsMe } };
+			using (var ctx = new ReviewsContext())
+			{
+				Console.WriteLine("Writing review to DB");
+				ctx.ReviewConfigurations.Add(reviewConfiguration);
+				ctx.SaveChanges();
+			}
+			ScenarioContext.Current.Set(reviewConfiguration);
 		}
 
 		[Given(@"I have an account at TeamReview")]
@@ -310,6 +331,12 @@ namespace TeamReview.Specs {
 				Assert.That(reviewFromDb.Categories, Is.EqualTo(
 					review.Categories).AsCollection.Using(new CategoryComparer()));
 			}
+		}
+
+		[Then(@"my review is updated with the new category")]
+		public void ThenMyReviewIsUpdatedWithTheNewCategory()
+		{
+			ThenMyNewReviewWasCreatedWithThoseCategories();
 		}
 
 		[Then(@"I am added to the review")]
