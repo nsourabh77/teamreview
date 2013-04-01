@@ -362,6 +362,35 @@ namespace TeamReview.Specs {
 			Assert.IsTrue(_browser.HasContent(message));
 		}
 
+		[Given(@"I am on the ""(.*)""")]
+		public void GivenIAmOnThe(string pageName)
+		{
+			string path;
+			switch (pageName)
+			{
+				case "Dashboard":
+					path = "/Review";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("pageName", "No mapping from '{0}' to concrete url path exists!");
+			}
+			_browser.Visit(path);
+		}
+
+		[When(@"I click on the ""(.*)"" link of the review")]
+		public void WhenIClickOnTheLinkOfTheReview(string linkName)
+		{
+			switch (linkName)
+			{
+				case "Edit review":
+					_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId)
+						.FindLink(linkName).Click();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("linkName", "No mapping from '{0}' to a link for review on dashboard.");
+			}
+		}
+
 
 		#region Helpers
 

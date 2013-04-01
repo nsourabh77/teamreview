@@ -18,12 +18,13 @@
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
+    var rowId = "ReviewId_" + item.ReviewId;
+    <tr id="@rowId">
         <td>
-            @Html.DisplayFor(modelItem => item.Active)
+            @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ReviewId }) |
+            @Html.ActionLink("Edit review", "Edit", new { id=item.ReviewId }) |
             @Html.ActionLink("Details", "Details", new { id=item.ReviewId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ReviewId })
         </td>
