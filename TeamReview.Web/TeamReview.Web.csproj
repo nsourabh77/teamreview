@@ -234,7 +234,6 @@
     <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Review\AddCategory.cshtml" />
-    <Content Include="Views\Review\CreateOrEdit.cshtml" />
     <Content Include="Views\Review\AddPeer.cshtml" />
   </ItemGroup>
   <PropertyGroup>

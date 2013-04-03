@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity.Infrastructure;
-using System.Data.Objects;
 using System.Linq;
 using System.Web.Mvc;
 using TeamReview.Web.Models;
-using WebGrease.Css.Extensions;
 
 namespace TeamReview.Web.Controllers {
 	[Authorize]
@@ -55,7 +51,7 @@ namespace TeamReview.Web.Controllers {
 				db.ReviewConfigurations.Add(reviewConfiguration);
 				db.SaveChanges();
 				TempData["Message"] = "Review has been created";
-				return RedirectToAction("Edit", new {id = reviewConfiguration.ReviewId});
+				return RedirectToAction("Edit", new { id = reviewConfiguration.ReviewId });
 			}
 
 			TempData["review"] = reviewConfiguration;
@@ -65,14 +61,14 @@ namespace TeamReview.Web.Controllers {
 		//
 		// GET: /Review/Edit/5
 
-		public ActionResult Edit(int id = 0) {
+		public ActionResult Edit(int id) {
 			object review;
 			if (TempData.TryGetValue("review", out review)) {
 				return View(review);
 			}
 			var reviewconfiguration = db.ReviewConfigurations.Find(id);
 			if (reviewconfiguration == null) {
-				return HttpNotFound();
+				return HttpNotFound("No review found with the given id.");
 			}
 			db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
 			db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
@@ -83,7 +79,10 @@ namespace TeamReview.Web.Controllers {
 		// POST: /Review/Edit/5
 
 		[HttpPost]
-		public ActionResult Edit(ReviewConfiguration reviewConfiguration) {
+		public ActionResult Edit(int id, ReviewConfiguration reviewConfiguration) {
+			if (reviewConfiguration.ReviewId != id) {
+				return new HttpUnauthorizedResult("You must not change the ID of the review you're editing!");
+			}
 			if (Request.Form["reviewAction"] == "AddCategory") {
 				reviewConfiguration.Categories.Add(new ReviewCategory());
 			}
@@ -91,15 +90,33 @@ namespace TeamReview.Web.Controllers {
 				reviewConfiguration.Peers.Add(new UserProfile());
 			}
 			else if (ModelState.IsValid) {
-				RemovePeerDuplicates(reviewConfiguration);
-				var dbReviewConfiguration = db.ReviewConfigurations.Find(reviewConfiguration.ReviewId);
-				db.Entry(dbReviewConfiguration).Collection(c => c.Categories).Load();
-				db.Entry(dbReviewConfiguration).Collection(c => c.Peers).Load();
-				dbReviewConfiguration.Peers = reviewConfiguration.Peers;
-				dbReviewConfiguration.Categories = reviewConfiguration.Categories;
-				dbReviewConfiguration.Name = reviewConfiguration.Name;
-				UpdateModel(dbReviewConfiguration, null, null, new[] { "Peers" });
+				// Get original product from DB including category
+				var fromDb = db.ReviewConfigurations
+					.Include("Categories")
+					.Include("Peers")
+					.SingleOrDefault(rev => rev.ReviewId == id);
+
+				// Update scalar properties of product
+				db.Entry(fromDb).CurrentValues.SetValues(reviewConfiguration);
+
+				// Update the Category reference if the CategoryID has been changed in the from
+				//if (productFromForm.Category.CategoryID != fromDb.Category.CategoryID)
+				//{
+				//    db.Categories.Attach(productFromForm.Category);
+				//    fromDb.Category = productFromForm.Category;
+				//}
+
 				db.SaveChanges();
+
+				//RemovePeerDuplicates(reviewConfiguration);
+				//var dbReviewConfiguration = db.ReviewConfigurations.Find(reviewConfiguration.ReviewId);
+				//db.Entry(dbReviewConfiguration).Collection(c => c.Categories).Load();
+				//db.Entry(dbReviewConfiguration).Collection(c => c.Peers).Load();
+				//dbReviewConfiguration.Peers = reviewConfiguration.Peers;
+				//dbReviewConfiguration.Categories = reviewConfiguration.Categories;
+				//dbReviewConfiguration.Name = reviewConfiguration.Name;
+				//UpdateModel(dbReviewConfiguration, null, null, new[] { "Peers" });
+				//db.SaveChanges();
 				//db.Entry(reviewConfiguration).State = EntityState.Modified;
 				//reviewConfiguration.Categories.ForEach(c => db.Entry(c).State = EntityState.Modified);
 				//reviewConfiguration.Peers.ForEach(p => db.Entry(p).State = EntityState.Modified);
@@ -112,7 +129,7 @@ namespace TeamReview.Web.Controllers {
 				//    db.SaveChanges();
 				//}
 				TempData["Message"] = "Review has been saved";
-				return RedirectToAction("Edit", new {id = reviewConfiguration.ReviewId});
+				return RedirectToAction("Edit", new { id = reviewConfiguration.ReviewId });
 			}
 
 			TempData["review"] = reviewConfiguration;
@@ -159,6 +176,8 @@ namespace TeamReview.Web.Controllers {
 	}
 
 	public class UserProfileComparer : IEqualityComparer<UserProfile> {
+		#region IEqualityComparer<UserProfile> Members
+
 		public bool Equals(UserProfile x, UserProfile y) {
 			return x.EmailAddress == y.EmailAddress;
 		}
@@ -166,5 +185,7 @@ namespace TeamReview.Web.Controllers {
 		public int GetHashCode(UserProfile userProfile) {
 			return userProfile.EmailAddress.GetHashCode();
 		}
+
+		#endregion
 	}
 }
