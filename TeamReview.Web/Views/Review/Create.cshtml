@@ -7,11 +7,11 @@
 
 <h2>Create Review</h2>
 
-@{ Html.RenderPartial("CreateOrEdit"); }
+@{ Html.RenderPartial("CreateOrEdit", Model); }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
+    <s@*cript type="text/javascript">
         $(function () {
             var nextCategory = 0;
             $("#addCategory").on('click', function (ev) {
@@ -32,5 +32,5 @@
                 });
             });
         });
-    </script>
+    </script*@>
 }

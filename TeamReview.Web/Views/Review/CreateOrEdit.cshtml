@@ -26,8 +26,18 @@
                 });
             }
         </div>
-        @Html.ActionLink("Add Category", "AddCategory", null, new { id = "addCategory" })
-        @Html.ActionLink("Add Peer", "AddPeer", null, new { id = "addPeer" })
+
+        <div id="peers">
+            @for (var i = 0; i < Model.Peers.Count; i++)
+            {
+                Html.RenderPartial("AddPeer", Model.Peers[i], new ViewDataDictionary
+                {
+                    TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Peers[" + i + "]" }
+                });
+            }
+        </div>
+        <button type="submit" name="reviewAction" value="AddCategory" id="AddCategory">Add Category</button>
+        <button type="submit" name="reviewAction" value="AddPeer" id="AddPeer">Add Peer</button>
         <p>
             <input type="submit" value="Save" />
         </p>
