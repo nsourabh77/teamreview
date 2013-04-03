@@ -6,7 +6,7 @@
 
     <fieldset>
         <legend>ReviewConfiguration</legend>
-
+        
         @Html.HiddenFor(model => model.ReviewId)
 
         <div class="editor-label">
@@ -18,9 +18,16 @@
         </div>
 
         <div id="categories">
+            @for (var i = 0; i < Model.Categories.Count; i++)
+            {
+                Html.RenderPartial("AddCategory", Model.Categories[i], new ViewDataDictionary
+                {
+                    TemplateInfo = new System.Web.Mvc.TemplateInfo { HtmlFieldPrefix = "Categories[" + i + "]" }
+                });
+            }
         </div>
         @Html.ActionLink("Add Category", "AddCategory", null, new { id = "addCategory" })
-
+        @Html.ActionLink("Add Peer", "AddPeer", null, new { id = "addPeer" })
         <p>
             <input type="submit" value="Save" />
         </p>
@@ -30,5 +37,4 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
 

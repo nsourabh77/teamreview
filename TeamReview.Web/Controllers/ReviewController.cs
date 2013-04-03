@@ -39,7 +39,7 @@ namespace TeamReview.Web.Controllers
 		// GET: /Review/Create
 		public ActionResult Create()
 		{
-			return View();
+			return View(new ReviewConfiguration());
 		}
 
 		//
@@ -60,8 +60,10 @@ namespace TeamReview.Web.Controllers
 			return View(reviewconfiguration);
 		}
 		
-		public PartialViewResult AddCategory()
+		public ActionResult AddCategory(ReviewConfiguration reviewConfiguration)
 		{
+			reviewConfiguration.Categories.Add(new ReviewCategory());
+			return View("Create", reviewConfiguration);
 			return PartialView("AddCategory", new ReviewCategory());
 		}
 

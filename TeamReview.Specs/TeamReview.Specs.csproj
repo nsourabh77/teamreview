@@ -91,10 +91,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeleniumServerProcess.cs" />
-    <Compile Include="GiveReview.feature.cs">
+    <Compile Include="ProvideReview.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>GiveReview.feature</DependentUpon>
+      <DependentUpon>ProvideReview.feature</DependentUpon>
     </Compile>
     <Compile Include="Steps.cs" />
   </ItemGroup>
@@ -115,9 +115,9 @@
       <LastGenOutput>RegisterAndLogin.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="GiveReview.feature">
+    <None Include="ProvideReview.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>GiveReview.feature.cs</LastGenOutput>
+      <LastGenOutput>ProvideReview.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
