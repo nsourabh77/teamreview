@@ -3,6 +3,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using TeamReview.Web.ViewModels;
 
 namespace TeamReview.Web {
 	public class MvcApplication : HttpApplication {
@@ -14,6 +15,7 @@ namespace TeamReview.Web {
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			AuthConfig.RegisterAuth();
+			AutoMapperBootstrap.Initialize();
 		}
 	}
 }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 using TeamReview.Web.Models;
+using TeamReview.Web.ViewModels;
 
 namespace TeamReview.Web.Controllers {
 	[Authorize]
@@ -66,20 +68,77 @@ namespace TeamReview.Web.Controllers {
 			if (TempData.TryGetValue("review", out review)) {
 				return View(review);
 			}
-			var reviewconfiguration = db.ReviewConfigurations.Find(id);
+			var reviewconfiguration = db.ReviewConfigurations
+				.Include("Categories")
+				.Include("Peers")
+				.SingleOrDefault(rev => rev.ReviewId == id);
 			if (reviewconfiguration == null) {
 				return HttpNotFound("No review found with the given id.");
 			}
-			db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
-			db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
-			return View(reviewconfiguration);
+			return View(Mapper.Map<ReviewEditModel>(reviewconfiguration));
 		}
 
 		//
 		// POST: /Review/Edit/5
 
 		[HttpPost]
-		public ActionResult Edit(int id, ReviewConfiguration reviewConfiguration) {
+		public ActionResult Edit(ReviewEditModel reviewEditModel) {
+			var action = Request.Form["reviewAction"];
+			if (action != null) {
+				if (action == "AddCategory") {
+					if (reviewEditModel.AddedCategories == null) {
+						reviewEditModel.AddedCategories = new List<ReviewEditModel.CategoryEditModel>();
+					}
+					reviewEditModel.AddedCategories.Add(new ReviewEditModel.CategoryEditModel());
+				}
+				else if (action == "AddPeer") {
+					if (reviewEditModel.AddedPeers == null) {
+						reviewEditModel.AddedPeers = new List<ReviewEditModel.PeerEditModel>();
+					}
+					reviewEditModel.AddedPeers.Add(new ReviewEditModel.PeerEditModel());
+				}
+				return View(reviewEditModel);
+			}
+
+			if (!ModelState.IsValid) {
+				return View(reviewEditModel);
+			}
+
+			var reviewFromDb = db.ReviewConfigurations
+				.Include("Categories")
+				.Include("Peers")
+				.SingleOrDefault(rev => rev.ReviewId == reviewEditModel.Id);
+
+			reviewFromDb.Name = reviewEditModel.Name;
+
+			if (reviewEditModel.AddedCategories != null && reviewEditModel.AddedCategories.Any()) {
+				foreach (var newCategory in Mapper.Map<ReviewCategory[]>(reviewEditModel.AddedCategories)) {
+					db.ReviewCategories.Add(newCategory);
+					reviewFromDb.Categories.Add(newCategory);
+				}
+			}
+
+			if (reviewEditModel.AddedPeers != null && reviewEditModel.AddedPeers.Any()) {
+				foreach (var newPeer in Mapper.Map<UserProfile[]>(reviewEditModel.AddedPeers)) {
+					var fromDb = db.UserProfiles.SingleOrDefault(user => user.UserName == newPeer.UserName);
+					if (fromDb != null) {
+						reviewFromDb.Peers.Add(fromDb);
+					}
+					else {
+						db.UserProfiles.Add(newPeer);
+						reviewFromDb.Peers.Add(newPeer);
+					}
+				}
+			}
+			db.SaveChanges();
+			return RedirectToAction("Edit", new { id = reviewEditModel.Id });
+		}
+
+		//
+		// POST: /Review/Edit/5
+
+		[HttpPost]
+		public ActionResult _Edit(int id, ReviewConfiguration reviewConfiguration) {
 			if (reviewConfiguration.ReviewId != id) {
 				return new HttpUnauthorizedResult("You must not change the ID of the review you're editing!");
 			}

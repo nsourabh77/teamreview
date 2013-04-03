@@ -17,6 +17,7 @@ namespace TeamReview.Web.Models
 
 		public DbSet<UserProfile> UserProfiles { get; set; }
 		public DbSet<ReviewConfiguration> ReviewConfigurations { get; set; }
+		public DbSet<ReviewCategory> ReviewCategories { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
