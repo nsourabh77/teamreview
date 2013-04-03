@@ -1,6 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity.Infrastructure;
+using System.Data.Objects;
+using System.Linq;
 using System.Web.Mvc;
 using TeamReview.Web.Models;
+using WebGrease.Css.Extensions;
 
 namespace TeamReview.Web.Controllers {
 	[Authorize]
@@ -45,35 +50,32 @@ namespace TeamReview.Web.Controllers {
 				reviewConfiguration.Peers.Add(new UserProfile());
 			}
 			else if (ModelState.IsValid) {
-				// TODO: check for duplicates, maybe user added himself or someone else twice
 				reviewConfiguration.Peers.Add(db.UserProfiles.First(user => user.UserName == User.Identity.Name));
+				RemovePeerDuplicates(reviewConfiguration);
 				db.ReviewConfigurations.Add(reviewConfiguration);
 				db.SaveChanges();
 				TempData["Message"] = "Review has been created";
-				return RedirectToAction("Edit", new { id = reviewConfiguration.ReviewId });
+				return RedirectToAction("Edit", new {id = reviewConfiguration.ReviewId});
 			}
 
 			TempData["review"] = reviewConfiguration;
 			return RedirectToAction("Create");
-			//return View(reviewConfiguration);
 		}
-
-		//public ActionResult AddCategory(ReviewConfiguration reviewConfiguration) {
-		//    reviewConfiguration.Categories.Add(new ReviewCategory());
-		//    TempData["review"] = reviewConfiguration;
-		//    return RedirectToAction("Create");
-		//    //return PartialView("AddCategory", new ReviewCategory());
-		//}
 
 		//
 		// GET: /Review/Edit/5
 
 		public ActionResult Edit(int id = 0) {
+			object review;
+			if (TempData.TryGetValue("review", out review)) {
+				return View(review);
+			}
 			var reviewconfiguration = db.ReviewConfigurations.Find(id);
 			if (reviewconfiguration == null) {
 				return HttpNotFound();
 			}
 			db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
+			db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
 			return View(reviewconfiguration);
 		}
 
@@ -81,16 +83,40 @@ namespace TeamReview.Web.Controllers {
 		// POST: /Review/Edit/5
 
 		[HttpPost]
-		public ActionResult Edit(ReviewConfiguration reviewconfiguration) {
-			if (ModelState.IsValid) {
-				var dbReviewConfiguration = db.ReviewConfigurations.Find(reviewconfiguration.ReviewId);
-				db.Entry(dbReviewConfiguration).Collection(c => c.Categories).Load();
-				UpdateModel(dbReviewConfiguration);
-				db.SaveChanges();
-				TempData["Message"] = "Review has been saved";
-				return RedirectToAction("Edit", new { id = reviewconfiguration.ReviewId });
+		public ActionResult Edit(ReviewConfiguration reviewConfiguration) {
+			if (Request.Form["reviewAction"] == "AddCategory") {
+				reviewConfiguration.Categories.Add(new ReviewCategory());
 			}
-			return View(reviewconfiguration);
+			else if (Request.Form["reviewAction"] == "AddPeer") {
+				reviewConfiguration.Peers.Add(new UserProfile());
+			}
+			else if (ModelState.IsValid) {
+				RemovePeerDuplicates(reviewConfiguration);
+				var dbReviewConfiguration = db.ReviewConfigurations.Find(reviewConfiguration.ReviewId);
+				db.Entry(dbReviewConfiguration).Collection(c => c.Categories).Load();
+				db.Entry(dbReviewConfiguration).Collection(c => c.Peers).Load();
+				dbReviewConfiguration.Peers = reviewConfiguration.Peers;
+				dbReviewConfiguration.Categories = reviewConfiguration.Categories;
+				dbReviewConfiguration.Name = reviewConfiguration.Name;
+				UpdateModel(dbReviewConfiguration, null, null, new[] { "Peers" });
+				db.SaveChanges();
+				//db.Entry(reviewConfiguration).State = EntityState.Modified;
+				//reviewConfiguration.Categories.ForEach(c => db.Entry(c).State = EntityState.Modified);
+				//reviewConfiguration.Peers.ForEach(p => db.Entry(p).State = EntityState.Modified);
+				//try {
+				//    db.SaveChanges();
+				//}
+				//catch (OptimisticConcurrencyException) {
+				//    var objectContext = ((IObjectContextAdapter) db).ObjectContext;
+				//    objectContext.Refresh(RefreshMode.ClientWins, db.ReviewConfigurations);
+				//    db.SaveChanges();
+				//}
+				TempData["Message"] = "Review has been saved";
+				return RedirectToAction("Edit", new {id = reviewConfiguration.ReviewId});
+			}
+
+			TempData["review"] = reviewConfiguration;
+			return RedirectToAction("Edit");
 		}
 
 		//
@@ -118,6 +144,27 @@ namespace TeamReview.Web.Controllers {
 		protected override void Dispose(bool disposing) {
 			db.Dispose();
 			base.Dispose(disposing);
+		}
+
+		private void RemovePeerDuplicates(ReviewConfiguration reviewConfiguration) {
+			for (var i = 0; i < reviewConfiguration.Peers.Count(); i++) {
+				var peer = reviewConfiguration.Peers[i];
+				var peerFromDb = db.UserProfiles.Where(p => p.EmailAddress == peer.EmailAddress).FirstOrDefault();
+				if (peerFromDb != null) {
+					reviewConfiguration.Peers[i] = peerFromDb;
+				}
+			}
+			reviewConfiguration.Peers = reviewConfiguration.Peers.Distinct(new UserProfileComparer()).ToList();
+		}
+	}
+
+	public class UserProfileComparer : IEqualityComparer<UserProfile> {
+		public bool Equals(UserProfile x, UserProfile y) {
+			return x.EmailAddress == y.EmailAddress;
+		}
+
+		public int GetHashCode(UserProfile userProfile) {
+			return userProfile.EmailAddress.GetHashCode();
 		}
 	}
 }

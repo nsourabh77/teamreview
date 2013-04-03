@@ -12,14 +12,9 @@
 
 @{ Html.RenderPartial("CreateOrEdit"); }
 
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    <script type="text/javascript">
+@*    <script type="text/javascript">
         $(function () {
             var nextCategory = '@Model.Categories.Count';
             $("#addCategory").on('click', function (ev) {
@@ -40,5 +35,5 @@
                 });
             });
         });
-    </script>
+    </script>*@
 }
