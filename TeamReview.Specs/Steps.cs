@@ -66,8 +66,7 @@ namespace TeamReview.Specs {
 			// delete cookies on current page
 			DeleteAllCookies();
 			// delete Google cookies
-			_browser.Visit("https://www.google.com");
-			DeleteAllCookies();
+			LogOutGoogle();
 		}
 
 		private static void DeleteAllCookies() {
@@ -133,13 +132,14 @@ namespace TeamReview.Specs {
 		public void GivenIAmNotLoggedIntoTeamReview() {
 			// in case we haven't visited any other resource yet
 			Console.WriteLine("Currently on " + _browser.Location);
-			if (_browser.Location.ToString() == "about:blank") {
+			Console.WriteLine("Checking '{0}' vs. '{1}'", _browser.Location.Host, _iisExpress.BaseUrl);
+			if (_browser.Location.Host != _iisExpress.BaseUrl) {
 				_browser.Visit("/");
 			}
 			if (_browser.HasCss("#logoffLink")) {
 				WhenILogOut();
 			}
-			Assert.That(_browser.HasCss("#loginLink"));
+			Assert.That(_browser.HasCss("#loginLink"), "Could not find login link!");
 		}
 
 		[When(@"I register a new account")]
@@ -273,8 +273,14 @@ namespace TeamReview.Specs {
 		/// </summary>
 		[When(@"I log out")]
 		public void WhenILogOut() {
+			LogOutGoogle();
 			_browser.Visit("/");
 			_browser.FindId("logoffLink").Click();
+			DeleteAllCookies();
+		}
+
+		private static void LogOutGoogle() {
+			_browser.Visit("https://www.google.com");
 			DeleteAllCookies();
 		}
 
