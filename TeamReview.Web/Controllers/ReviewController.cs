@@ -55,28 +55,22 @@ namespace TeamReview.Web.Controllers {
 				return View(reviewCreateModel);
 			}
 
+			// TODO: raise model state errors for duplicate email addresses
+
 			var newReview = Mapper.Map<ReviewConfiguration>(reviewCreateModel);
 			_db.ReviewConfigurations.Add(newReview);
 
 			foreach (var cat in reviewCreateModel.AddedCategories.Select(Mapper.Map<ReviewCategory>)) {
-				_db.ReviewCategories.Add(cat);
 				newReview.Categories.Add(cat);
 			}
 
 			foreach (var newPeer in reviewCreateModel.AddedPeers.Select(Mapper.Map<UserProfile>)) {
-				var fromDb = _db.UserProfiles.SingleOrDefault(user => user.UserName == newPeer.UserName);
-				if (fromDb != null) {
-					_db.UserProfiles.Attach(fromDb);
-					newReview.Peers.Add(fromDb);
-				}
-				else {
-					_db.UserProfiles.Add(newPeer);
-					newReview.Peers.Add(newPeer);
-				}
+				var fromDb = _db.UserProfiles.SingleOrDefault(user => user.EmailAddress == newPeer.EmailAddress);
+				newReview.Peers.Add(fromDb ?? newPeer);
 			}
+
 			var loggedInUser = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name);
 			if (loggedInUser != null) {
-				_db.UserProfiles.Attach(loggedInUser);
 				newReview.Peers.Add(loggedInUser);
 			}
 			_db.SaveChanges();
@@ -135,22 +129,16 @@ namespace TeamReview.Web.Controllers {
 			}
 
 			reviewFromDb.Name = reviewEditModel.Name;
+			// use this if there are more properties to set
+			// _db.Entry(reviewFromDb).CurrentValues.SetValues(reviewEditModel);
 
 			foreach (var cat in reviewEditModel.AddedCategories.Select(Mapper.Map<ReviewCategory>)) {
-				_db.ReviewCategories.Add(cat);
 				reviewFromDb.Categories.Add(cat);
 			}
 
 			foreach (var newPeer in reviewEditModel.AddedPeers.Select(Mapper.Map<UserProfile>)) {
-				var fromDb = _db.UserProfiles.SingleOrDefault(user => user.UserName == newPeer.UserName);
-				if (fromDb != null) {
-					_db.UserProfiles.Attach(fromDb);
-					reviewFromDb.Peers.Add(fromDb);
-				}
-				else {
-					_db.UserProfiles.Add(newPeer);
-					reviewFromDb.Peers.Add(newPeer);
-				}
+				var fromDb = _db.UserProfiles.SingleOrDefault(user => user.EmailAddress == newPeer.EmailAddress);
+				reviewFromDb.Peers.Add(fromDb ?? newPeer);
 			}
 			_db.SaveChanges();
 

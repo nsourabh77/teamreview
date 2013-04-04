@@ -11,6 +11,7 @@ namespace TeamReview.Web.ViewModels {
 		[Required]
 		public string UserName { get; set; }
 
+		[Required]
 		public string EmailAddress { get; set; }
 	}
 }
