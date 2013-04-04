@@ -1,44 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Web.Mvc;
 using DataAnnotationsExtensions;
 
-namespace TeamReview.Web.Models
-{
-	public class DatabaseContext : DbContext
-	{
+namespace TeamReview.Web.Models {
+	public class DatabaseContext : DbContext {
 		public DatabaseContext()
-			: base("DefaultConnection")
-		{
+			: base("DefaultConnection") {
 		}
 
 		public DbSet<UserProfile> UserProfiles { get; set; }
 		public DbSet<ReviewConfiguration> ReviewConfigurations { get; set; }
 		public DbSet<ReviewCategory> ReviewCategories { get; set; }
 
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
-		{
+		protected override void OnModelCreating(DbModelBuilder modelBuilder) {
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.Entity<ReviewConfiguration>()
 				.HasMany(s => s.Peers)
 				.WithMany(a => a.ReviewConfigurations)
-				.Map(m =>
-				{
-					m.MapLeftKey("ReviewId");
-					m.MapRightKey("PeerId");
-					m.ToTable("ReviewsPeers");
-				});
+				.Map(m => {
+				     	m.MapLeftKey("ReviewId");
+				     	m.MapRightKey("PeerId");
+				     	m.ToTable("ReviewsPeers");
+				     });
 		}
 	}
 
 	[Table("ReviewConfiguration")]
-	public class ReviewConfiguration
-	{
-		public ReviewConfiguration()
-		{
+	public class ReviewConfiguration {
+		public ReviewConfiguration() {
 			Categories = new List<ReviewCategory>();
 			Peers = new List<UserProfile>();
 		}
@@ -54,8 +46,7 @@ namespace TeamReview.Web.Models
 	}
 
 	[Table("ReviewCategory")]
-	public class ReviewCategory
-	{
+	public class ReviewCategory {
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int CatId { get; set; }
@@ -65,8 +56,7 @@ namespace TeamReview.Web.Models
 	}
 
 	[Table("UserProfile")]
-	public class UserProfile
-	{
+	public class UserProfile {
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int UserId { get; set; }
@@ -77,8 +67,7 @@ namespace TeamReview.Web.Models
 		public ICollection<ReviewConfiguration> ReviewConfigurations { get; set; }
 	}
 
-	public class RegisterExternalLoginModel
-	{
+	public class RegisterExternalLoginModel {
 		[Required]
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
@@ -91,8 +80,7 @@ namespace TeamReview.Web.Models
 		public string ExternalLoginData { get; set; }
 	}
 
-	public class LocalPasswordModel
-	{
+	public class LocalPasswordModel {
 		[Required]
 		[DataType(DataType.Password)]
 		[Display(Name = "Current password")]
@@ -110,8 +98,7 @@ namespace TeamReview.Web.Models
 		public string ConfirmPassword { get; set; }
 	}
 
-	public class LoginModel
-	{
+	public class LoginModel {
 		[Required]
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
@@ -125,8 +112,7 @@ namespace TeamReview.Web.Models
 		public bool RememberMe { get; set; }
 	}
 
-	public class RegisterModel
-	{
+	public class RegisterModel {
 		[Required]
 		[Display(Name = "User name")]
 		public string UserName { get; set; }
@@ -143,8 +129,7 @@ namespace TeamReview.Web.Models
 		public string ConfirmPassword { get; set; }
 	}
 
-	public class ExternalLogin
-	{
+	public class ExternalLogin {
 		public string Provider { get; set; }
 		public string ProviderDisplayName { get; set; }
 		public string ProviderUserId { get; set; }
