@@ -8,9 +8,9 @@ using DataAnnotationsExtensions;
 
 namespace TeamReview.Web.Models
 {
-	public class ReviewsContext : DbContext
+	public class DatabaseContext : DbContext
 	{
-		public ReviewsContext()
+		public DatabaseContext()
 			: base("DefaultConnection")
 		{
 		}

@@ -168,7 +168,7 @@ namespace TeamReview.Specs {
 		public void WhenIFinishRegistering() {
 			_browser.FindId("Register").Click();
 			Thread.Sleep(1000);
-			using (var ctx = new ReviewsContext()) {
+			using (var ctx = new DatabaseContext()) {
 				Console.WriteLine("Retrieving user from DB");
 				ScenarioContext.Current.Set(ctx.UserProfiles.Single());
 			}
@@ -178,7 +178,7 @@ namespace TeamReview.Specs {
 		public void ThenANewAccountWasCreatedWithMyGoogleAddress() {
 			var emailAddress = ScenarioContext.Current.Get<Email>().Address;
 			Thread.Sleep(1000);
-			using (var ctx = new ReviewsContext()) {
+			using (var ctx = new DatabaseContext()) {
 				Console.WriteLine("Retrieving user from DB");
 				Assert.That(ctx.UserProfiles.Single().EmailAddress, Is.EqualTo(emailAddress));
 			}
@@ -227,7 +227,7 @@ namespace TeamReview.Specs {
 		{
 			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
 			var reviewConfiguration = new ReviewConfiguration { Name = "NewReview", Peers = { thisIsMe } };
-			using (var ctx = new ReviewsContext())
+			using (var ctx = new DatabaseContext())
 			{
 				Console.WriteLine("Writing review to DB");
 				ctx.ReviewConfigurations.Add(reviewConfiguration);
@@ -255,7 +255,7 @@ namespace TeamReview.Specs {
 
 		[Given(@"I don't have an account at TeamReview")]
 		public void GivenIDonTHaveAnAccountAtTeamReview() {
-			using (var ctx = new ReviewsContext()) {
+			using (var ctx = new DatabaseContext()) {
 				Console.WriteLine("Retrieving user from DB");
 				if (!ctx.Database.Exists())
 					Console.WriteLine("DB does not exist yet - no account exists");
@@ -323,7 +323,7 @@ namespace TeamReview.Specs {
 		public void ThenMyNewReviewWasCreatedWithThoseCategories() {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
 			Thread.Sleep(1000);
-			using (var ctx = new ReviewsContext()) {
+			using (var ctx = new DatabaseContext()) {
 				Console.WriteLine("Retrieving review from DB");
 				var reviewFromDb = ctx.ReviewConfigurations.Include("Categories").Single();
 				Assert.AreEqual(review.Name, reviewFromDb.Name);
@@ -342,7 +342,7 @@ namespace TeamReview.Specs {
 		[Then(@"I am added to the review")]
 		public void ThenIAmAddedToTheReview() {
 			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
-			using (var ctx = new ReviewsContext()) {
+			using (var ctx = new DatabaseContext()) {
 				Console.WriteLine("Retrieving review from DB");
 				var reviewFromDb = ctx.ReviewConfigurations.Include("Peers").Single();
 				Assert.That(reviewFromDb.Peers.Count, Is.EqualTo(1));

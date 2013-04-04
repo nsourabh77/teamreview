@@ -22,10 +22,10 @@ namespace TeamReview.Web.Filters {
 
 		private class SimpleMembershipInitializer {
 			public SimpleMembershipInitializer() {
-				Database.SetInitializer<ReviewsContext>(null);
+				Database.SetInitializer<DatabaseContext>(null);
 
 				try {
-					using (var context = new ReviewsContext()) {
+					using (var context = new DatabaseContext()) {
 						if (!context.Database.Exists()) {
 							// Create the SimpleMembership database without Entity Framework migration schema
 							((IObjectContextAdapter) context).ObjectContext.CreateDatabase();

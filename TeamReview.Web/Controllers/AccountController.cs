@@ -241,7 +241,7 @@ namespace TeamReview.Web.Controllers {
 
 			if (ModelState.IsValid) {
 				// Insert a new user into the database
-				using (var db = new ReviewsContext()) {
+				using (var db = new DatabaseContext()) {
 					var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
 					if (user != null) {
 						ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");

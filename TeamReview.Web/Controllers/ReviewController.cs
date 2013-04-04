@@ -8,7 +8,7 @@ using TeamReview.Web.ViewModels;
 namespace TeamReview.Web.Controllers {
 	[Authorize]
 	public class ReviewController : Controller {
-		private readonly ReviewsContext db = new ReviewsContext();
+		private readonly DatabaseContext db = new DatabaseContext();
 
 		//
 		// GET: /Review/
