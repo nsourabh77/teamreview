@@ -175,9 +175,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 47
   testRunner.And("I fill in the peer\'s email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
-  testRunner.And("I invite that peer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
   testRunner.And("no account exists for that peer\'s email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+  testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
  testRunner.Then("a new user with the given name and email address was created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 51
@@ -206,9 +206,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 59
   testRunner.And("I fill in the peer\'s email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
-  testRunner.And("I invite that peer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
   testRunner.And("an account exists for that peer\'s email address", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+  testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 62
  testRunner.Then("this user is added to the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

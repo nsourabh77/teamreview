@@ -7,8 +7,6 @@
 
 <h2>Create a new Review</h2>
 
-@*@{ Html.RenderPartial("CreateOrEdit", Model); }*@
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
@@ -43,8 +41,8 @@
                 });
             }
         </div>
-        <button type="submit" name="reviewAction" value="AddCategory" id="AddCategory">Add Category</button>
-        <button type="submit" name="reviewAction" value="AddPeer" id="AddPeer">Add Peer</button>
+        <button type="submit" name="reviewAction" value="AddCategory" id="addCategory">Add Category</button>
+        <button type="submit" name="reviewAction" value="AddPeer" id="addPeer">Add Peer</button>
         <p>
             <input type="submit" value="Save" />
         </p>

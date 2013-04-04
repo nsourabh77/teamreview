@@ -45,8 +45,8 @@ Scenario: Invite new peer to my review
 		And I invite a peer
 		And I fill in the peer's name
 		And I fill in the peer's email address
-		And I invite that peer
 		And no account exists for that peer's email address
+		And I save the review
 	Then a new user with the given name and email address was created
 		And this user is added to the review
 
@@ -57,6 +57,6 @@ Scenario: Invite existing peer to my review
 		And I invite a peer
 		And I fill in the peer's name
 		And I fill in the peer's email address
-		And I invite that peer
 		And an account exists for that peer's email address
+		And I save the review
 	Then this user is added to the review

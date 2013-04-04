@@ -6,7 +6,7 @@ namespace TeamReview.Specs {
 	internal class IisExpressProcess : BackgroundProcessBase {
 		private readonly string _path;
 
-		public IisExpressProcess(string directory, int port = 12345) {
+		public IisExpressProcess(string directory, int port) {
 			Port = port;
 			_path = directory;
 		}

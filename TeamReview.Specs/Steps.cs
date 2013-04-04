@@ -63,6 +63,10 @@ namespace TeamReview.Specs {
 		public void BeforeScenario() {
 			_iisExpress = new IisExpressProcess(WebPath, _port);
 			_iisExpress.Start();
+			// delete cookies on current page
+			DeleteAllCookies();
+			// delete Google cookies
+			_browser.Visit("https://www.google.com");
 			DeleteAllCookies();
 		}
 
@@ -167,8 +171,7 @@ namespace TeamReview.Specs {
 		[When(@"I finish registering")]
 		public void WhenIFinishRegistering() {
 			_browser.FindId("Register").Click();
-			Thread.Sleep(1000);
-			using (var ctx = new DatabaseContext()) {
+			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Retrieving user from DB");
 				ScenarioContext.Current.Set(ctx.UserProfiles.Single());
 			}
@@ -177,8 +180,7 @@ namespace TeamReview.Specs {
 		[Then(@"a new account was created with my Google address")]
 		public void ThenANewAccountWasCreatedWithMyGoogleAddress() {
 			var emailAddress = ScenarioContext.Current.Get<Email>().Address;
-			Thread.Sleep(1000);
-			using (var ctx = new DatabaseContext()) {
+			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Retrieving user from DB");
 				Assert.That(ctx.UserProfiles.Single().EmailAddress, Is.EqualTo(emailAddress));
 			}
@@ -209,10 +211,9 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I edit my review")]
-		public void WhenIEditMyReview()
-		{
+		public void WhenIEditMyReview() {
 			var reviewId = ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId;
-			_browser.Visit("/Review/Edit/"+reviewId);
+			_browser.Visit("/Review/Edit/" + reviewId);
 		}
 
 		[Given(@"I am logged in")]
@@ -223,12 +224,10 @@ namespace TeamReview.Specs {
 		}
 
 		[Given(@"I own a review")]
-		public void GivenIOwnAReview()
-		{
+		public void GivenIOwnAReview() {
 			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
 			var reviewConfiguration = new ReviewConfiguration { Name = "NewReview", Peers = { thisIsMe } };
-			using (var ctx = new DatabaseContext())
-			{
+			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Writing review to DB");
 				ctx.ReviewConfigurations.Add(reviewConfiguration);
 				ctx.SaveChanges();
@@ -255,7 +254,7 @@ namespace TeamReview.Specs {
 
 		[Given(@"I don't have an account at TeamReview")]
 		public void GivenIDonTHaveAnAccountAtTeamReview() {
-			using (var ctx = new DatabaseContext()) {
+			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Retrieving user from DB");
 				if (!ctx.Database.Exists())
 					Console.WriteLine("DB does not exist yet - no account exists");
@@ -274,8 +273,6 @@ namespace TeamReview.Specs {
 		/// </summary>
 		[When(@"I log out")]
 		public void WhenILogOut() {
-			_browser.Visit("https://www.google.com");
-			DeleteAllCookies();
 			_browser.Visit("/");
 			_browser.FindId("logoffLink").Click();
 			DeleteAllCookies();
@@ -297,7 +294,7 @@ namespace TeamReview.Specs {
 		[When(@"I add (?:a|another) category")]
 		public void WhenIAddACategory() {
 			ScenarioContext.Current.Get<ReviewConfiguration>().Categories.Add(new ReviewCategory());
-			_browser.FindId("addCategory").Click();
+			_browser.ClickButton("addCategory");
 		}
 
 		[When(@"I fill in a category name")]
@@ -322,8 +319,7 @@ namespace TeamReview.Specs {
 		[Then(@"my new review was created with those categories")]
 		public void ThenMyNewReviewWasCreatedWithThoseCategories() {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
-			Thread.Sleep(1000);
-			using (var ctx = new DatabaseContext()) {
+			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Retrieving review from DB");
 				var reviewFromDb = ctx.ReviewConfigurations.Include("Categories").Single();
 				Assert.AreEqual(review.Name, reviewFromDb.Name);
@@ -334,15 +330,14 @@ namespace TeamReview.Specs {
 		}
 
 		[Then(@"my review is updated with the new category")]
-		public void ThenMyReviewIsUpdatedWithTheNewCategory()
-		{
+		public void ThenMyReviewIsUpdatedWithTheNewCategory() {
 			ThenMyNewReviewWasCreatedWithThoseCategories();
 		}
 
 		[Then(@"I am added to the review")]
 		public void ThenIAmAddedToTheReview() {
 			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
-			using (var ctx = new DatabaseContext()) {
+			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Retrieving review from DB");
 				var reviewFromDb = ctx.ReviewConfigurations.Include("Peers").Single();
 				Assert.That(reviewFromDb.Peers.Count, Is.EqualTo(1));
@@ -351,23 +346,19 @@ namespace TeamReview.Specs {
 		}
 
 		[Then(@"I am on the ""(.*)"" page for my review")]
-		public void ThenIAmOnThePageForMyReview(string pagename)
-		{
+		public void ThenIAmOnThePageForMyReview(string pagename) {
 			Assert.IsTrue(_browser.Title.Contains(pagename));
 		}
 
 		[Then(@"I see the message ""(.*)""")]
-		public void ThenISeeTheMessage(string message)
-		{
+		public void ThenISeeTheMessage(string message) {
 			Assert.IsTrue(_browser.HasContent(message));
 		}
 
 		[Given(@"I am on the ""(.*)""")]
-		public void GivenIAmOnThe(string pageName)
-		{
+		public void GivenIAmOnThe(string pageName) {
 			string path;
-			switch (pageName)
-			{
+			switch (pageName) {
 				case "Dashboard":
 					path = "/Review";
 					break;
@@ -378,10 +369,8 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I click on the ""(.*)"" link of the review")]
-		public void WhenIClickOnTheLinkOfTheReview(string linkName)
-		{
-			switch (linkName)
-			{
+		public void WhenIClickOnTheLinkOfTheReview(string linkName) {
+			switch (linkName) {
 				case "Edit review":
 					_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId)
 						.FindLink(linkName).Click();
@@ -391,6 +380,65 @@ namespace TeamReview.Specs {
 			}
 		}
 
+		[When(@"I invite a peer")]
+		public void WhenIInviteAPeer() {
+			_browser.ClickButton("addPeer");
+			ScenarioContext.Current.Set(new UserProfile { UserName = "Peer", EmailAddress = "peer@teamaton.com" }, "peer");
+		}
+
+		[When(@"I fill in the peer's name")]
+		public void WhenIFillInThePeerSName() {
+			_browser.FillIn("UserName").With(ScenarioContext.Current.Get<UserProfile>("peer").UserName);
+		}
+
+		[When(@"I fill in the peer's email address")]
+		public void WhenIFillInThePeerSEmailAddress() {
+			_browser.FillIn("EmailAddress").With(ScenarioContext.Current.Get<UserProfile>("peer").EmailAddress);
+		}
+
+		[When(@"no account exists for that peer's email address")]
+		public void WhenNoAccountExistsForThatPeerSEmailAddress() {
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Trying to retrieve peer from DB");
+				var peerAddress = ScenarioContext.Current.Get<UserProfile>("peer").EmailAddress;
+				var peerFromDb = ctx.UserProfiles.SingleOrDefault(user => user.EmailAddress == peerAddress);
+				Assert.IsNull(peerFromDb);
+			}
+		}
+
+		[Then(@"a new user with the given name and email address was created")]
+		public void ThenANewUserWithTheGivenNameAndEmailAddressWasCreated() {
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Trying to retrieve peer from DB");
+				var peer = ScenarioContext.Current.Get<UserProfile>("peer");
+				var peerFromDb = ctx.UserProfiles.SingleOrDefault(
+					user => user.EmailAddress == peer.EmailAddress && user.UserName == peer.UserName);
+				Assert.IsNotNull(peerFromDb);
+			}
+		}
+
+		[Then(@"this user is added to the review")]
+		public void ThenThisUserIsAddedToTheReview() {
+			var peer = ScenarioContext.Current.Get<UserProfile>("peer");
+
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				var reviewFromDb = ctx.ReviewConfigurations.Include("Peers").Single();
+				Assert.AreEqual(1, reviewFromDb.Peers.Count(
+					user => user.EmailAddress == peer.EmailAddress && user.UserName == peer.UserName));
+			}
+		}
+
+		[When(@"an account exists for that peer's email address")]
+		public void WhenAnAccountExistsForThatPeerSEmailAddress() {
+			var peer = ScenarioContext.Current.Get<UserProfile>("peer");
+
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Saving peer to DB");
+				ctx.UserProfiles.Add(new UserProfile { UserName = peer.UserName, EmailAddress = peer.EmailAddress });
+				ctx.SaveChanges();
+			}
+		}
 
 		#region Helpers
 
@@ -401,7 +449,9 @@ namespace TeamReview.Specs {
 			else {
 				// second backup copy with timestamp in case something goes wrong
 				File.Copy(DbPath, DbPath + "." + DateTime.Now.ToString("yyyyMMdd-HHmmss"), true);
+				// move db file, but with overwrite = true
 				File.Copy(DbPath, DbBkpPath, true);
+				File.Delete(DbPath);
 			}
 		}
 
@@ -438,6 +488,12 @@ namespace TeamReview.Specs {
 		}
 
 		#endregion
+	}
+
+	public class DelayedDatabaseContext : DatabaseContext {
+		public DelayedDatabaseContext() {
+			Thread.Sleep(1000);
+		}
 	}
 
 	internal class Email {

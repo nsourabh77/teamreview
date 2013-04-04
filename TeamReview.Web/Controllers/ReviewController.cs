@@ -127,6 +127,9 @@ namespace TeamReview.Web.Controllers {
 				}
 			}
 			db.SaveChanges();
+
+			TempData["Message"] = "Review has been saved";
+			
 			return RedirectToAction("Edit", new { id = reviewEditModel.Id });
 		}
 
