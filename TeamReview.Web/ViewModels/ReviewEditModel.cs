@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TeamReview.Web.ViewModels {
 	public class ReviewEditModel {
@@ -24,6 +25,7 @@ namespace TeamReview.Web.ViewModels {
 		#region Nested type: CategoryAddModel
 
 		public class CategoryAddModel {
+			[Required]
 			public string Name { get; set; }
 			public string Description { get; set; }
 		}
@@ -43,6 +45,7 @@ namespace TeamReview.Web.ViewModels {
 		#region Nested type: PeerAddModel
 
 		public class PeerAddModel {
+			[Required]
 			public string UserName { get; set; }
 			public string EmailAddress { get; set; }
 		}

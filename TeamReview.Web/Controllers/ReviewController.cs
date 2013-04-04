@@ -68,14 +68,14 @@ namespace TeamReview.Web.Controllers {
 			if (TempData.TryGetValue("review", out review)) {
 				return View(review);
 			}
-			var reviewconfiguration = db.ReviewConfigurations
+			var reviewFromDb = db.ReviewConfigurations
 				.Include("Categories")
 				.Include("Peers")
 				.SingleOrDefault(rev => rev.ReviewId == id);
-			if (reviewconfiguration == null) {
+			if (reviewFromDb == null) {
 				return HttpNotFound("No review found with the given id.");
 			}
-			return View(Mapper.Map<ReviewEditModel>(reviewconfiguration));
+			return View(Mapper.Map<ReviewEditModel>(reviewFromDb));
 		}
 
 		//
@@ -83,25 +83,30 @@ namespace TeamReview.Web.Controllers {
 
 		[HttpPost]
 		public ActionResult Edit(ReviewEditModel reviewEditModel) {
-			var action = Request.Form["reviewAction"];
-			if (action != null) {
-				if (action == "AddCategory") {
-					reviewEditModel.AddedCategories.Add(new ReviewEditModel.CategoryAddModel());
-				}
-				else if (action == "AddPeer") {
-					reviewEditModel.AddedPeers.Add(new ReviewEditModel.PeerAddModel());
-				}
-				return View(reviewEditModel);
-			}
-
-			if (!ModelState.IsValid) {
-				return View(reviewEditModel);
-			}
-
 			var reviewFromDb = db.ReviewConfigurations
 				.Include("Categories")
 				.Include("Peers")
-				.SingleOrDefault(rev => rev.ReviewId == reviewEditModel.Id);
+				.Single(rev => rev.ReviewId == reviewEditModel.Id);
+
+			if (reviewFromDb == null) {
+				return new HttpNotFoundResult("The review could not be found.");
+			}
+
+			var newModel = Mapper.Map<ReviewEditModel>(reviewFromDb);
+			var action = Request.Form["reviewAction"];
+			if (action != null) {
+				if (action == "AddCategory") {
+					newModel.AddedCategories.Add(new ReviewEditModel.CategoryAddModel());
+				}
+				else if (action == "AddPeer") {
+					newModel.AddedPeers.Add(new ReviewEditModel.PeerAddModel());
+				}
+				return View(newModel);
+			}
+
+			if (!ModelState.IsValid) {
+				return View(newModel);
+			}
 
 			reviewFromDb.Name = reviewEditModel.Name;
 
