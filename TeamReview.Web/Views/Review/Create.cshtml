@@ -1,5 +1,4 @@
-﻿@model TeamReview.Web.Models.ReviewConfiguration
-@using TeamReview.Web.Models
+﻿@model TeamReview.Web.ViewModels.ReviewCreateModel
 
 @{
     ViewBag.Title = "Create Review";
@@ -23,21 +22,21 @@
         </div>
 
         <div id="categories">
-            @for (var i = 0; i < Model.Categories.Count; i++)
+            @for (var i = 0; i < Model.AddedCategories.Count; i++)
             {
-                Html.RenderPartial("AddCategory", Model.Categories[i], new ViewDataDictionary
+                Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary
                 {
-                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "Categories[" + i + "]" }
+                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedCategories[" + i + "]" }
                 });
             }
         </div>
 
         <div id="peers">
-            @for (var i = 0; i < Model.Peers.Count; i++)
+            @for (var i = 0; i < Model.AddedPeers.Count; i++)
             {
-                Html.RenderPartial("AddPeer", Model.Peers[i], new ViewDataDictionary
+                Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
                 {
-                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "Peers[" + i + "]" }
+                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedPeers[" + i + "]" }
                 });
             }
         </div>

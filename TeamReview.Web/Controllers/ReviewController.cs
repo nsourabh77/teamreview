@@ -32,32 +32,58 @@ namespace TeamReview.Web.Controllers {
 		// GET: /Review/Create
 
 		public ActionResult Create() {
-			object review;
-			return View(TempData.TryGetValue("review", out review) ? review : new ReviewConfiguration());
+			return View(new ReviewCreateModel());
 		}
 
 		//
 		// POST: /Review/Create
 
 		[HttpPost]
-		public ActionResult Create(ReviewConfiguration reviewConfiguration) {
-			if (Request.Form["reviewAction"] == "AddCategory") {
-				reviewConfiguration.Categories.Add(new ReviewCategory());
-			}
-			else if (Request.Form["reviewAction"] == "AddPeer") {
-				reviewConfiguration.Peers.Add(new UserProfile());
-			}
-			else if (ModelState.IsValid) {
-				reviewConfiguration.Peers.Add(db.UserProfiles.First(user => user.UserName == User.Identity.Name));
-				RemovePeerDuplicates(reviewConfiguration);
-				db.ReviewConfigurations.Add(reviewConfiguration);
-				db.SaveChanges();
-				TempData["Message"] = "Review has been created";
-				return RedirectToAction("Edit", new { id = reviewConfiguration.ReviewId });
+		public ActionResult Create(ReviewCreateModel reviewCreateModel) {
+			var action = Request.Form["reviewAction"];
+			if (action != null) {
+				if (action == "AddCategory") {
+					reviewCreateModel.AddedCategories.Add(new CategoryAddModel());
+				}
+				else if (action == "AddPeer") {
+					reviewCreateModel.AddedPeers.Add(new PeerAddModel());
+				}
+				return View(reviewCreateModel);
 			}
 
-			TempData["review"] = reviewConfiguration;
-			return RedirectToAction("Create");
+			if (!ModelState.IsValid) {
+				return View(reviewCreateModel);
+			}
+
+			var newReview = Mapper.Map<ReviewConfiguration>(reviewCreateModel);
+			db.ReviewConfigurations.Add(newReview);
+
+			foreach (var cat in reviewCreateModel.AddedCategories.Select(Mapper.Map<ReviewCategory>)) {
+				db.ReviewCategories.Add(cat);
+				newReview.Categories.Add(cat);
+			}
+
+			foreach (var newPeer in reviewCreateModel.AddedPeers.Select(Mapper.Map<UserProfile>)) {
+				var fromDb = db.UserProfiles.SingleOrDefault(user => user.UserName == newPeer.UserName);
+				if (fromDb != null) {
+					db.UserProfiles.Attach(fromDb);
+					newReview.Peers.Add(fromDb);
+				}
+				else {
+					db.UserProfiles.Add(newPeer);
+					newReview.Peers.Add(newPeer);
+				}
+			}
+			var loggedInUser = db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name);
+			if (loggedInUser != null) {
+				db.UserProfiles.Attach(loggedInUser);
+				newReview.Peers.Add(loggedInUser);
+			}
+			db.SaveChanges();
+
+			TempData["Message"] = "Review has been created";
+
+			return RedirectToAction("Edit", new { id = newReview.ReviewId });
 		}
 
 		//
@@ -96,10 +122,10 @@ namespace TeamReview.Web.Controllers {
 			var action = Request.Form["reviewAction"];
 			if (action != null) {
 				if (action == "AddCategory") {
-					newModel.AddedCategories.Add(new ReviewEditModel.CategoryAddModel());
+					newModel.AddedCategories.Add(new CategoryAddModel());
 				}
 				else if (action == "AddPeer") {
-					newModel.AddedPeers.Add(new ReviewEditModel.PeerAddModel());
+					newModel.AddedPeers.Add(new PeerAddModel());
 				}
 				return View(newModel);
 			}
@@ -129,7 +155,7 @@ namespace TeamReview.Web.Controllers {
 			db.SaveChanges();
 
 			TempData["Message"] = "Review has been saved";
-			
+
 			return RedirectToAction("Edit", new { id = reviewEditModel.Id });
 		}
 
