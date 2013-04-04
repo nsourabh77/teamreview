@@ -10,14 +10,12 @@
 
 <h2>@ViewBag.Title</h2>
 
-@*@{ Html.RenderPartial("CreateOrEdit"); }*@
-
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Create a new Review</legend>
+        <legend>Edit your Review</legend>
         
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)
@@ -28,7 +26,7 @@
         </div>
 
         <div id="categories">
-            @if (Model.ExistingCategories != null && Model.ExistingCategories.Any())
+            @if (Model.ExistingCategories.Any())
             {
                 <h3>Existing categories</h3>
                 <ul>
@@ -41,28 +39,35 @@
                 }
                 </ul>
             }
-            @if (Model.AddedCategories != null)
+            @for (var i = 0; i < Model.AddedCategories.Count(); i++)
             {
-                for (var i = 0; i < Model.AddedCategories.Count(); i++)
+                Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary
                 {
-                    Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary
-                    {
-                        TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedCategories[" + i + "]" }
-                    });
-                }
+                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedCategories[" + i + "]" }
+                });
             }
         </div>
 
         <div id="peers">
-            @if (Model.AddedPeers != null)
+            @if (Model.ExistingPeers.Any())
             {
-                for (var i = 0; i < Model.AddedPeers.Count(); i++)
+                <h3>Invited peers</h3>
+                <ul>
+                @foreach (var peer in Model.ExistingPeers)
                 {
-                    Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
-                    {
-                        TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedPeers[" + i + "]" }
-                    });
+                    <li>
+                        <span>@peer.UserName:</span>
+                        <span>@peer.EmailAddress</span>
+                    </li>
                 }
+                </ul>
+            }
+            @for (var i = 0; i < Model.AddedPeers.Count(); i++)
+            {
+                Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
+                {
+                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedPeers[" + i + "]" }
+                });
             }
         </div>
         <button type="submit" name="reviewAction" value="AddCategory" id="AddCategory">Add Category</button>

@@ -2,6 +2,13 @@ using System.Collections.Generic;
 
 namespace TeamReview.Web.ViewModels {
 	public class ReviewEditModel {
+		public ReviewEditModel() {
+			ExistingCategories = new CategoryShowModel[0];
+			ExistingPeers = new PeerShowModel[0];
+			AddedCategories = new List<CategoryAddModel>();
+			AddedPeers = new List<PeerAddModel>();
+		}
+
 		public int Id { get; set; }
 
 		public string Name { get; set; }
@@ -10,13 +17,13 @@ namespace TeamReview.Web.ViewModels {
 
 		public PeerShowModel[] ExistingPeers { get; set; }
 
-		public IList<CategoryEditModel> AddedCategories { get; set; }
+		public IList<CategoryAddModel> AddedCategories { get; set; }
 
-		public IList<PeerEditModel> AddedPeers { get; set; }
+		public IList<PeerAddModel> AddedPeers { get; set; }
 
-		#region Nested type: CategoryEditModel
+		#region Nested type: CategoryAddModel
 
-		public class CategoryEditModel {
+		public class CategoryAddModel {
 			public string Name { get; set; }
 			public string Description { get; set; }
 		}
@@ -33,9 +40,9 @@ namespace TeamReview.Web.ViewModels {
 
 		#endregion
 
-		#region Nested type: PeerEditModel
+		#region Nested type: PeerAddModel
 
-		public class PeerEditModel {
+		public class PeerAddModel {
 			public string UserName { get; set; }
 			public string EmailAddress { get; set; }
 		}

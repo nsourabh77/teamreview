@@ -86,16 +86,10 @@ namespace TeamReview.Web.Controllers {
 			var action = Request.Form["reviewAction"];
 			if (action != null) {
 				if (action == "AddCategory") {
-					if (reviewEditModel.AddedCategories == null) {
-						reviewEditModel.AddedCategories = new List<ReviewEditModel.CategoryEditModel>();
-					}
-					reviewEditModel.AddedCategories.Add(new ReviewEditModel.CategoryEditModel());
+					reviewEditModel.AddedCategories.Add(new ReviewEditModel.CategoryAddModel());
 				}
 				else if (action == "AddPeer") {
-					if (reviewEditModel.AddedPeers == null) {
-						reviewEditModel.AddedPeers = new List<ReviewEditModel.PeerEditModel>();
-					}
-					reviewEditModel.AddedPeers.Add(new ReviewEditModel.PeerEditModel());
+					reviewEditModel.AddedPeers.Add(new ReviewEditModel.PeerAddModel());
 				}
 				return View(reviewEditModel);
 			}
@@ -111,23 +105,20 @@ namespace TeamReview.Web.Controllers {
 
 			reviewFromDb.Name = reviewEditModel.Name;
 
-			if (reviewEditModel.AddedCategories != null && reviewEditModel.AddedCategories.Any()) {
-				foreach (var newCategory in Mapper.Map<ReviewCategory[]>(reviewEditModel.AddedCategories)) {
-					db.ReviewCategories.Add(newCategory);
-					reviewFromDb.Categories.Add(newCategory);
-				}
+			foreach (var cat in reviewEditModel.AddedCategories.Select(Mapper.Map<ReviewCategory>)) {
+				db.ReviewCategories.Add(cat);
+				reviewFromDb.Categories.Add(cat);
 			}
 
-			if (reviewEditModel.AddedPeers != null && reviewEditModel.AddedPeers.Any()) {
-				foreach (var newPeer in Mapper.Map<UserProfile[]>(reviewEditModel.AddedPeers)) {
-					var fromDb = db.UserProfiles.SingleOrDefault(user => user.UserName == newPeer.UserName);
-					if (fromDb != null) {
-						reviewFromDb.Peers.Add(fromDb);
-					}
-					else {
-						db.UserProfiles.Add(newPeer);
-						reviewFromDb.Peers.Add(newPeer);
-					}
+			foreach (var newPeer in reviewEditModel.AddedPeers.Select(Mapper.Map<UserProfile>)) {
+				var fromDb = db.UserProfiles.SingleOrDefault(user => user.UserName == newPeer.UserName);
+				if (fromDb != null) {
+					db.UserProfiles.Attach(fromDb);
+					reviewFromDb.Peers.Add(fromDb);
+				}
+				else {
+					db.UserProfiles.Add(newPeer);
+					reviewFromDb.Peers.Add(newPeer);
 				}
 			}
 			db.SaveChanges();
