@@ -125,7 +125,7 @@ namespace TeamReview.Specs {
 		[Given(@"I own a Google account")]
 		public void GivenIOwnAGoogleAccount() {
 			ScenarioContext.Current.Set(
-				new Email { Address = "test@teamaton.com", Password = "9c60026e5467eeeee49c7d2b491dd6d2" });
+				new Email {Address = "test@teamaton.com", Password = "9c60026e5467eeeee49c7d2b491dd6d2"});
 		}
 
 		[StepDefinition(@"I am not logged into TeamReview")]
@@ -206,7 +206,7 @@ namespace TeamReview.Specs {
 
 		[When(@"I create a new review")]
 		public void WhenICreateANewReview() {
-			ScenarioContext.Current.Set(new ReviewConfiguration { Peers = { ScenarioContext.Current.Get<UserProfile>() } });
+			ScenarioContext.Current.Set(new ReviewConfiguration {Peers = {ScenarioContext.Current.Get<UserProfile>()}});
 			_browser.Visit("/Review/Create");
 		}
 
@@ -226,7 +226,22 @@ namespace TeamReview.Specs {
 		[Given(@"I own a review")]
 		public void GivenIOwnAReview() {
 			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
-			var reviewConfiguration = new ReviewConfiguration { Name = "NewReview", Peers = { thisIsMe } };
+			var reviewConfiguration = new ReviewConfiguration {Name = "NewReview", Peers = {thisIsMe}};
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Writing review to DB");
+				ctx.ReviewConfigurations.Add(reviewConfiguration);
+				ctx.SaveChanges();
+			}
+			ScenarioContext.Current.Set(reviewConfiguration);
+		}
+
+		[Given(@"I own a review with two peers")]
+		public void GivenIOwnAReviewWithTwoPeers() {
+			var peers = new List<UserProfile>();
+			peers.Add(ScenarioContext.Current.Get<UserProfile>());
+			peers.Add(new UserProfile {EmailAddress = "anton.telle@gmail.com", UserName = "Anton"});
+			peers.Add(new UserProfile {EmailAddress = "teamreview@teamaton.com", UserName = "Admin"});
+			var reviewConfiguration = new ReviewConfiguration {Name = "NewReview", Peers = peers};
 			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Writing review to DB");
 				ctx.ReviewConfigurations.Add(reviewConfiguration);
@@ -389,7 +404,7 @@ namespace TeamReview.Specs {
 		[When(@"I invite a peer")]
 		public void WhenIInviteAPeer() {
 			_browser.ClickButton("addPeer");
-			ScenarioContext.Current.Set(new UserProfile { UserName = "Peer", EmailAddress = "peer@teamaton.com" }, "peer");
+			ScenarioContext.Current.Set(new UserProfile {UserName = "Peer", EmailAddress = "peer@teamaton.com"}, "peer");
 		}
 
 		[When(@"I fill in the peer's name")]
@@ -441,8 +456,24 @@ namespace TeamReview.Specs {
 
 			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Saving peer to DB");
-				ctx.UserProfiles.Add(new UserProfile { UserName = peer.UserName, EmailAddress = peer.EmailAddress });
+				ctx.UserProfiles.Add(new UserProfile {UserName = peer.UserName, EmailAddress = peer.EmailAddress});
 				ctx.SaveChanges();
+			}
+		}
+
+		[When(@"I start the review")]
+		public void WhenIStartTheReview() {
+			GivenIAmOnThe("Dashboard");
+			_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).FindLink("Start review").
+				Click();
+		}
+
+		[Then(@"the review is active")]
+		public void ThenTheReviewIsActive() {
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				var reviewFromDb = ctx.ReviewConfigurations.Single();
+				Assert.IsTrue(reviewFromDb.Active);
 			}
 		}
 

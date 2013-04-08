@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web.Mvc;
 using AutoMapper;
 using TeamReview.Web.Models;
@@ -77,7 +79,7 @@ namespace TeamReview.Web.Controllers {
 
 			TempData["Message"] = "Review has been created";
 
-			return RedirectToAction("Edit", new { id = newReview.ReviewId });
+			return RedirectToAction("Edit", new {id = newReview.ReviewId});
 		}
 
 		//
@@ -144,7 +146,7 @@ namespace TeamReview.Web.Controllers {
 
 			TempData["Message"] = "Review has been saved";
 
-			return RedirectToAction("Edit", new { id = reviewEditModel.Id });
+			return RedirectToAction("Edit", new {id = reviewEditModel.Id});
 		}
 
 		//
@@ -167,6 +169,50 @@ namespace TeamReview.Web.Controllers {
 			_db.ReviewConfigurations.Remove(reviewconfiguration);
 			_db.SaveChanges();
 			return RedirectToAction("Index");
+		}
+
+		public ActionResult StartReview(int id = 0) {
+			var reviewconfiguration = _db.ReviewConfigurations.Include("Peers").Single(rc => rc.ReviewId == id);
+			if (reviewconfiguration == null) {
+				return HttpNotFound();
+			}
+			reviewconfiguration.Active = true;
+			_db.SaveChanges();
+
+			SendMailToPeers(reviewconfiguration.Peers, id);
+
+			TempData["Message"] = "Review has been started and mails have been sent to peers";
+			return RedirectToAction("Index");
+		}
+
+		private void SendMailToPeers(IEnumerable<UserProfile> peers, int id) {
+			var credentials = new NetworkCredential("teamreview@teamaton.com", "TGqDYzt0ZnnbPMgzn9Hl");
+			var smtpClient = new SmtpClient("smtp.teamaton.com")
+			                 	{
+			                 		UseDefaultCredentials = false,
+			                 		Credentials = credentials
+			                 	};
+
+			foreach (var peer in peers) {
+				var message = new MailMessage("teamreview@teamaton.com", peer.EmailAddress)
+				              	{
+				              		Subject = "Provide Review",
+				              		Body = GetMailBody(peer.UserName, id)
+				              	};
+
+				smtpClient.Send(message);
+			}
+		}
+
+		private string GetMailBody(string userName, int id) {
+			return string.Format(
+				@"Dear {0},
+
+Please provide a review. Go to the following page:
+http://teamreview.teamaton.com/Review/Provide/{1}
+--
+Your teamaton team",
+				userName, id);
 		}
 
 		protected override void Dispose(bool disposing) {

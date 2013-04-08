@@ -4,7 +4,11 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+@if (TempData["Message"] != null) { 
+    <p>@TempData["Message"]</p>
+}
+
+<h2>List of Reviews</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -25,6 +29,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit review", "Edit", new { id=item.ReviewId }) |
+            @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId }) |
             @Html.ActionLink("Details", "Details", new { id=item.ReviewId }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.ReviewId })
         </td>
