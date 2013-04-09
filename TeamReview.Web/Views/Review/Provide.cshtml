@@ -1,0 +1,30 @@
+﻿@model TeamReview.Web.Models.ReviewFeedback
+
+@{
+    ViewBag.Title = "Provide";
+}
+
+<h2>Provide Review</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Please rate the following categories</legend>
+        
+        @foreach (var assessment in Model.Assessments)
+        {
+            <li>
+                <span>@assessment.Item1.Name:</span>
+                <span>@assessment.Item1.Description</span>
+            </li>
+            @Html.EditorFor(x => assessment.Item2)
+        }
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+

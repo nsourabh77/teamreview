@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -43,6 +44,7 @@ namespace TeamReview.Web.Models {
 		public bool Active { get; set; }
 		public IList<ReviewCategory> Categories { get; set; }
 		public IList<UserProfile> Peers { get; set; }
+		public IList<ReviewFeedback> Feedback { get; set; }
 	}
 
 	[Table("ReviewCategory")]
@@ -53,6 +55,19 @@ namespace TeamReview.Web.Models {
 
 		public string Name { get; set; }
 		public string Description { get; set; }
+	}
+
+	[Table("ReviewFeedback")]
+	public class ReviewFeedback {
+		public ReviewFeedback() {
+			Assessments = new List<Tuple<ReviewCategory, int>>();
+		}
+
+		[Key]
+		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+		public int FeedbackId { get; set; }
+
+		public IList<Tuple<ReviewCategory, int>> Assessments { get; set; }
 	}
 
 	[Table("UserProfile")]

@@ -97,7 +97,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
   testRunner.And("I have a started review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.When("I visit the \"Provide a review\" url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I visit the \"Provide review\" url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
  testRunner.Then("I am on the \"Provide review\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

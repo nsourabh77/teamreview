@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -168,6 +169,27 @@ namespace TeamReview.Web.Controllers {
 			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
 			_db.ReviewConfigurations.Remove(reviewconfiguration);
 			_db.SaveChanges();
+			return RedirectToAction("Index");
+		}
+
+		public ActionResult Provide(int id = 0) {
+			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
+			if (reviewconfiguration == null)
+			{
+				return HttpNotFound();
+			}
+			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
+
+			TempData["ReviewId"] = id;
+			var newFeedback = new ReviewFeedback();
+			foreach (var reviewCategory in reviewconfiguration.Categories) {
+				newFeedback.Assessments.Add(new Tuple<ReviewCategory, int>(reviewCategory, -1));
+			}
+			return View(newFeedback);
+		}
+
+		[HttpPost, ActionName("Provide")]
+		public ActionResult Provide() {
 			return RedirectToAction("Index");
 		}
 

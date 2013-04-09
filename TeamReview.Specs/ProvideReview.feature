@@ -8,13 +8,13 @@ Scenario: Start the review
 		And I own a review with two peers
 	When I start the review
 	Then the review is active
-		#And an email is sent to me and two peers containing a link to the "Provide a review" page of my review
+		#And an email is sent to me and two peers containing a link to the "Provide review" page of my review
 		And I see the message "Review has been started and mails have been sent to peers"
 
 Scenario: Provide a review
 	Given I am logged in
 		And I have a started review
-	When I visit the "Provide a review" url
+	When I visit the "Provide review" url
 	Then I am on the "Provide review" page
 
 Scenario: Show "Provide review" button for started reviews
