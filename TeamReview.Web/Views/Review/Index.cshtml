@@ -16,7 +16,7 @@
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Active)
+            @Html.DisplayNameFor(model => model.Name)
         </th>
         <th></th>
     </tr>
@@ -28,10 +28,14 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit review", "Edit", new { id=item.ReviewId }) |
-            @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ReviewId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ReviewId })
+            @if (item.Active)
+            { @Html.ActionLink("Provide review", "Provide", new { id = item.ReviewId }) }
+            else
+            { @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId }) }
+             |
+            @Html.ActionLink("Edit review", "Edit", new { id = item.ReviewId }) |
+            @*@Html.ActionLink("Details", "Details", new { id = item.ReviewId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.ReviewId })*@
         </td>
     </tr>
 }

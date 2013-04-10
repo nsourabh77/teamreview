@@ -60,16 +60,25 @@ namespace TeamReview.Web.Models {
 	[Table("ReviewFeedback")]
 	public class ReviewFeedback {
 		public ReviewFeedback() {
-			Assessments = new List<Tuple<ReviewCategory, int>>();
+			Assessments = new List<Assessment>();
 		}
 
 		[Key]
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int FeedbackId { get; set; }
 
-		public IList<Tuple<ReviewCategory, int>> Assessments { get; set; }
+		public IList<Assessment> Assessments { get; set; }
 	}
 
+	[Table("Assessment")]
+	public class Assessment {
+		[Key]
+		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+		public int AssessmentId { get; set; }
+
+		public ReviewCategory ReviewCategory { get; set; }
+		public int Rating { get; set; }
+	}
 	[Table("UserProfile")]
 	public class UserProfile {
 		[Key]
