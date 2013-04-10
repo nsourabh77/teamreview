@@ -11,15 +11,18 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Please rate the following categories</legend>
+        <legend>Please evaluate the following categories</legend>
         
-        @foreach (var assessment in Model.Assessments)
+        @Html.Hidden("reviewId", TempData["ReviewId"])
+
+        @for (int i = 0; i < Model.Assessments.Count; i++)
         {
             <li>
-                <span>@assessment.Item1.Name:</span>
-                <span>@assessment.Item1.Description</span>
+                <span>@Model.Assessments[i].ReviewCategory.Name:</span>
+                <span>@Model.Assessments[i].ReviewCategory.Description</span>
             </li>
-            @Html.EditorFor(x => assessment.Item2)
+            @Html.Hidden("Assessments[" + i + "].ReviewCategory.CatId", Model.Assessments[i].ReviewCategory.CatId)
+            @Html.EditorFor(x => Model.Assessments[i].Rating)
         }
 
         <p>

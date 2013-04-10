@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -174,8 +173,7 @@ namespace TeamReview.Web.Controllers {
 
 		public ActionResult Provide(int id = 0) {
 			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
-			if (reviewconfiguration == null)
-			{
+			if (reviewconfiguration == null) {
 				return HttpNotFound();
 			}
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
@@ -183,13 +181,23 @@ namespace TeamReview.Web.Controllers {
 			TempData["ReviewId"] = id;
 			var newFeedback = new ReviewFeedback();
 			foreach (var reviewCategory in reviewconfiguration.Categories) {
-				newFeedback.Assessments.Add(new Tuple<ReviewCategory, int>(reviewCategory, -1));
+				newFeedback.Assessments.Add(new Assessment {ReviewCategory = reviewCategory, Rating = -1});
 			}
 			return View(newFeedback);
 		}
 
-		[HttpPost, ActionName("Provide")]
-		public ActionResult Provide() {
+		[HttpPost]
+		public ActionResult Provide(ReviewFeedback feedback, int reviewId) {
+			var reviewconfiguration = _db.ReviewConfigurations.Find(reviewId);
+			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
+			foreach (var assessment in feedback.Assessments) {
+				var category = _db.ReviewCategories.Find(assessment.ReviewCategory.CatId);
+				assessment.ReviewCategory = category;
+			}
+			reviewconfiguration.Feedback.Add(feedback);
+			_db.SaveChanges();
+
+			TempData["Message"] = "Review has been completed";
 			return RedirectToAction("Index");
 		}
 
