@@ -188,6 +188,11 @@ namespace TeamReview.Web.Controllers {
 
 		[HttpPost]
 		public ActionResult Provide(ReviewFeedback feedback, int reviewId) {
+			if (feedback.Assessments.Any(a => a.Rating < 1 || a.Rating > 10)) {
+				TempData["Message"] = "Please fill out all categories";
+				return View(feedback);
+			}
+
 			var reviewconfiguration = _db.ReviewConfigurations.Find(reviewId);
 			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
 			foreach (var assessment in feedback.Assessments) {

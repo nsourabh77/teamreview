@@ -1,7 +1,11 @@
 ﻿@model TeamReview.Web.Models.ReviewFeedback
 
 @{
-    ViewBag.Title = "Provide";
+    ViewBag.Title = "Provide review";
+}
+
+@if (TempData["Message"] != null) { 
+    <p>@TempData["Message"]</p>
 }
 
 <h2>Provide Review</h2>
@@ -17,12 +21,18 @@
 
         @for (int i = 0; i < Model.Assessments.Count; i++)
         {
+            var category = "category_" + Model.Assessments[i].ReviewCategory.CatId;
+            <div id="@category">
             <li>
                 <span>@Model.Assessments[i].ReviewCategory.Name:</span>
                 <span>@Model.Assessments[i].ReviewCategory.Description</span>
             </li>
             @Html.Hidden("Assessments[" + i + "].ReviewCategory.CatId", Model.Assessments[i].ReviewCategory.CatId)
-            @Html.EditorFor(x => Model.Assessments[i].Rating)
+            @for (int j = 1; j < 11; j++) 
+            { 
+                @Html.RadioButtonFor(x => Model.Assessments[i].Rating, j) @j
+            }
+            </div>
         }
 
         <p>

@@ -198,6 +198,9 @@ namespace TeamReview.Specs {
 				case "Dashboard":
 					path = "/";
 					break;
+				case "Reviews":
+					path = "/Review";
+					break;
 				default:
 					throw new ArgumentOutOfRangeException("pageName", "No mapping from '{0}' to concrete url path exists!");
 			}
@@ -231,8 +234,8 @@ namespace TeamReview.Specs {
 				Console.WriteLine("Writing review to DB");
 				ctx.ReviewConfigurations.Add(reviewConfiguration);
 				ctx.SaveChanges();
+				ScenarioContext.Current.Set(reviewConfiguration);
 			}
-			ScenarioContext.Current.Set(reviewConfiguration);
 		}
 
 		[Given(@"I own a review with two peers")]
@@ -248,6 +251,20 @@ namespace TeamReview.Specs {
 				ctx.SaveChanges();
 			}
 			ScenarioContext.Current.Set(reviewConfiguration);
+		}
+
+		[Given(@"I have a started review with two categories")]
+		public void GivenIHaveAStartedReviewWithTwoCategories() {
+			GivenIOwnAReview();
+			var reviewId = ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId;
+			using (var ctx = new DelayedDatabaseContext()) {
+				var reviewConfiguration = ctx.ReviewConfigurations.Find(reviewId);
+				reviewConfiguration.Categories.Add(new ReviewCategory {Name = "first", Description = "first desc"});
+				reviewConfiguration.Categories.Add(new ReviewCategory {Name = "second", Description = "second desc"});
+				reviewConfiguration.Active = true;
+				ctx.SaveChanges();
+				ScenarioContext.Current.Set(reviewConfiguration);
+			}
 		}
 
 		[Given(@"I have an account at TeamReview")]
@@ -376,8 +393,8 @@ namespace TeamReview.Specs {
 			Assert.IsTrue(_browser.HasContent(message));
 		}
 
-		[Given(@"I am on the ""(.*)""")]
-		public void GivenIAmOnThe(string pageName) {
+		[Given(@"I am on the ""(.*)"" page")]
+		public void GivenIAmOnThePage(string pageName) {
 			string path;
 			switch (pageName) {
 				case "Dashboard":
@@ -391,14 +408,7 @@ namespace TeamReview.Specs {
 
 		[When(@"I click on the ""(.*)"" link of the review")]
 		public void WhenIClickOnTheLinkOfTheReview(string linkName) {
-			switch (linkName) {
-				case "Edit review":
-					_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId)
-						.FindLink(linkName).Click();
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("linkName", "No mapping from '{0}' to a link for review on dashboard.");
-			}
+			_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).FindLink(linkName).Click();
 		}
 
 		[When(@"I invite a peer")]
@@ -463,7 +473,7 @@ namespace TeamReview.Specs {
 
 		[When(@"I start the review")]
 		public void WhenIStartTheReview() {
-			GivenIAmOnThe("Dashboard");
+			GivenIAmOnThePage("Dashboard");
 			_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).FindLink("Start review").
 				Click();
 		}
@@ -474,6 +484,67 @@ namespace TeamReview.Specs {
 				Console.WriteLine("Retrieving review from DB");
 				var reviewFromDb = ctx.ReviewConfigurations.Single();
 				Assert.IsTrue(reviewFromDb.Active);
+			}
+		}
+
+		[When(@"I visit the ""(.*)"" url")]
+		public void WhenIVisitTheUrl(string url) {
+			ScenarioContext.Current.Pending();
+		}
+
+		[When(@"I visit the Provide review url")]
+		public void WhenIVisitTheProvideReviewUrl() {
+			var reviewId = ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId;
+			_browser.Visit("/Review/Provide/" + reviewId);
+		}
+
+		[Then(@"I see all categories")]
+		public void ThenISeeAllCategories() {
+			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
+			foreach (var category in review.Categories) {
+				Assert.IsTrue(_browser.HasContent(category.Name));
+				Assert.IsTrue(_browser.HasContent(category.Description));
+			}
+		}
+
+		[Then(@"I have input options from (.*) to (.*) for each category")]
+		public void ThenIHaveInputOptionsFromToForEachCategory(int start, int end) {
+			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
+			foreach (var category in review.Categories) {
+				var element = _browser.FindId("category_" + category.CatId);
+				for (var i = start; i <= end; i++) {
+					Assert.IsTrue(element.FindCss(@"input[type=""radio""][value=""" + i + @"""]").Exists());
+					Assert.IsTrue(element.HasContent(i.ToString()));
+				}
+			}
+		}
+
+		[When(@"I select (.*) for each category")]
+		public void WhenISelectForEachCategory(int rating) {
+			var radiobuttons = _browser.FindAllCss(@"input[type=""radio""][value=""" + rating + @"""]");
+			foreach (var radiobutton in radiobuttons) {
+				radiobutton.Click();
+			}
+		}
+
+		[Then(@"the feedback is saved with (.*) for each category")]
+		public void ThenTheFeedbackIsSavedWithForEachCategory(int rating) {
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				var reviewFromDb = ctx.ReviewConfigurations.Include("Feedback").Single();
+				var feedback = reviewFromDb.Feedback.Single();
+				foreach (var assessment in feedback.Assessments) {
+					Assert.AreEqual(rating, assessment.Rating);
+				}
+			}
+		}
+
+		[Then(@"the feedback is not saved")]
+		public void ThenTheFeedbackIsNotSaved() {
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				var reviewFromDb = ctx.ReviewConfigurations.Include("Feedback").Single();
+				Assert.IsFalse(reviewFromDb.Feedback.Any());
 			}
 		}
 

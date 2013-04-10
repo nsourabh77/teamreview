@@ -34,7 +34,7 @@ Scenario: Add category to existing Review
 Scenario: Show edit link to review on dashboard
 	Given I am logged in
 		And I own a review
-		And I am on the "Dashboard"
+		And I am on the "Dashboard" page
 	When I click on the "Edit review" link of the review
 	Then I am on the "Edit review" page for my review
 

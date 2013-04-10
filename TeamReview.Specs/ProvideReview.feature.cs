@@ -95,11 +95,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
-  testRunner.And("I have a started review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.When("I visit the \"Provide review\" url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 18
- testRunner.Then("I am on the \"Provide review\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I am on the \"Provide review\" page for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -114,13 +114,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
-  testRunner.And("I have a started review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.When("I visit the \"Dashboard\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I am on the \"Dashboard\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
- testRunner.And("I click on \"Provide review\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I click on the \"Provide review\" link of the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
- testRunner.Then("I am on the \"Provide review\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I am on the \"Provide review\" page for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -135,9 +135,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 28
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 29
-  testRunner.And("I have a started review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 30
- testRunner.When("I am on the \"Provide review\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 31
  testRunner.Then("I see all categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 32
@@ -156,17 +156,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 35
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
-  testRunner.And("I have a started review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
- testRunner.When("I am on the \"Provide review\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 38
  testRunner.When("I select 5 for each category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
   testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
- testRunner.Then("the feedback is saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the feedback is saved with 5 for each category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 41
- testRunner.Then("I am on the \"Dashboard\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I am on the \"Reviews\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 42
   testRunner.And("I see the message \"Review has been completed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -183,9 +183,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 45
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 46
-  testRunner.And("I have a started review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
- testRunner.When("I am on the \"Provide review\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 48
   testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49

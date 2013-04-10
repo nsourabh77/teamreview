@@ -146,7 +146,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 36
   testRunner.And("I own a review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
-  testRunner.And("I am on the \"Dashboard\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am on the \"Dashboard\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
  testRunner.When("I click on the \"Edit review\" link of the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
