@@ -29,7 +29,7 @@
         </td>
         <td>
             @if (item.Active)
-            { @Html.ActionLink("Provide review", "Provide", new { id = item.ReviewId }) }
+            { @Html.ActionLink("Provide review", "Provide", new { @class = "Andréj, hier bitte Klasse setzen.", id = item.ReviewId }) }
             else
             { @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId }) }
              |
