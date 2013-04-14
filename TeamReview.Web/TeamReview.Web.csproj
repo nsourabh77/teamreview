@@ -230,6 +230,10 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\layout.scss" />
+    <None Include="Content\_bootstrap-responsive.scss" />
+    <None Include="Content\_bootstrap.scss" />
+    <None Include="Content\_reset.scss" />
     <None Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="Views\LogOn\LogOn.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />

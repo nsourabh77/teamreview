@@ -49,7 +49,7 @@ body {padding-top:0; background:#fefefe;}
 	
 	/* typography */
 	
-		h1, h2, h3, h4, h5, h6, legend, .brand, .button {font-family: 'Carter One', sans serif; font-weight:normal;}
+		h1, h2, h3, h4, h5, h6, legend, .logo, .button {font-family: 'Carter One', sans serif; font-weight:normal;}
 	
 		a {color:#007ACC;}
 		a:hover {cursor:pointer;}
@@ -174,11 +174,23 @@ body {padding-top:0; background:#fefefe;}
 /* general */
 
 /* header */
-	header {@include gradient(#333, #222); border-bottom:solid 1px #111; margin-bottom:20px;}
+	header {@include gradient(#333, #222); margin-bottom:20px; color:#eee;}
 	header a {color:#eee;}
-	.brand {font-size:1.8em; float:left; display:block; padding:12px; margin-right:32px;}
-	.nav {float:left; margin:0; list-style:none;}
-	.nav li {float:left; padding:17px 8px 8px 8px;}
+	.logo  {font-size:1.8em; float:left; display:block; padding:16px 0 12px 0; margin-right:32px;}	
+	.lg11 {color:#62C462;}
+	.lg12 {color:#FFD42A;}
+	.nav1 {float:left; list-style:none; margin:0; font-family:open sans;}
+	.nav1 li {float:left;}
+	.nav1 a {padding:18px 8px 12px 8px; display:block; text-decoration:none; text-transform:uppercase;}
+	.nav1 a:hover{background:#FFD42A; color:#333; text-decoration:none;}
+	.hd1 {float:right; margin-top:4px;}
+	.hd14 {@extend .icon, .icon-white, .icon-user;display:inline-block;}
+	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:11px; float:left; margin-right:24px;}
+	.hd16, .hd17, .hd18 {padding-top:12px; display:inline-block;}
+	.hd19 {@extend .icon, .icon-white, .icon-off;}
+	#logoutForm {display:inline-block; margin-left:12px;}
+	
+	
 	
 /* end header */
 
@@ -188,7 +200,10 @@ body {padding-top:0; background:#fefefe;}
 /* end sidebar */
 
 /* main content */
-	
+	.db10{float:left; margin-right:24px;}
+	.db11 {@extend .btn, .btn-success; margin-top:24px;}
+	.db12 {@extend .icon, .icon-white, .icon-plus;}
+	.db13 {clear:both;}
 	
 	
 /* end main content */

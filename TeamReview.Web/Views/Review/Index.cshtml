@@ -8,19 +8,19 @@
     <p>@TempData["Message"]</p>
 }
 
-<h2>List of Reviews</h2>
+<h1 class="db10">Your TeamReview Dashboard</h1>
+<a class="db11" href="@Url.Action("Create", "Review")"><i class="db12"></i>Create Review</a>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
-
+<h2 class="db13">Your Reviews</h2>
+<table class="table-bordered table">
+    <thead>
+        <tr>
+            <td>
+                @Html.DisplayNameFor(model => model.Name)
+            </td>
+            <td>Status</td>
+        </tr>
+    </thead>
 @foreach (var item in Model) {
     var rowId = "ReviewId_" + item.ReviewId;
     <tr id="@rowId">

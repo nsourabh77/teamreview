@@ -1,12 +1,16 @@
 @if (Request.IsAuthenticated) {
+    <a class="hd15" href="@Url.Action("Create", "Review")"><i class="db12"></i>Create Review</a>
     <text>
-        Hello, @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "username", title = "Manage" })!
-        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" })) {
+        <i class="hd14"></i><span class="hd16">Logged in as</span> @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "hd17", title = "Manage" })
+        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+        {
             @Html.AntiForgeryToken()
-            <a id="logoffLink" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+            <a id="logoffLink" class="hd18" href="javascript:document.getElementById('logoutForm').submit()"><i class="hd19"></i>Log off</a>
         }
     </text>
-} else {
+}
+else
+{
     <ul>
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
