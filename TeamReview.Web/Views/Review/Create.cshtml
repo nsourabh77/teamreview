@@ -10,15 +10,15 @@
 {
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Create a new Review</legend>
-        
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
+    <fieldset class="form-horizontal well">
+               
+        <div class="control-group">
+            <p class="info">should be "Review Name"</p>
+            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+            <div class="controls">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
         </div>
 
         <div id="categories">
@@ -40,16 +40,18 @@
                 });
             }
         </div>
-        <button type="submit" name="reviewAction" value="AddCategory" id="addCategory">Add Category</button>
-        <button type="submit" name="reviewAction" value="AddPeer" id="addPeer">Add Peer</button>
         <p>
-            <input type="submit" value="Save" />
+            <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>
+            <button class="cr43" type="submit" name="reviewAction" value="AddPeer" id="addPeer"><i class="cr44"></i>Invite Peers</button>
+        </p>
+        <p>
+            <input type="submit" value="Save" class="cr51" />
         </p>
     </fieldset>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Return to your dashboard", "Index")
 </div>
 
 @section Scripts {

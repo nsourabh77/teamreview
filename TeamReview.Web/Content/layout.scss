@@ -176,17 +176,21 @@ body {padding-top:0; background:#fefefe;}
 /* header */
 	header {@include gradient(#333, #222); margin-bottom:20px; color:#eee;}
 	header a {color:#eee;}
-	.logo  {font-size:1.8em; float:left; display:block; padding:16px 0 12px 0; margin-right:32px;}	
+	.logo  {font-size:1.8em; float:left; display:block; padding:16px 0 12px 0; margin-right:32px;}
+	.logo:hover {text-decoration:none;}
 	.lg11 {color:#62C462;}
 	.lg12 {color:#FFD42A;}
+	.logo:hover .lg11 {color:#FFD42A;}
+	.logo:hover .lg12 {color:#62C462;}
+	
 	.nav1 {float:left; list-style:none; margin:0; font-family:open sans;}
-	.nav1 li {float:left;}
-	.nav1 a {padding:18px 8px 12px 8px; display:block; text-decoration:none; text-transform:uppercase;}
-	.nav1 a:hover{background:#FFD42A; color:#333; text-decoration:none;}
-	.hd1 {float:right; margin-top:4px;}
+	.nav1 li, .mini-nav li {float:left;}
+	.nav1 a, .mini-nav a {padding:18px 8px 12px 8px; display:inline-block; text-decoration:none; text-transform:uppercase;}
+	.nav1 a:hover, .mini-nav a:hover {background:#FFD42A; color:#333; text-decoration:none;}
+	.hd1 {float:right;}
+	.mini-nav {list-style:none; margin:0; font-family:open sans; float:right;}
 	.hd14 {@extend .icon, .icon-white, .icon-user;display:inline-block;}
-	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:11px; float:left; margin-right:24px;}
-	.hd16, .hd17, .hd18 {padding-top:12px; display:inline-block;}
+	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:15px; float:left; margin-right:24px;}	
 	.hd19 {@extend .icon, .icon-white, .icon-off;}
 	#logoutForm {display:inline-block; margin-left:12px;}
 	
@@ -204,6 +208,12 @@ body {padding-top:0; background:#fefefe;}
 	.db11 {@extend .btn, .btn-success; margin-top:24px;}
 	.db12 {@extend .icon, .icon-white, .icon-plus;}
 	.db13 {clear:both;}
+	
+	.cr41 {@extend .btn, .btn-success;}
+	.cr42 {@extend .icon, .icon-white, .icon-plus;}
+	.cr43 {@extend .btn, .btn-info;}
+	.cr44 {@extend .icon, .icon-white, .icon-user	;}
+	.cr51 {@extend .btn, .btn-success, .btn-large;}
 	
 	
 /* end main content */

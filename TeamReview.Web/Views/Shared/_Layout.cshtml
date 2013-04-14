@@ -11,15 +11,13 @@
 <body>
     <header>
         <div class="container">
-            <a class="logo" href="home"><span class="lg11">Team</span><span class="lg12">Review</span></a>
+            <a class="logo" href="@Url.Action("Index", "Home")"><span class="lg11">Team</span><span class="lg12">Review</span></a>
             <ul class="nav1">
                 <li class="active"><a href="#">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>            
             </ul>          
-            <div class="hd1" id="login">
-                @Html.Partial("_LoginPartial")
-            </div>
+            <div class="hd1">@Html.Partial("_LoginPartial")</div>
         </div>
     </header>
     <div class="container">
