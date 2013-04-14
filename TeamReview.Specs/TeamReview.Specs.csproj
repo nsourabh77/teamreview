@@ -96,6 +96,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProvideReview.feature</DependentUpon>
     </Compile>
+    <Compile Include="ShowReviewResults.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ShowReviewResults.feature</DependentUpon>
+    </Compile>
     <Compile Include="Steps.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +123,10 @@
     <None Include="ProvideReview.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ProvideReview.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ShowReviewResults.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ShowReviewResults.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
