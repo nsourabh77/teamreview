@@ -557,8 +557,8 @@ namespace TeamReview.Specs {
 			}
 		}
 
-		[Then(@"the feedback is saved with (.*) for each category")]
-		public void ThenTheFeedbackIsSavedWithForEachCategory(int rating) {
+		[Then(@"the feedback is saved with (.*) for each peer for each category")]
+		public void ThenTheFeedbackIsSavedWithForEachPeerForEachCategory(int rating) {
 			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Retrieving review from DB");
 				var reviewFromDb = ctx.ReviewConfigurations.Include("Feedback").Single();
@@ -581,6 +581,13 @@ namespace TeamReview.Specs {
 		[Then(@"I see ""(.*)"" for my review")]
 		public void ThenISeeForMyReview(string text) {
 			Assert.IsTrue(
+				_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).HasContent(text));
+		}
+
+		[Then(@"I do not see ""(.*)"" for my review")]
+		public void ThenIDoNotSeeForMyReview(string text)
+		{
+			Assert.IsFalse(
 				_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).HasContent(text));
 		}
 
