@@ -139,7 +139,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
  testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 31
- testRunner.Then("I see name of review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I see the name of review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 32
  testRunner.Then("I see for each category all peers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
@@ -165,14 +165,14 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I select 5 for each category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 40
   testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
- testRunner.Then("the feedback is saved with 5 for each peer for each category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 42
- testRunner.Then("I am on the \"Reviews\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the feedback is saved with 5 for each peer for each category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 43
-  testRunner.And("I see the message \"Review has been completed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("I am on the \"Reviews\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 44
-  testRunner.And("I do not see \"Provide review\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I see the message \"Review has been completed\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+  testRunner.And("I do not see \"Provide review\" for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -182,19 +182,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ProvidingPartialReviewIsNotAllowed()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Providing partial Review is not allowed", ((string[])(null)));
-#line 46
-this.ScenarioSetup(scenarioInfo);
 #line 47
- testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 48
-  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 49
- testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
-  testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 51
- testRunner.Then("the feedback is not saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
+ testRunner.Then("the feedback is not saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 53
   testRunner.And("I see the message \"Please fill out all categories\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

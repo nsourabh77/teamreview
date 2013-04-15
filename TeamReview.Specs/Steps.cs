@@ -229,9 +229,10 @@ namespace TeamReview.Specs {
 		[Given(@"I own a review")]
 		public void GivenIOwnAReview() {
 			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
-			var reviewConfiguration = new ReviewConfiguration {Name = "NewReview", Peers = {thisIsMe}};
+			var reviewConfiguration = new ReviewConfiguration {Name = "NewReview"};
 			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Writing review to DB");
+				reviewConfiguration.Peers.Add(ctx.UserProfiles.Find(thisIsMe.UserId));
 				ctx.ReviewConfigurations.Add(reviewConfiguration);
 				ctx.SaveChanges();
 				ScenarioContext.Current.Set(reviewConfiguration);
@@ -255,13 +256,42 @@ namespace TeamReview.Specs {
 
 		[Given(@"I have a started review with two categories")]
 		public void GivenIHaveAStartedReviewWithTwoCategories() {
+			GivenIHaveAStartedReviewWithCategoriesAndAdditionalPeers(2, 0);
+		}
+
+		[Given(@"I have a started review with (.*) categories and (.*) additional peers")]
+		public void GivenIHaveAStartedReviewWithCategoriesAndAdditionalPeers(int numberOfCategories, int numberOfPeers) {
 			GivenIOwnAReview();
 			var reviewId = ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId;
 			using (var ctx = new DelayedDatabaseContext()) {
 				var reviewConfiguration = ctx.ReviewConfigurations.Find(reviewId);
-				reviewConfiguration.Categories.Add(new ReviewCategory {Name = "first", Description = "first desc"});
-				reviewConfiguration.Categories.Add(new ReviewCategory {Name = "second", Description = "second desc"});
+				for (var i = 0; i < numberOfCategories; i++) {
+					reviewConfiguration.Categories.Add(new ReviewCategory {Name = "cat" + i, Description = "desc" + i});
+				}
+				for (var i = 0; i < numberOfPeers; i++) {
+					reviewConfiguration.Peers.Add(new UserProfile {EmailAddress = i + "@teamaton.com", UserName = "user" + i});
+				}
 				reviewConfiguration.Active = true;
+				ctx.SaveChanges();
+				ScenarioContext.Current.Set(reviewConfiguration);
+			}
+		}
+
+		[Given(@"I have provided review")]
+		public void GivenIHaveProvidedReview() {
+			var reviewId = ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId;
+			using (var ctx = new DelayedDatabaseContext()) {
+				var reviewConfiguration = ctx.ReviewConfigurations.Find(reviewId);
+				ctx.Entry(reviewConfiguration).Collection(c => c.Feedback).Load();
+				ctx.Entry(reviewConfiguration).Collection(c => c.Categories).Load();
+				var newFeedback = new ReviewFeedback();
+				foreach (var reviewCategory in reviewConfiguration.Categories) {
+					newFeedback.Assessments.Add(new Assessment {ReviewCategory = reviewCategory, Rating = 7});
+				}
+				var thisIsMyId = ScenarioContext.Current.Get<UserProfile>().UserId;
+				newFeedback.Reviewer = ctx.UserProfiles.Find(thisIsMyId);
+				reviewConfiguration.Feedback.Add(newFeedback);
+
 				ctx.SaveChanges();
 				ScenarioContext.Current.Set(reviewConfiguration);
 			}
@@ -527,8 +557,8 @@ namespace TeamReview.Specs {
 			}
 		}
 
-		[Then(@"the feedback is saved with (.*) for each category")]
-		public void ThenTheFeedbackIsSavedWithForEachCategory(int rating) {
+		[Then(@"the feedback is saved with (.*) for each peer for each category")]
+		public void ThenTheFeedbackIsSavedWithForEachPeerForEachCategory(int rating) {
 			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Retrieving review from DB");
 				var reviewFromDb = ctx.ReviewConfigurations.Include("Feedback").Single();
@@ -546,6 +576,19 @@ namespace TeamReview.Specs {
 				var reviewFromDb = ctx.ReviewConfigurations.Include("Feedback").Single();
 				Assert.IsFalse(reviewFromDb.Feedback.Any());
 			}
+		}
+
+		[Then(@"I see ""(.*)"" for my review")]
+		public void ThenISeeForMyReview(string text) {
+			Assert.IsTrue(
+				_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).HasContent(text));
+		}
+
+		[Then(@"I do not see ""(.*)"" for my review")]
+		public void ThenIDoNotSeeForMyReview(string text)
+		{
+			Assert.IsFalse(
+				_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).HasContent(text));
 		}
 
 		#region Helpers

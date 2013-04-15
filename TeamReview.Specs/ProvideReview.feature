@@ -28,7 +28,7 @@ Scenario: Show Provide Review
 	Given I am logged in
 		And I have a started review with two categories
 	When I visit the Provide review url
-	Then I see name of review
+	Then I see the name of review
 	Then I see for each category all peers
 		And I have input options from 1 to 10 for each peer for given category
 
@@ -38,10 +38,11 @@ Scenario: Provide full Review
 	When I visit the Provide review url
 	When I select 5 for each category
 		And I save the review
+	#TODO: peers not included yet
 	Then the feedback is saved with 5 for each peer for each category
 	Then I am on the "Reviews"
 		And I see the message "Review has been completed"
-		And I do not see "Provide review"
+		And I do not see "Provide review" for my review
 
 Scenario: Providing partial Review is not allowed
 	Given I am logged in

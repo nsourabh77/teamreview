@@ -16,7 +16,26 @@ namespace TeamReview.Web.Controllers {
 		// GET: /Review/
 
 		public ActionResult Index() {
-			return View(_db.ReviewConfigurations.ToList());
+			var currentUserId = _db.UserProfiles.First(user => user.UserName == User.Identity.Name).UserId;
+			var reviewConfigurations = _db.ReviewConfigurations.Include("Feedback").Include("Peers").ToList();
+			var reviewViewModels = new List<ReviewViewModel>();
+			foreach (var reviewConfiguration in reviewConfigurations) {
+				var reviewViewModel = new ReviewViewModel {ReviewId = reviewConfiguration.ReviewId, Name = reviewConfiguration.Name};
+				if (!reviewConfiguration.Active) {
+					reviewViewModel.ActionStatus = ActionStatus.NotStarted;
+				}
+				else if (reviewConfiguration.Feedback.Count == reviewConfiguration.Peers.Count) {
+					reviewViewModel.ActionStatus = ActionStatus.ShowResults;
+				}
+				else if (reviewConfiguration.Feedback.Any(f => f.Reviewer.UserId == currentUserId)) {
+					reviewViewModel.ActionStatus = ActionStatus.WaitForReviews;
+				}
+				else {
+					reviewViewModel.ActionStatus = ActionStatus.ProvideReview;
+				}
+				reviewViewModels.Add(reviewViewModel);
+			}
+			return View(reviewViewModels);
 		}
 
 		//
@@ -192,6 +211,8 @@ namespace TeamReview.Web.Controllers {
 				TempData["Message"] = "Please fill out all categories";
 				return View(feedback);
 			}
+
+			feedback.Reviewer = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name);
 
 			var reviewconfiguration = _db.ReviewConfigurations.Find(reviewId);
 			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();

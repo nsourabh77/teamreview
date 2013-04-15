@@ -34,6 +34,7 @@ namespace TeamReview.Web.Models {
 		public ReviewConfiguration() {
 			Categories = new List<ReviewCategory>();
 			Peers = new List<UserProfile>();
+			Feedback = new List<ReviewFeedback>();
 		}
 
 		[Key]
@@ -67,6 +68,7 @@ namespace TeamReview.Web.Models {
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int FeedbackId { get; set; }
 
+		public UserProfile Reviewer { get; set; }
 		public IList<Assessment> Assessments { get; set; }
 	}
 
@@ -79,6 +81,7 @@ namespace TeamReview.Web.Models {
 		public ReviewCategory ReviewCategory { get; set; }
 		public int Rating { get; set; }
 	}
+
 	[Table("UserProfile")]
 	public class UserProfile {
 		[Key]
