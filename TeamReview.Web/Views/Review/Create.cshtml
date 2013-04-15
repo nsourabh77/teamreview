@@ -13,8 +13,7 @@
     <fieldset class="form-horizontal well">
                
         <div class="control-group">
-            <p class="info">should be "Review Name"</p>
-            @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+            @Html.LabelFor(model => model.Name, "Review Name", new { @class = "control-label" })
             <div class="controls">
                 @Html.EditorFor(model => model.Name)
                 @Html.ValidationMessageFor(model => model.Name)

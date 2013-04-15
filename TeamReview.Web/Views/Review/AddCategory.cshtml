@@ -11,9 +11,8 @@
     </div>
     <div class="control-group">
         @Html.LabelFor(model => model.Description, new { @class = "control-label" })
-        <p class="info">should be a text-field with multiple lines</p>
         <div class="controls">
-            @Html.EditorFor(model => model.Description)
+            @Html.TextAreaFor(model => model.Description, new { rows = "4" })
             @Html.ValidationMessageFor(model => model.Description)
         </div>
     </div>
