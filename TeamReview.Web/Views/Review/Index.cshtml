@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TeamReview.Web.Models.ReviewConfiguration>
+﻿@model IEnumerable<TeamReview.Web.ViewModels.ReviewViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -28,13 +28,25 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @if (item.Active)
-            { @Html.ActionLink("Provide review", "Provide", new { @class = "Andréj, hier bitte Klasse setzen.", id = item.ReviewId }) }
-            else
-            { @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId }) }
-             |
-            @Html.ActionLink("Edit review", "Edit", new { id = item.ReviewId }) |
-            @*@Html.ActionLink("Details", "Details", new { id = item.ReviewId }) |
+            @switch (item.ActionStatus) 
+            {
+                case TeamReview.Web.ViewModels.ActionStatus.NotStarted:
+                    @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId })
+                    break;
+                case TeamReview.Web.ViewModels.ActionStatus.ProvideReview:
+                    @Html.ActionLink("Provide review", "Provide", new { @class = "Andréj, hier bitte Klasse setzen.", id = item.ReviewId }) 
+                    break;
+                case TeamReview.Web.ViewModels.ActionStatus.WaitForReviews:
+                    <p>Waiting for reviews</p>
+                    break;
+                case TeamReview.Web.ViewModels.ActionStatus.ShowResults:
+                    @Html.ActionLink("Show results", "Results", new { id = item.ReviewId })
+                    break;
+                default:
+                    break;
+            }
+             | @Html.ActionLink("Edit review", "Edit", new { id = item.ReviewId })
+            @* | @Html.ActionLink("Details", "Details", new { id = item.ReviewId }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.ReviewId })*@
         </td>
     </tr>

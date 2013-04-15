@@ -3,15 +3,16 @@
 	As a peer
 	I want to see the results of the review
 
-Scenario: Show "Waiting for reviews" for started reviews
+Scenario: Show "Waiting for reviews" for started, provided review if not all peers have provided review
 	Given I am logged in
-		And I have a started review with two categories
+		And I have a started review with 2 categories and 1 additional peers
+		And I have provided review
 		And I am on the "Dashboard" page
 	Then I see "Waiting for reviews" for my review
 
 Scenario: Show "Show results" button for finished reviews
 	Given I am logged in
-		And I have a started review with two categories
+		And I have a started review with 2 categories and 2 additional peers
 		And all peers have provided the review
 		And I am on the "Dashboard" page
 	When I click on the "Show results" link of the review

@@ -181,6 +181,7 @@
     <Compile Include="ViewModels\PeerModels.cs" />
     <Compile Include="ViewModels\ReviewCreateModel.cs" />
     <Compile Include="ViewModels\ReviewEditModel.cs" />
+    <Compile Include="ViewModels\ReviewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\img\glyphicons-halflings-white.png" />

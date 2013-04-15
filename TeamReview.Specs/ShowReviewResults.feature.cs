@@ -65,19 +65,23 @@ namespace TeamReview.Specs
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Show \"Waiting for reviews\" for started reviews")]
-        public virtual void ShowWaitingForReviewsForStartedReviews()
+        [NUnit.Framework.DescriptionAttribute("Show \"Waiting for reviews\" for started, provided review if not all peers have pro" +
+            "vided review")]
+        public virtual void ShowWaitingForReviewsForStartedProvidedReviewIfNotAllPeersHaveProvidedReview()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show \"Waiting for reviews\" for started reviews", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show \"Waiting for reviews\" for started, provided review if not all peers have pro" +
+                    "vided review", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with 2 categories and 1 additional peers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
-  testRunner.And("I am on the \"Dashboard\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have provided review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
+  testRunner.And("I am on the \"Dashboard\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
  testRunner.Then("I see \"Waiting for reviews\" for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -88,19 +92,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ShowShowResultsButtonForFinishedReviews()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show \"Show results\" button for finished reviews", ((string[])(null)));
-#line 12
-this.ScenarioSetup(scenarioInfo);
 #line 13
- testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 14
-  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
-  testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with 2 categories and 2 additional peers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
-  testRunner.And("I am on the \"Dashboard\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.When("I click on the \"Show results\" link of the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I am on the \"Dashboard\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
+ testRunner.When("I click on the \"Show results\" link of the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
  testRunner.Then("I am on the \"Show results\" page for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -111,20 +115,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ShowIndividualResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show individual results", ((string[])(null)));
-#line 20
-this.ScenarioSetup(scenarioInfo);
 #line 21
- testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 22
-  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 23
-  testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
-  testRunner.And("I am on the \"Show results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
+  testRunner.And("I am on the \"Show results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
  testRunner.Then("for each category I see the peer rating (average rating of all peers except mine)" +
                     " and my rating", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 26
+#line 27
   testRunner.And("I see the stacked rating (sum of ratings of all categories)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -135,20 +139,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ShowTeamResults()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Show team results", ((string[])(null)));
-#line 28
-this.ScenarioSetup(scenarioInfo);
 #line 29
- testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 30
-  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 31
-  testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
-  testRunner.And("I am on the \"Show results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
+  testRunner.And("I am on the \"Show results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
  testRunner.Then("for each category and each peer I see the peer rating (average rating of all peer" +
                     "s except his/hers)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 34
+#line 35
   testRunner.And("I see the stacked rating (sum of ratings of all categories)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
