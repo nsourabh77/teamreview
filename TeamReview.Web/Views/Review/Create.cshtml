@@ -4,26 +4,25 @@
     ViewBag.Title = "Create Review";
 }
 
-<h2>Create a new Review</h2>
+
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
-    <fieldset class="form-horizontal well">
-               
-        <div class="control-group">
-            @Html.LabelFor(model => model.Name, "Review Name", new { @class = "control-label" })
-            <div class="controls">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
-            </div>
-        </div>
+    <fieldset class="form-horizontal">
 
-        <div id="categories">
+        <h1><a class="cr25"><span class="cr26">Untitled Review</span><i class="cr21"></i></a></h1>        
+        @Html.TextBoxFor(model => model.Name, new {type = "hidden", @class = "cr27"}  )
+        @Html.ValidationMessageFor(model => model.Name)
+                       
+        <div id="categories">            
             <h2 class="cr40">Categories</h2>
-            <p class="info"><a href="http://www.appelsiini.net/projects/jeditable">use jeditable for inline edit</a></p>
-            <table class="table">
+            <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>                       
+            <p class="cr410">
+                You have not yet created categories. Go ahead <a class="cr61" href="@Url.Action("Create", "Review")">add your first category</a>.
+            </p>
+            <table class="table table-bordered">
                 <colgroup>
                     <col width="200" />
                     <col width="600" />
@@ -40,7 +39,7 @@
                     <tr>
                         <td>Example Category</td>
                         <td>Example Description</td>
-                        <td><a>edit</a> | <a>delete</a></td>
+                        <td><a>delete</a></td>
                     </tr>
                     @for (var i = 0; i < Model.AddedCategories.Count; i++)
                     {
@@ -51,36 +50,68 @@
                     }
                 </tbody>
             </table>
-            <p class="info">
-                You have not yet created categories. Go ahead 
-                <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>            
-            </p>
+            
         </div>
 
         <div id="peers">
-            <h2>Peers</h2>
-            @for (var i = 0; i < Model.AddedPeers.Count; i++)
-            {
-                Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
-                {
-                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedPeers[" + i + "]" }
-                });
-            }
-        </div>
-        <p>
-            
+            <h2 class="cr40">Peers</h2>
             <button class="cr43" type="submit" name="reviewAction" value="AddPeer" id="addPeer"><i class="cr44"></i>Invite Peers</button>
+            <p class="cr410">You have not yet invited any peers for your review. In order to give and get feedback you can invite your colleagues, team members, project members...</p> 
+            <p class="cr410">Go ahead <a class="cr61" href="@Url.Action("Create", "Review")">add invite some peers</a>.</p>
+            <table class="table table-bordered">
+                <colgroup>
+                    <col width="200" />
+                    <col width="600" />
+                    <col width="100" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Peer Name or Username</th>
+                        <th>Peer Email</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Andrej</td>
+                        <td>andrej@teamaton.com</td>
+                        <td><a>remove</a></td>
+                    </tr>
+                    @for (var i = 0; i < Model.AddedPeers.Count; i++)
+                    {
+                        Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
+                        {
+                            TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedPeers[" + i + "]" }
+                        });
+                    }
+                </tbody>
+            </table>
+        </div>        
+        <p class="cr71">            
+            <input type="submit" value="Save and Start the Review" class="cr51" />
+            <input type="submit" value="Save for later" class="cr52" />
         </p>
-        <p>
-            <input type="submit" value="Save" class="cr51" />
-        </p>
+        <p class="info">Once you start the review, all your peers will get an email inviting them to take part in the review. You can start the review at any time.</p>
     </fieldset>
 }
-
 <div>
     @Html.ActionLink("Return to your dashboard", "Index")
 </div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+   
 }
+
+ <!-- edit in place script: http://www.egstudio.biz/tiny-inline-edit-plugin-for-jquery/ -->
+    
+<script>
+    $(document).ready(function () {
+        var replaceWith = $('<input name="temp" type="text" />'),
+        connectWith = $('.cr27');
+
+        $('.cr25').click(function(){
+            $('.cr26').inlineEdit(replaceWith, connectWith);
+        });
+    });
+</script>    

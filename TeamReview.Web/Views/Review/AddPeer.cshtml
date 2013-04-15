@@ -1,21 +1,7 @@
 ﻿@model TeamReview.Web.ViewModels.PeerAddModel
 
-<section class="category">
-<h3>Invite a new Peer</h3>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.UserName)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.UserName)
-    @Html.ValidationMessageFor(model => model.UserName)
-</div>
-
-<div class="editor-label">
-    @Html.LabelFor(model => model.EmailAddress)
-</div>
-<div class="editor-field">
-    @Html.EditorFor(model => model.EmailAddress)
-    @Html.ValidationMessageFor(model => model.EmailAddress)
-</div>
-</section>
+<tr>
+    <td>@Html.EditorFor(model => model.UserName)@Html.ValidationMessageFor(model => model.UserName)</td>
+    <td>@Html.EditorFor(model => model.EmailAddress)@Html.ValidationMessageFor(model => model.EmailAddress)</td>
+    <td><a>remove</a></td>
+</tr>

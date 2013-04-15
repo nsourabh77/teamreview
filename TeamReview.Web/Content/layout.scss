@@ -3,9 +3,10 @@
 @import "_reset";
 @import "_bootstrap";
   
-body {padding-top:0; background:#fefefe;}
+body {padding-top:0; background:#F5F5F5;}
 
 #wrap:before {background:#2e2e2e; width:250px; height:100%; position:fixed; left:0; top:0; content:""; z-index:-1; line-height:20px;}
+.well{background:#fff !important;}
 
 /* general */
 	
@@ -123,6 +124,12 @@ body {padding-top:0; background:#fefefe;}
 	
 	/* end boxes */
 	
+	/* table */
+	
+		.table {background:#f5f5f5;}
+	
+	/* end table */
+	
 	/* shadow */
 		
 		.shadow {	-moz-box-shadow:    3px 3px 5px 6px #999;
@@ -208,12 +215,17 @@ body {padding-top:0; background:#fefefe;}
 	.db12 {@extend .icon, .icon-white, .icon-plus;}
 	.db13 {clear:both;}
 	
-	.cr41 {@extend .btn, .btn-success;}
+	.cr21 {@extend .icon, .icon-pencil; opacity:0.7; margin:18px 0 0 12px;}
+	.cr40 {float:left;}
+	.cr41 {@extend .btn, .btn-success, .btn-mini; margin:24px 0 0 24px;}
+	.cr410 {clear:both; @extend .info;}
 	.cr42 {@extend .icon, .icon-white, .icon-plus;}
-	.cr43 {@extend .btn, .btn-info;}
-	.cr44 {@extend .icon, .icon-white, .icon-user	;}
-	.cr51 {@extend .btn, .btn-success, .btn-large	;}
-	
+	.cr43 {@extend .btn, .btn-info, .btn-mini; margin:24px 0 0 24px;}
+	.cr44 {@extend .icon, .icon-white, .icon-user;}
+	.cr51 {@extend .btn, .btn-success, .btn-large;}
+	.cr52 {@extend .btn, .btn-info, .btn-large;}
+	.cr61 {font-weight:bold;}
+	.cr71 {text-align:center;}
 	
 /* end main content */
 

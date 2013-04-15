@@ -1145,13 +1145,15 @@ select:focus:required:invalid:focus {
 .input-prepend .cr41,
 .input-prepend .cr43,
 .input-prepend .cr51,
+.input-prepend .cr52,
 .input-append .btn,
 .input-append .primaryAction,
 .input-append .hd15,
 .input-append .db11,
 .input-append .cr41,
 .input-append .cr43,
-.input-append .cr51 {
+.input-append .cr51,
+.input-append .cr52 {
   margin-left: -1px;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -1169,7 +1171,8 @@ select:focus:required:invalid:focus {
 .input-prepend .db11,
 .input-prepend .cr41,
 .input-prepend .cr43,
-.input-prepend .cr51 {
+.input-prepend .cr51,
+.input-prepend .cr52 {
   margin-right: -1px; }
 
 .input-prepend .add-on:first-child,
@@ -1179,7 +1182,8 @@ select:focus:required:invalid:focus {
 .input-prepend .db11:first-child,
 .input-prepend .cr41:first-child,
 .input-prepend .cr43:first-child,
-.input-prepend .cr51:first-child {
+.input-prepend .cr51:first-child,
+.input-prepend .cr52:first-child {
   -webkit-border-radius: 3px 0 0 3px;
   -moz-border-radius: 3px 0 0 3px;
   border-radius: 3px 0 0 3px; }
@@ -1202,7 +1206,8 @@ select:focus:required:invalid:focus {
 .input-append .db11:last-child,
 .input-append .cr41:last-child,
 .input-append .cr43:last-child,
-.input-append .cr51:last-child {
+.input-append .cr51:last-child,
+.input-append .cr52:last-child {
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
   border-radius: 0 3px 3px 0; }
@@ -1221,7 +1226,8 @@ select:focus:required:invalid:focus {
 .input-prepend.input-append .db11:first-child,
 .input-prepend.input-append .cr41:first-child,
 .input-prepend.input-append .cr43:first-child,
-.input-prepend.input-append .cr51:first-child {
+.input-prepend.input-append .cr51:first-child,
+.input-prepend.input-append .cr52:first-child {
   margin-right: -1px;
   -webkit-border-radius: 3px 0 0 3px;
   -moz-border-radius: 3px 0 0 3px;
@@ -1234,7 +1240,8 @@ select:focus:required:invalid:focus {
 .input-prepend.input-append .db11:last-child,
 .input-prepend.input-append .cr41:last-child,
 .input-prepend.input-append .cr43:last-child,
-.input-prepend.input-append .cr51:last-child {
+.input-prepend.input-append .cr51:last-child,
+.input-prepend.input-append .cr52:last-child {
   margin-left: -1px;
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
@@ -1577,7 +1584,7 @@ table .span24 {
   margin-left: 0; }
 
 [class^="icon-"],
-[class*=" icon-"], .icon, .hd14, .hd19, .db12, .cr42, .cr44 {
+[class*=" icon-"], .icon, .hd14, .hd19, .db12, .cr21, .cr42, .cr44 {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -1775,7 +1782,7 @@ table .span24 {
 .icon-picture {
   background-position: -456px -48px; }
 
-.icon-pencil {
+.icon-pencil, .cr21 {
   background-position: 0 -72px; }
 
 .icon-map-marker {
@@ -2210,7 +2217,7 @@ button.close {
   border: 0;
   -webkit-appearance: none; }
 
-.btn, .primaryAction, .hd15, .db11, .cr41, .cr43, .cr51 {
+.btn, .primaryAction, .hd15, .db11, .cr41, .cr43, .cr51, .cr52 {
   display: inline-block;
   *display: inline;
   padding: 4px 10px 4px;
@@ -2248,7 +2255,7 @@ button.close {
   -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); }
 
-.btn:hover, .primaryAction:hover, .hd15:hover, .db11:hover, .cr41:hover, .cr43:hover, .cr51:hover,
+.btn:hover, .primaryAction:hover, .hd15:hover, .db11:hover, .cr41:hover, .cr43:hover, .cr51:hover, .cr52:hover,
 .btn:active,
 .primaryAction:active,
 .hd15:active,
@@ -2256,6 +2263,7 @@ button.close {
 .cr41:active,
 .cr43:active,
 .cr51:active,
+.cr52:active,
 .btn.active,
 .active.primaryAction,
 .active.hd15,
@@ -2263,6 +2271,7 @@ button.close {
 .active.cr41,
 .active.cr43,
 .active.cr51,
+.active.cr52,
 .btn.disabled,
 .disabled.primaryAction,
 .disabled.hd15,
@@ -2270,30 +2279,33 @@ button.close {
 .disabled.cr41,
 .disabled.cr43,
 .disabled.cr51,
+.disabled.cr52,
 .btn[disabled],
 [disabled].primaryAction,
 [disabled].hd15,
 [disabled].db11,
 [disabled].cr41,
 [disabled].cr43,
-[disabled].cr51 {
+[disabled].cr51,
+[disabled].cr52 {
   background-color: #e6e6e6;
   *background-color: #d9d9d9; }
 
-.btn:active, .primaryAction:active, .hd15:active, .db11:active, .cr41:active, .cr43:active, .cr51:active,
+.btn:active, .primaryAction:active, .hd15:active, .db11:active, .cr41:active, .cr43:active, .cr51:active, .cr52:active,
 .btn.active,
 .active.primaryAction,
 .active.hd15,
 .active.db11,
 .active.cr41,
 .active.cr43,
-.active.cr51 {
+.active.cr51,
+.active.cr52 {
   background-color: #cccccc \9; }
 
-.btn:first-child, .primaryAction:first-child, .hd15:first-child, .db11:first-child, .cr41:first-child, .cr43:first-child, .cr51:first-child {
+.btn:first-child, .primaryAction:first-child, .hd15:first-child, .db11:first-child, .cr41:first-child, .cr43:first-child, .cr51:first-child, .cr52:first-child {
   *margin-left: 0; }
 
-.btn:hover, .primaryAction:hover, .hd15:hover, .db11:hover, .cr41:hover, .cr43:hover, .cr51:hover {
+.btn:hover, .primaryAction:hover, .hd15:hover, .db11:hover, .cr41:hover, .cr43:hover, .cr51:hover, .cr52:hover {
   color: #333333;
   text-decoration: none;
   background-color: #e6e6e6;
@@ -2306,19 +2318,20 @@ button.close {
   -o-transition: background-position 0.1s linear;
   transition: background-position 0.1s linear; }
 
-.btn:focus, .primaryAction:focus, .hd15:focus, .db11:focus, .cr41:focus, .cr43:focus, .cr51:focus {
+.btn:focus, .primaryAction:focus, .hd15:focus, .db11:focus, .cr41:focus, .cr43:focus, .cr51:focus, .cr52:focus {
   outline: thin dotted #333;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px; }
 
-.btn.active, .active.primaryAction, .active.hd15, .active.db11, .active.cr41, .active.cr43, .active.cr51,
+.btn.active, .active.primaryAction, .active.hd15, .active.db11, .active.cr41, .active.cr43, .active.cr51, .active.cr52,
 .btn:active,
 .primaryAction:active,
 .hd15:active,
 .db11:active,
 .cr41:active,
 .cr43:active,
-.cr51:active {
+.cr51:active,
+.cr52:active {
   background-color: #e6e6e6;
   background-color: #d9d9d9 \9;
   background-image: none;
@@ -2327,14 +2340,15 @@ button.close {
   -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); }
 
-.btn.disabled, .disabled.primaryAction, .disabled.hd15, .disabled.db11, .disabled.cr41, .disabled.cr43, .disabled.cr51,
+.btn.disabled, .disabled.primaryAction, .disabled.hd15, .disabled.db11, .disabled.cr41, .disabled.cr43, .disabled.cr51, .disabled.cr52,
 .btn[disabled],
 [disabled].primaryAction,
 [disabled].hd15,
 [disabled].db11,
 [disabled].cr41,
 [disabled].cr43,
-[disabled].cr51 {
+[disabled].cr51,
+[disabled].cr52 {
   cursor: default;
   background-color: #e6e6e6;
   background-image: none;
@@ -2344,7 +2358,7 @@ button.close {
   -moz-box-shadow: none;
   box-shadow: none; }
 
-.btn-large, .cr51 {
+.btn-large, .cr51, .cr52 {
   padding: 9px 14px;
   font-size: 15px;
   line-height: normal;
@@ -2352,7 +2366,7 @@ button.close {
   -moz-border-radius: 5px;
   border-radius: 5px; }
 
-.btn-large [class^="icon-"], .cr51 [class^="icon-"] {
+.btn-large [class^="icon-"], .cr51 [class^="icon-"], .cr52 [class^="icon-"] {
   margin-top: 1px; }
 
 .btn-small {
@@ -2363,7 +2377,7 @@ button.close {
 .btn-small [class^="icon-"] {
   margin-top: -1px; }
 
-.btn-mini, .hd15 {
+.btn-mini, .hd15, .cr41, .cr43 {
   padding: 2px 6px;
   font-size: 11px;
   line-height: 14px; }
@@ -2387,8 +2401,10 @@ button.close {
 .cr51:hover,
 .btn-info,
 .cr43,
+.cr52,
 .btn-info:hover,
 .cr43:hover,
+.cr52:hover,
 .btn-inverse,
 .btn-inverse:hover {
   color: #ffffff;
@@ -2404,10 +2420,11 @@ button.close {
 .active.cr51,
 .btn-info.active,
 .active.cr43,
+.active.cr52,
 .btn-inverse.active {
   color: rgba(255, 255, 255, 0.75); }
 
-.btn, .primaryAction, .hd15, .db11, .cr41, .cr43, .cr51 {
+.btn, .primaryAction, .hd15, .db11, .cr41, .cr43, .cr51, .cr52 {
   border-color: #ccc;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25); }
 
@@ -2544,7 +2561,7 @@ button.close {
 .active.cr51 {
   background-color: #408140 \9; }
 
-.btn-info, .cr43 {
+.btn-info, .cr43, .cr52 {
   background-color: #49afcd;
   *background-color: #2f96b4;
   background-image: -ms-linear-gradient(top, #5bc0de, #2f96b4);
@@ -2559,21 +2576,26 @@ button.close {
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='#5bc0de', endColorstr='#2f96b4', GradientType=0);
   filter: progid:dximagetransform.microsoft.gradient(enabled=false); }
 
-.btn-info:hover, .cr43:hover,
+.btn-info:hover, .cr43:hover, .cr52:hover,
 .btn-info:active,
 .cr43:active,
+.cr52:active,
 .btn-info.active,
 .active.cr43,
+.active.cr52,
 .btn-info.disabled,
 .disabled.cr43,
+.disabled.cr52,
 .btn-info[disabled],
-[disabled].cr43 {
+[disabled].cr43,
+[disabled].cr52 {
   background-color: #2f96b4;
   *background-color: #2a85a0; }
 
-.btn-info:active, .cr43:active,
+.btn-info:active, .cr43:active, .cr52:active,
 .btn-info.active,
-.active.cr43 {
+.active.cr43,
+.active.cr52 {
   background-color: #24748c \9; }
 
 .btn-inverse {
@@ -2603,58 +2625,63 @@ button.close {
 .btn-inverse.active {
   background-color: #080808 \9; }
 
-button.btn, button.primaryAction, button.hd15, button.db11, button.cr41, button.cr43, button.cr51,
+button.btn, button.primaryAction, button.hd15, button.db11, button.cr41, button.cr43, button.cr51, button.cr52,
 input[type="submit"].btn,
 input[type="submit"].primaryAction,
 input[type="submit"].hd15,
 input[type="submit"].db11,
 input[type="submit"].cr41,
 input[type="submit"].cr43,
-input[type="submit"].cr51 {
+input[type="submit"].cr51,
+input[type="submit"].cr52 {
   *padding-top: 2px;
   *padding-bottom: 2px; }
 
-button.btn::-moz-focus-inner, button.primaryAction::-moz-focus-inner, button.hd15::-moz-focus-inner, button.db11::-moz-focus-inner, button.cr41::-moz-focus-inner, button.cr43::-moz-focus-inner, button.cr51::-moz-focus-inner,
+button.btn::-moz-focus-inner, button.primaryAction::-moz-focus-inner, button.hd15::-moz-focus-inner, button.db11::-moz-focus-inner, button.cr41::-moz-focus-inner, button.cr43::-moz-focus-inner, button.cr51::-moz-focus-inner, button.cr52::-moz-focus-inner,
 input[type="submit"].btn::-moz-focus-inner,
 input[type="submit"].primaryAction::-moz-focus-inner,
 input[type="submit"].hd15::-moz-focus-inner,
 input[type="submit"].db11::-moz-focus-inner,
 input[type="submit"].cr41::-moz-focus-inner,
 input[type="submit"].cr43::-moz-focus-inner,
-input[type="submit"].cr51::-moz-focus-inner {
+input[type="submit"].cr51::-moz-focus-inner,
+input[type="submit"].cr52::-moz-focus-inner {
   padding: 0;
   border: 0; }
 
-button.btn.btn-large, button.btn-large.primaryAction, button.primaryAction.cr51, button.btn-large.hd15, button.hd15.cr51, button.btn-large.db11, button.db11.cr51, button.btn-large.cr41, button.cr41.cr51, button.btn-large.cr43, button.cr43.cr51, button.cr51,
+button.btn.btn-large, button.btn-large.primaryAction, button.primaryAction.cr51, button.primaryAction.cr52, button.btn-large.hd15, button.hd15.cr51, button.hd15.cr52, button.btn-large.db11, button.db11.cr51, button.db11.cr52, button.btn-large.cr41, button.cr41.cr51, button.cr41.cr52, button.btn-large.cr43, button.cr43.cr51, button.cr43.cr52, button.cr51, button.cr52,
 input[type="submit"].btn.btn-large,
 input[type="submit"].btn-large.primaryAction,
 input[type="submit"].btn-large.hd15,
 input[type="submit"].btn-large.db11,
 input[type="submit"].btn-large.cr41,
 input[type="submit"].btn-large.cr43,
-input[type="submit"].cr51 {
+input[type="submit"].cr51,
+input[type="submit"].cr52 {
   *padding-top: 7px;
   *padding-bottom: 7px; }
 
-button.btn.btn-small, button.btn-small.primaryAction, button.btn-small.hd15, button.btn-small.db11, button.btn-small.cr41, button.btn-small.cr43, button.btn-small.cr51,
+button.btn.btn-small, button.btn-small.primaryAction, button.btn-small.hd15, button.btn-small.db11, button.btn-small.cr41, button.btn-small.cr43, button.btn-small.cr51, button.btn-small.cr52,
 input[type="submit"].btn.btn-small,
 input[type="submit"].btn-small.primaryAction,
 input[type="submit"].btn-small.hd15,
 input[type="submit"].btn-small.db11,
 input[type="submit"].btn-small.cr41,
 input[type="submit"].btn-small.cr43,
-input[type="submit"].btn-small.cr51 {
+input[type="submit"].btn-small.cr51,
+input[type="submit"].btn-small.cr52 {
   *padding-top: 3px;
   *padding-bottom: 3px; }
 
-button.btn.btn-mini, button.btn-mini.primaryAction, button.primaryAction.hd15, button.hd15, button.btn-mini.db11, button.db11.hd15, button.btn-mini.cr41, button.cr41.hd15, button.btn-mini.cr43, button.cr43.hd15, button.btn-mini.cr51, button.cr51.hd15,
+button.btn.btn-mini, button.btn-mini.primaryAction, button.primaryAction.hd15, button.primaryAction.cr41, button.primaryAction.cr43, button.hd15, button.btn-mini.db11, button.db11.hd15, button.db11.cr41, button.db11.cr43, button.cr41, button.cr43, button.btn-mini.cr51, button.cr51.hd15, button.cr51.cr41, button.cr51.cr43, button.btn-mini.cr52, button.cr52.hd15, button.cr52.cr41, button.cr52.cr43,
 input[type="submit"].btn.btn-mini,
 input[type="submit"].btn-mini.primaryAction,
 input[type="submit"].hd15,
 input[type="submit"].btn-mini.db11,
-input[type="submit"].btn-mini.cr41,
-input[type="submit"].btn-mini.cr43,
-input[type="submit"].btn-mini.cr51 {
+input[type="submit"].cr41,
+input[type="submit"].cr43,
+input[type="submit"].btn-mini.cr51,
+input[type="submit"].btn-mini.cr52 {
   *padding-top: 1px;
   *padding-bottom: 1px; }
 
@@ -2687,7 +2714,7 @@ input[type="submit"].btn-mini.cr51 {
   /* IE7 inline-block hack */
   *zoom: 1; }
 
-.btn-group > .btn, .btn-group > .primaryAction, .btn-group > .hd15, .btn-group > .db11, .btn-group > .cr41, .btn-group > .cr43, .btn-group > .cr51 {
+.btn-group > .btn, .btn-group > .primaryAction, .btn-group > .hd15, .btn-group > .db11, .btn-group > .cr41, .btn-group > .cr43, .btn-group > .cr51, .btn-group > .cr52 {
   position: relative;
   float: left;
   margin-left: -1px;
@@ -2695,7 +2722,7 @@ input[type="submit"].btn-mini.cr51 {
   -moz-border-radius: 0;
   border-radius: 0; }
 
-.btn-group > .btn:first-child, .btn-group > .primaryAction:first-child, .btn-group > .hd15:first-child, .btn-group > .db11:first-child, .btn-group > .cr41:first-child, .btn-group > .cr43:first-child, .btn-group > .cr51:first-child {
+.btn-group > .btn:first-child, .btn-group > .primaryAction:first-child, .btn-group > .hd15:first-child, .btn-group > .db11:first-child, .btn-group > .cr41:first-child, .btn-group > .cr43:first-child, .btn-group > .cr51:first-child, .btn-group > .cr52:first-child {
   margin-left: 0;
   -webkit-border-bottom-left-radius: 4px;
   border-bottom-left-radius: 4px;
@@ -2704,7 +2731,7 @@ input[type="submit"].btn-mini.cr51 {
   -moz-border-radius-bottomleft: 4px;
   -moz-border-radius-topleft: 4px; }
 
-.btn-group > .btn:last-child, .btn-group > .primaryAction:last-child, .btn-group > .hd15:last-child, .btn-group > .db11:last-child, .btn-group > .cr41:last-child, .btn-group > .cr43:last-child, .btn-group > .cr51:last-child,
+.btn-group > .btn:last-child, .btn-group > .primaryAction:last-child, .btn-group > .hd15:last-child, .btn-group > .db11:last-child, .btn-group > .cr41:last-child, .btn-group > .cr43:last-child, .btn-group > .cr51:last-child, .btn-group > .cr52:last-child,
 .btn-group > .dropdown-toggle {
   -webkit-border-top-right-radius: 4px;
   border-top-right-radius: 4px;
@@ -2713,7 +2740,7 @@ input[type="submit"].btn-mini.cr51 {
   -moz-border-radius-topright: 4px;
   -moz-border-radius-bottomright: 4px; }
 
-.btn-group > .btn.large:first-child, .btn-group > .large.primaryAction:first-child, .btn-group > .large.hd15:first-child, .btn-group > .large.db11:first-child, .btn-group > .large.cr41:first-child, .btn-group > .large.cr43:first-child, .btn-group > .large.cr51:first-child {
+.btn-group > .btn.large:first-child, .btn-group > .large.primaryAction:first-child, .btn-group > .large.hd15:first-child, .btn-group > .large.db11:first-child, .btn-group > .large.cr41:first-child, .btn-group > .large.cr43:first-child, .btn-group > .large.cr51:first-child, .btn-group > .large.cr52:first-child {
   margin-left: 0;
   -webkit-border-bottom-left-radius: 6px;
   border-bottom-left-radius: 6px;
@@ -2722,7 +2749,7 @@ input[type="submit"].btn-mini.cr51 {
   -moz-border-radius-bottomleft: 6px;
   -moz-border-radius-topleft: 6px; }
 
-.btn-group > .btn.large:last-child, .btn-group > .large.primaryAction:last-child, .btn-group > .large.hd15:last-child, .btn-group > .large.db11:last-child, .btn-group > .large.cr41:last-child, .btn-group > .large.cr43:last-child, .btn-group > .large.cr51:last-child,
+.btn-group > .btn.large:last-child, .btn-group > .large.primaryAction:last-child, .btn-group > .large.hd15:last-child, .btn-group > .large.db11:last-child, .btn-group > .large.cr41:last-child, .btn-group > .large.cr43:last-child, .btn-group > .large.cr51:last-child, .btn-group > .large.cr52:last-child,
 .btn-group > .large.dropdown-toggle {
   -webkit-border-top-right-radius: 6px;
   border-top-right-radius: 6px;
@@ -2731,7 +2758,7 @@ input[type="submit"].btn-mini.cr51 {
   -moz-border-radius-topright: 6px;
   -moz-border-radius-bottomright: 6px; }
 
-.btn-group > .btn:hover, .btn-group > .primaryAction:hover, .btn-group > .hd15:hover, .btn-group > .db11:hover, .btn-group > .cr41:hover, .btn-group > .cr43:hover, .btn-group > .cr51:hover,
+.btn-group > .btn:hover, .btn-group > .primaryAction:hover, .btn-group > .hd15:hover, .btn-group > .db11:hover, .btn-group > .cr41:hover, .btn-group > .cr43:hover, .btn-group > .cr51:hover, .btn-group > .cr52:hover,
 .btn-group > .btn:focus,
 .btn-group > .primaryAction:focus,
 .btn-group > .hd15:focus,
@@ -2739,6 +2766,7 @@ input[type="submit"].btn-mini.cr51 {
 .btn-group > .cr41:focus,
 .btn-group > .cr43:focus,
 .btn-group > .cr51:focus,
+.btn-group > .cr52:focus,
 .btn-group > .btn:active,
 .btn-group > .primaryAction:active,
 .btn-group > .hd15:active,
@@ -2746,13 +2774,15 @@ input[type="submit"].btn-mini.cr51 {
 .btn-group > .cr41:active,
 .btn-group > .cr43:active,
 .btn-group > .cr51:active,
+.btn-group > .cr52:active,
 .btn-group > .btn.active,
 .btn-group > .active.primaryAction,
 .btn-group > .active.hd15,
 .btn-group > .active.db11,
 .btn-group > .active.cr41,
 .btn-group > .active.cr43,
-.btn-group > .active.cr51 {
+.btn-group > .active.cr51,
+.btn-group > .active.cr52 {
   z-index: 2; }
 
 .btn-group .dropdown-toggle:active,
@@ -2768,7 +2798,7 @@ input[type="submit"].btn-mini.cr51 {
   -moz-box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.125), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.125), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); }
 
-.btn-group > .btn-mini.dropdown-toggle, .btn-group > .dropdown-toggle.hd15 {
+.btn-group > .btn-mini.dropdown-toggle, .btn-group > .dropdown-toggle.hd15, .btn-group > .dropdown-toggle.cr41, .btn-group > .dropdown-toggle.cr43 {
   padding-right: 5px;
   padding-left: 5px; }
 
@@ -2776,7 +2806,7 @@ input[type="submit"].btn-mini.cr51 {
   *padding-top: 4px;
   *padding-bottom: 4px; }
 
-.btn-group > .btn-large.dropdown-toggle, .btn-group > .dropdown-toggle.cr51 {
+.btn-group > .btn-large.dropdown-toggle, .btn-group > .dropdown-toggle.cr51, .btn-group > .dropdown-toggle.cr52 {
   padding-right: 12px;
   padding-left: 12px; }
 
@@ -2786,7 +2816,7 @@ input[type="submit"].btn-mini.cr51 {
   -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); }
 
-.btn-group.open .btn.dropdown-toggle, .btn-group.open .dropdown-toggle.primaryAction, .btn-group.open .dropdown-toggle.hd15, .btn-group.open .dropdown-toggle.db11, .btn-group.open .dropdown-toggle.cr41, .btn-group.open .dropdown-toggle.cr43, .btn-group.open .dropdown-toggle.cr51 {
+.btn-group.open .btn.dropdown-toggle, .btn-group.open .dropdown-toggle.primaryAction, .btn-group.open .dropdown-toggle.hd15, .btn-group.open .dropdown-toggle.db11, .btn-group.open .dropdown-toggle.cr41, .btn-group.open .dropdown-toggle.cr43, .btn-group.open .dropdown-toggle.cr51, .btn-group.open .dropdown-toggle.cr52 {
   background-color: #e6e6e6; }
 
 .btn-group.open .btn-primary.dropdown-toggle, .btn-group.open .dropdown-toggle.primaryAction {
@@ -2801,34 +2831,34 @@ input[type="submit"].btn-mini.cr51 {
 .btn-group.open .btn-success.dropdown-toggle, .btn-group.open .dropdown-toggle.hd15, .btn-group.open .dropdown-toggle.db11, .btn-group.open .dropdown-toggle.cr41, .btn-group.open .dropdown-toggle.cr51 {
   background-color: #51a351; }
 
-.btn-group.open .btn-info.dropdown-toggle, .btn-group.open .dropdown-toggle.cr43 {
+.btn-group.open .btn-info.dropdown-toggle, .btn-group.open .dropdown-toggle.cr43, .btn-group.open .dropdown-toggle.cr52 {
   background-color: #2f96b4; }
 
 .btn-group.open .btn-inverse.dropdown-toggle {
   background-color: #222222; }
 
-.btn .caret, .primaryAction .caret, .hd15 .caret, .db11 .caret, .cr41 .caret, .cr43 .caret, .cr51 .caret {
+.btn .caret, .primaryAction .caret, .hd15 .caret, .db11 .caret, .cr41 .caret, .cr43 .caret, .cr51 .caret, .cr52 .caret {
   margin-top: 7px;
   margin-left: 0; }
 
-.btn:hover .caret, .primaryAction:hover .caret, .hd15:hover .caret, .db11:hover .caret, .cr41:hover .caret, .cr43:hover .caret, .cr51:hover .caret,
+.btn:hover .caret, .primaryAction:hover .caret, .hd15:hover .caret, .db11:hover .caret, .cr41:hover .caret, .cr43:hover .caret, .cr51:hover .caret, .cr52:hover .caret,
 .open.btn-group .caret {
   opacity: 1;
   filter: alpha(opacity=100); }
 
-.btn-mini .caret, .hd15 .caret {
+.btn-mini .caret, .hd15 .caret, .cr41 .caret, .cr43 .caret {
   margin-top: 5px; }
 
 .btn-small .caret {
   margin-top: 6px; }
 
-.btn-large .caret, .cr51 .caret {
+.btn-large .caret, .cr51 .caret, .cr52 .caret {
   margin-top: 6px;
   border-top-width: 5px;
   border-right-width: 5px;
   border-left-width: 5px; }
 
-.dropup .btn-large .caret, .dropup .cr51 .caret {
+.dropup .btn-large .caret, .dropup .cr51 .caret, .dropup .cr52 .caret {
   border-top: 0;
   border-bottom: 5px solid #000000; }
 
@@ -2837,6 +2867,7 @@ input[type="submit"].btn-mini.cr51 {
 .btn-danger .caret,
 .btn-info .caret,
 .cr43 .caret,
+.cr52 .caret,
 .btn-success .caret,
 .hd15 .caret,
 .db11 .caret,
@@ -3289,11 +3320,11 @@ input[type="submit"].btn-mini.cr51 {
 .navbar .navbar-link:hover {
   color: #ffffff; }
 
-.navbar .btn, .navbar .primaryAction, .navbar .hd15, .navbar .db11, .navbar .cr41, .navbar .cr43, .navbar .cr51,
+.navbar .btn, .navbar .primaryAction, .navbar .hd15, .navbar .db11, .navbar .cr41, .navbar .cr43, .navbar .cr51, .navbar .cr52,
 .navbar .btn-group {
   margin-top: 5px; }
 
-.navbar .btn-group .btn, .navbar .btn-group .primaryAction, .navbar .btn-group .hd15, .navbar .btn-group .db11, .navbar .btn-group .cr41, .navbar .btn-group .cr43, .navbar .btn-group .cr51 {
+.navbar .btn-group .btn, .navbar .btn-group .primaryAction, .navbar .btn-group .hd15, .navbar .btn-group .db11, .navbar .btn-group .cr41, .navbar .btn-group .cr43, .navbar .btn-group .cr51, .navbar .btn-group .cr52 {
   margin: 0; }
 
 .navbar-form {
@@ -3426,7 +3457,7 @@ input[type="submit"].btn-mini.cr51 {
   text-decoration: none;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25); }
 
-.navbar .btn, .navbar .primaryAction, .navbar .hd15, .navbar .db11, .navbar .cr41, .navbar .cr43, .navbar .cr51 {
+.navbar .btn, .navbar .primaryAction, .navbar .hd15, .navbar .db11, .navbar .cr41, .navbar .cr43, .navbar .cr51, .navbar .cr52 {
   display: inline-block;
   padding: 4px 10px 4px;
   margin: 5px 5px 6px;
@@ -3811,11 +3842,11 @@ input[type="submit"].btn-mini.cr51 {
 .modal-footer:after {
   clear: both; }
 
-.modal-footer .btn + .btn, .modal-footer .primaryAction + .btn, .modal-footer .hd15 + .btn, .modal-footer .db11 + .btn, .modal-footer .cr41 + .btn, .modal-footer .cr43 + .btn, .modal-footer .cr51 + .btn, .modal-footer .btn + .primaryAction, .modal-footer .primaryAction + .primaryAction, .modal-footer .hd15 + .primaryAction, .modal-footer .db11 + .primaryAction, .modal-footer .cr41 + .primaryAction, .modal-footer .cr43 + .primaryAction, .modal-footer .cr51 + .primaryAction, .modal-footer .btn + .hd15, .modal-footer .primaryAction + .hd15, .modal-footer .hd15 + .hd15, .modal-footer .db11 + .hd15, .modal-footer .cr41 + .hd15, .modal-footer .cr43 + .hd15, .modal-footer .cr51 + .hd15, .modal-footer .btn + .db11, .modal-footer .primaryAction + .db11, .modal-footer .hd15 + .db11, .modal-footer .db11 + .db11, .modal-footer .cr41 + .db11, .modal-footer .cr43 + .db11, .modal-footer .cr51 + .db11, .modal-footer .btn + .cr41, .modal-footer .primaryAction + .cr41, .modal-footer .hd15 + .cr41, .modal-footer .db11 + .cr41, .modal-footer .cr41 + .cr41, .modal-footer .cr43 + .cr41, .modal-footer .cr51 + .cr41, .modal-footer .btn + .cr43, .modal-footer .primaryAction + .cr43, .modal-footer .hd15 + .cr43, .modal-footer .db11 + .cr43, .modal-footer .cr41 + .cr43, .modal-footer .cr43 + .cr43, .modal-footer .cr51 + .cr43, .modal-footer .btn + .cr51, .modal-footer .primaryAction + .cr51, .modal-footer .hd15 + .cr51, .modal-footer .db11 + .cr51, .modal-footer .cr41 + .cr51, .modal-footer .cr43 + .cr51, .modal-footer .cr51 + .cr51 {
+.modal-footer .btn + .btn, .modal-footer .primaryAction + .btn, .modal-footer .hd15 + .btn, .modal-footer .db11 + .btn, .modal-footer .cr41 + .btn, .modal-footer .cr43 + .btn, .modal-footer .cr51 + .btn, .modal-footer .cr52 + .btn, .modal-footer .btn + .primaryAction, .modal-footer .primaryAction + .primaryAction, .modal-footer .hd15 + .primaryAction, .modal-footer .db11 + .primaryAction, .modal-footer .cr41 + .primaryAction, .modal-footer .cr43 + .primaryAction, .modal-footer .cr51 + .primaryAction, .modal-footer .cr52 + .primaryAction, .modal-footer .btn + .hd15, .modal-footer .primaryAction + .hd15, .modal-footer .hd15 + .hd15, .modal-footer .db11 + .hd15, .modal-footer .cr41 + .hd15, .modal-footer .cr43 + .hd15, .modal-footer .cr51 + .hd15, .modal-footer .cr52 + .hd15, .modal-footer .btn + .db11, .modal-footer .primaryAction + .db11, .modal-footer .hd15 + .db11, .modal-footer .db11 + .db11, .modal-footer .cr41 + .db11, .modal-footer .cr43 + .db11, .modal-footer .cr51 + .db11, .modal-footer .cr52 + .db11, .modal-footer .btn + .cr41, .modal-footer .primaryAction + .cr41, .modal-footer .hd15 + .cr41, .modal-footer .db11 + .cr41, .modal-footer .cr41 + .cr41, .modal-footer .cr43 + .cr41, .modal-footer .cr51 + .cr41, .modal-footer .cr52 + .cr41, .modal-footer .btn + .cr43, .modal-footer .primaryAction + .cr43, .modal-footer .hd15 + .cr43, .modal-footer .db11 + .cr43, .modal-footer .cr41 + .cr43, .modal-footer .cr43 + .cr43, .modal-footer .cr51 + .cr43, .modal-footer .cr52 + .cr43, .modal-footer .btn + .cr51, .modal-footer .primaryAction + .cr51, .modal-footer .hd15 + .cr51, .modal-footer .db11 + .cr51, .modal-footer .cr41 + .cr51, .modal-footer .cr43 + .cr51, .modal-footer .cr51 + .cr51, .modal-footer .cr52 + .cr51, .modal-footer .btn + .cr52, .modal-footer .primaryAction + .cr52, .modal-footer .hd15 + .cr52, .modal-footer .db11 + .cr52, .modal-footer .cr41 + .cr52, .modal-footer .cr43 + .cr52, .modal-footer .cr51 + .cr52, .modal-footer .cr52 + .cr52 {
   margin-bottom: 0;
   margin-left: 5px; }
 
-.modal-footer .btn-group .btn + .btn, .modal-footer .btn-group .primaryAction + .btn, .modal-footer .btn-group .hd15 + .btn, .modal-footer .btn-group .db11 + .btn, .modal-footer .btn-group .cr41 + .btn, .modal-footer .btn-group .cr43 + .btn, .modal-footer .btn-group .cr51 + .btn, .modal-footer .btn-group .btn + .primaryAction, .modal-footer .btn-group .primaryAction + .primaryAction, .modal-footer .btn-group .hd15 + .primaryAction, .modal-footer .btn-group .db11 + .primaryAction, .modal-footer .btn-group .cr41 + .primaryAction, .modal-footer .btn-group .cr43 + .primaryAction, .modal-footer .btn-group .cr51 + .primaryAction, .modal-footer .btn-group .btn + .hd15, .modal-footer .btn-group .primaryAction + .hd15, .modal-footer .btn-group .hd15 + .hd15, .modal-footer .btn-group .db11 + .hd15, .modal-footer .btn-group .cr41 + .hd15, .modal-footer .btn-group .cr43 + .hd15, .modal-footer .btn-group .cr51 + .hd15, .modal-footer .btn-group .btn + .db11, .modal-footer .btn-group .primaryAction + .db11, .modal-footer .btn-group .hd15 + .db11, .modal-footer .btn-group .db11 + .db11, .modal-footer .btn-group .cr41 + .db11, .modal-footer .btn-group .cr43 + .db11, .modal-footer .btn-group .cr51 + .db11, .modal-footer .btn-group .btn + .cr41, .modal-footer .btn-group .primaryAction + .cr41, .modal-footer .btn-group .hd15 + .cr41, .modal-footer .btn-group .db11 + .cr41, .modal-footer .btn-group .cr41 + .cr41, .modal-footer .btn-group .cr43 + .cr41, .modal-footer .btn-group .cr51 + .cr41, .modal-footer .btn-group .btn + .cr43, .modal-footer .btn-group .primaryAction + .cr43, .modal-footer .btn-group .hd15 + .cr43, .modal-footer .btn-group .db11 + .cr43, .modal-footer .btn-group .cr41 + .cr43, .modal-footer .btn-group .cr43 + .cr43, .modal-footer .btn-group .cr51 + .cr43, .modal-footer .btn-group .btn + .cr51, .modal-footer .btn-group .primaryAction + .cr51, .modal-footer .btn-group .hd15 + .cr51, .modal-footer .btn-group .db11 + .cr51, .modal-footer .btn-group .cr41 + .cr51, .modal-footer .btn-group .cr43 + .cr51, .modal-footer .btn-group .cr51 + .cr51 {
+.modal-footer .btn-group .btn + .btn, .modal-footer .btn-group .primaryAction + .btn, .modal-footer .btn-group .hd15 + .btn, .modal-footer .btn-group .db11 + .btn, .modal-footer .btn-group .cr41 + .btn, .modal-footer .btn-group .cr43 + .btn, .modal-footer .btn-group .cr51 + .btn, .modal-footer .btn-group .cr52 + .btn, .modal-footer .btn-group .btn + .primaryAction, .modal-footer .btn-group .primaryAction + .primaryAction, .modal-footer .btn-group .hd15 + .primaryAction, .modal-footer .btn-group .db11 + .primaryAction, .modal-footer .btn-group .cr41 + .primaryAction, .modal-footer .btn-group .cr43 + .primaryAction, .modal-footer .btn-group .cr51 + .primaryAction, .modal-footer .btn-group .cr52 + .primaryAction, .modal-footer .btn-group .btn + .hd15, .modal-footer .btn-group .primaryAction + .hd15, .modal-footer .btn-group .hd15 + .hd15, .modal-footer .btn-group .db11 + .hd15, .modal-footer .btn-group .cr41 + .hd15, .modal-footer .btn-group .cr43 + .hd15, .modal-footer .btn-group .cr51 + .hd15, .modal-footer .btn-group .cr52 + .hd15, .modal-footer .btn-group .btn + .db11, .modal-footer .btn-group .primaryAction + .db11, .modal-footer .btn-group .hd15 + .db11, .modal-footer .btn-group .db11 + .db11, .modal-footer .btn-group .cr41 + .db11, .modal-footer .btn-group .cr43 + .db11, .modal-footer .btn-group .cr51 + .db11, .modal-footer .btn-group .cr52 + .db11, .modal-footer .btn-group .btn + .cr41, .modal-footer .btn-group .primaryAction + .cr41, .modal-footer .btn-group .hd15 + .cr41, .modal-footer .btn-group .db11 + .cr41, .modal-footer .btn-group .cr41 + .cr41, .modal-footer .btn-group .cr43 + .cr41, .modal-footer .btn-group .cr51 + .cr41, .modal-footer .btn-group .cr52 + .cr41, .modal-footer .btn-group .btn + .cr43, .modal-footer .btn-group .primaryAction + .cr43, .modal-footer .btn-group .hd15 + .cr43, .modal-footer .btn-group .db11 + .cr43, .modal-footer .btn-group .cr41 + .cr43, .modal-footer .btn-group .cr43 + .cr43, .modal-footer .btn-group .cr51 + .cr43, .modal-footer .btn-group .cr52 + .cr43, .modal-footer .btn-group .btn + .cr51, .modal-footer .btn-group .primaryAction + .cr51, .modal-footer .btn-group .hd15 + .cr51, .modal-footer .btn-group .db11 + .cr51, .modal-footer .btn-group .cr41 + .cr51, .modal-footer .btn-group .cr43 + .cr51, .modal-footer .btn-group .cr51 + .cr51, .modal-footer .btn-group .cr52 + .cr51, .modal-footer .btn-group .btn + .cr52, .modal-footer .btn-group .primaryAction + .cr52, .modal-footer .btn-group .hd15 + .cr52, .modal-footer .btn-group .db11 + .cr52, .modal-footer .btn-group .cr41 + .cr52, .modal-footer .btn-group .cr43 + .cr52, .modal-footer .btn-group .cr51 + .cr52, .modal-footer .btn-group .cr52 + .cr52 {
   margin-left: -1px; }
 
 .tooltip {
@@ -4442,7 +4473,7 @@ a.badge:hover {
 
 body {
   padding-top: 0;
-  background: #fefefe; }
+  background: #F5F5F5; }
 
 #wrap:before {
   background: #2e2e2e;
@@ -4454,6 +4485,9 @@ body {
   content: "";
   z-index: -1;
   line-height: 20px; }
+
+.well, .box1of3, .box1of4, .box1of2, .box1of1, .form {
+  background: #fff !important; }
 
 /* general */
 /* display */
@@ -4506,7 +4540,7 @@ a:hover {
 .well p:last-child, .box1of3 p:last-child, .box1of4 p:last-child, .box1of2 p:last-child, .box1of1 p:last-child, .form p:last-child {
   margin-bottom: 0; }
 
-.info, .help-block {
+.info, .help-block, .cr410 {
   font-style: italic;
   color: #777; }
 
@@ -4663,6 +4697,11 @@ h2 i {
   float: left; }
 
 /* end boxes */
+/* table */
+.table {
+  background: #f5f5f5; }
+
+/* end table */
 /* shadow */
 .shadow {
   -moz-box-shadow: 3px 3px 5px 6px #999;
@@ -4820,6 +4859,28 @@ header a {
 
 .db13 {
   clear: both; }
+
+.cr21 {
+  opacity: 0.7;
+  margin: 18px 0 0 12px; }
+
+.cr40 {
+  float: left; }
+
+.cr41 {
+  margin: 24px 0 0 24px; }
+
+.cr410 {
+  clear: both; }
+
+.cr43 {
+  margin: 24px 0 0 24px; }
+
+.cr61 {
+  font-weight: bold; }
+
+.cr71 {
+  text-align: center; }
 
 /* end main content */
 /* footer */
