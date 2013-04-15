@@ -4789,9 +4789,6 @@ header a {
   color: #333;
   text-decoration: none; }
 
-.hd1 {
-  float: right; }
-
 .mini-nav {
   list-style: none;
   margin: 0;
@@ -4804,7 +4801,7 @@ header a {
 .hd15 {
   margin-top: 15px;
   float: left;
-  margin-right: 24px; }
+  margin-left: 24px; }
 
 #logoutForm {
   display: inline-block;

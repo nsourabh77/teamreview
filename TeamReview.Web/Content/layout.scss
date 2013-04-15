@@ -151,7 +151,7 @@ body {padding-top:0; background:#fefefe;}
 		.primaryAction {@extend .btn, .btn-primary;}
 		.control-label {font-weight:bold;}	
 	
-	/* end forms */
+	/* end forms */	
 	
 	/* messages */
 	
@@ -186,11 +186,10 @@ body {padding-top:0; background:#fefefe;}
 	.nav1 {float:left; list-style:none; margin:0; font-family:open sans;}
 	.nav1 li, .mini-nav li {float:left;}
 	.nav1 a, .mini-nav a {padding:18px 8px 12px 8px; display:inline-block; text-decoration:none; text-transform:uppercase;}
-	.nav1 a:hover, .mini-nav a:hover {background:#FFD42A; color:#333; text-decoration:none;}
-	.hd1 {float:right;}
+	.nav1 a:hover, .mini-nav a:hover {background:#FFD42A; color:#333; text-decoration:none;}	
 	.mini-nav {list-style:none; margin:0; font-family:open sans; float:right;}
-	.hd14 {@extend .icon, .icon-white, .icon-user;display:inline-block;}
-	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:15px; float:left; margin-right:24px;}	
+	.hd14 {@extend .icon, .icon-white, .icon-user; display:inline-block;}
+	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:15px; float:left; margin-left:24px;}	
 	.hd19 {@extend .icon, .icon-white, .icon-off;}
 	#logoutForm {display:inline-block; margin-left:12px;}
 	
@@ -213,7 +212,7 @@ body {padding-top:0; background:#fefefe;}
 	.cr42 {@extend .icon, .icon-white, .icon-plus;}
 	.cr43 {@extend .btn, .btn-info;}
 	.cr44 {@extend .icon, .icon-white, .icon-user	;}
-	.cr51 {@extend .btn, .btn-success, .btn-large;}
+	.cr51 {@extend .btn, .btn-success, .btn-large	;}
 	
 	
 /* end main content */

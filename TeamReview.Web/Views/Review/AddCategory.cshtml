@@ -1,19 +1,7 @@
 ﻿@model TeamReview.Web.ViewModels.CategoryAddModel
 
-<section class="category">
-    <h3>Add a new Category</h3>
-    <div class="control-group">
-        @Html.LabelFor(model => model.Name, new { @class = "control-label" })
-        <div class="controls">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-    </div>
-    <div class="control-group">
-        @Html.LabelFor(model => model.Description, new { @class = "control-label" })
-        <div class="controls">
-            @Html.TextAreaFor(model => model.Description, new { rows = "4" })
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-    </div>
-</section>
+<tr>
+    <td>@Html.TextBoxFor(model => model.Name) @Html.ValidationMessageFor(model => model.Name)</td>
+    <td>@Html.TextAreaFor(model => model.Description, new { row = "1", @class = "input-xxlarge" }) @Html.ValidationMessageFor(model => model.Description)</td>
+    <td><a>edit</a> | <a>delete</a></td>
+</tr>

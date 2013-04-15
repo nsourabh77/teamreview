@@ -1,4 +1,9 @@
 @if (Request.IsAuthenticated) {    
+    <ul class="nav1">
+        <li>@Html.ActionLink("My Dashboard", "Index")</li>
+        <li><a href="#about">Help</a></li>
+        <li><a href="#contact">Contact</a></li>            
+    </ul>
     <a class="hd15" href="@Url.Action("Create", "Review")"><i class="db12"></i>Create Review</a>
     <ul class="mini-nav">        
         <li>
@@ -15,6 +20,12 @@
 }
 else
 {
+    <ul class="nav1">
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>            
+    </ul>  
+    <a class="hd15" href="@Url.Action("Login", "Account")"><i class="db12"></i>Create Review</a>
     <ul class="mini-nav">
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>

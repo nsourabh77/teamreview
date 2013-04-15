@@ -21,16 +21,44 @@
         </div>
 
         <div id="categories">
-            @for (var i = 0; i < Model.AddedCategories.Count; i++)
-            {
-                Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary
-                {
-                    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedCategories[" + i + "]" }
-                });
-            }
+            <h2 class="cr40">Categories</h2>
+            <p class="info"><a href="http://www.appelsiini.net/projects/jeditable">use jeditable for inline edit</a></p>
+            <table class="table">
+                <colgroup>
+                    <col width="200" />
+                    <col width="600" />
+                    <col width="100" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>Category Name</th>
+                        <th>Category Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Example Category</td>
+                        <td>Example Description</td>
+                        <td><a>edit</a> | <a>delete</a></td>
+                    </tr>
+                    @for (var i = 0; i < Model.AddedCategories.Count; i++)
+                    {
+                        Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary
+                        {
+                            TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedCategories[" + i + "]" }
+                        });
+                    }
+                </tbody>
+            </table>
+            <p class="info">
+                You have not yet created categories. Go ahead 
+                <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>            
+            </p>
         </div>
 
         <div id="peers">
+            <h2>Peers</h2>
             @for (var i = 0; i < Model.AddedPeers.Count; i++)
             {
                 Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
@@ -40,7 +68,7 @@
             }
         </div>
         <p>
-            <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>
+            
             <button class="cr43" type="submit" name="reviewAction" value="AddPeer" id="addPeer"><i class="cr44"></i>Invite Peers</button>
         </p>
         <p>
