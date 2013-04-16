@@ -198,36 +198,51 @@ namespace TeamReview.Web.Controllers {
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
 			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
 
-			TempData["ReviewId"] = id;
-			TempData["ReviewName"] = reviewconfiguration.Name;
+			var feedback = new FeedbackViewModel { ReviewId = id, ReviewName = reviewconfiguration.Name };
 
-			var newFeedback = new ReviewFeedback();
-			foreach (var reviewCategory in reviewconfiguration.Categories) {
-				foreach (var peer in reviewconfiguration.Peers) {
-					newFeedback.Assessments.Add(new Assessment { ReviewCategory = reviewCategory, ReviewedPeer = peer, Rating = -1 });
+			foreach (var reviewCategory in reviewconfiguration.Categories)
+			{
+				var categoryWithPeersAndRatings = new CategoryWithPeersAndRatings();
+				categoryWithPeersAndRatings.Category = Mapper.Map<CategoryShowModel>(reviewCategory);
+				foreach (var peer in reviewconfiguration.Peers)
+				{
+					var peerWithRating = new PeerWithRating { Peer = Mapper.Map<PeerShowModel>(peer), Rating = -1 };
+					categoryWithPeersAndRatings.PeersWithRatings.Add(peerWithRating);
 				}
+				feedback.CategoriesWithPeersAndRatings.Add(categoryWithPeersAndRatings);
 			}
-			return View(newFeedback);
+			return View(feedback);
 		}
 
 		[HttpPost]
-		public ActionResult Provide(ReviewFeedback feedback, int reviewId) {
-			if (feedback.Assessments.Any(a => a.Rating < 1 || a.Rating > 10)) {
-				TempData["Message"] = "Please fill out all categories";
+		public ActionResult Provide(FeedbackViewModel feedback)
+		{
+			if (feedback.CategoriesWithPeersAndRatings.SelectMany(c => c.PeersWithRatings.Select(p => p.Rating)).Any(a => a < 1 || a > 10)) {
+				TempData["Message"] = "Please fill out all ratings";
 				return View(feedback);
 			}
 
-			feedback.Reviewer = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name);
+			var reviewFeedback = new ReviewFeedback
+			                     	{
+			                     		Reviewer = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name)
+			                     	};
 
-			var reviewconfiguration = _db.ReviewConfigurations.Find(reviewId);
+			var reviewconfiguration = _db.ReviewConfigurations.Find(feedback.ReviewId);
 			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
-			foreach (var assessment in feedback.Assessments) {
-				var category = _db.ReviewCategories.Find(assessment.ReviewCategory.CatId);
-				assessment.ReviewCategory = category;
-				var peer = _db.UserProfiles.Find(assessment.ReviewedPeer.UserId);
-				assessment.ReviewedPeer = peer;
+
+			foreach (var categoriesWithPeersAndRating in feedback.CategoriesWithPeersAndRatings) {
+				foreach (var peersWithRating in categoriesWithPeersAndRating.PeersWithRatings) {
+					var assessment = new Assessment
+					                 	{
+					                 		Rating = peersWithRating.Rating,
+					                 		ReviewCategory = _db.ReviewCategories.Find(categoriesWithPeersAndRating.Category.Id),
+					                 		ReviewedPeer = _db.UserProfiles.Find(peersWithRating.Peer.Id)
+					                 	};
+					reviewFeedback.Assessments.Add(assessment);
+				}
 			}
-			reviewconfiguration.Feedback.Add(feedback);
+
+			reviewconfiguration.Feedback.Add(reviewFeedback);
 			_db.SaveChanges();
 
 			TempData["Message"] = "Review has been completed";

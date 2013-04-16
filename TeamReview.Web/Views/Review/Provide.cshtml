@@ -1,4 +1,4 @@
-﻿@model TeamReview.Web.Models.ReviewFeedback
+﻿@model TeamReview.Web.ViewModels.FeedbackViewModel
 
 @{
     ViewBag.Title = "Provide review";
@@ -8,7 +8,7 @@
     <p>@TempData["Message"]</p>
 }
 
-<h2>Provide Review "@TempData["ReviewName"]"</h2>
+<h2>Provide Review "@Model.ReviewName"</h2>
 
 @using (Html.BeginForm())
 {
@@ -17,22 +17,24 @@
     <fieldset>
         <legend>Please evaluate the following categories for each peer and yourself</legend>
         
-        @Html.Hidden("reviewId", TempData["ReviewId"])
-
-        @for (int i = 0; i < Model.Assessments.Count; i++)
+        @Html.HiddenFor(x => Model.ReviewId)
+        @for (int i = 0; i < Model.CategoriesWithPeersAndRatings.Count; i++)
         {
-            var category = "category_" + Model.Assessments[i].ReviewCategory.CatId;
+            var category = "category_" + Model.CategoriesWithPeersAndRatings[i].Category.Id;
             <div id="@category">
+            @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].Category.Id)
             <li>
-                <span>@Model.Assessments[i].ReviewCategory.Name:</span>
-                <span>@Model.Assessments[i].ReviewCategory.Description</span>
-                <span>for @Model.Assessments[i].ReviewedPeer.UserName</span>
+                <span>@Model.CategoriesWithPeersAndRatings[i].Category.Name:</span>
+                <span>@Model.CategoriesWithPeersAndRatings[i].Category.Description</span>
             </li>
-            @Html.Hidden("Assessments[" + i + "].ReviewCategory.CatId", Model.Assessments[i].ReviewCategory.CatId)
-            @Html.Hidden("Assessments[" + i + "].ReviewedPeer.UserId", Model.Assessments[i].ReviewedPeer.UserId)
-            @for (int j = 1; j < 11; j++) 
+            @for (int j = 0; j < Model.CategoriesWithPeersAndRatings[i].PeersWithRatings.Count; j++)
             { 
-                @Html.RadioButtonFor(x => Model.Assessments[i].Rating, j) @j
+                <p>for @Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserName</p>
+                @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.Id)
+                for (int k = 1; k < 11; k++)
+                { 
+                    @Html.RadioButtonFor(x => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Rating, k) @k
+                }
             }
             </div>
         }
@@ -42,4 +44,3 @@
         </p>
     </fieldset>
 }
-

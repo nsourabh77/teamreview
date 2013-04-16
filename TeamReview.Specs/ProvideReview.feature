@@ -50,7 +50,7 @@ Scenario: Providing partial Review is not allowed
 	When I visit the Provide review url
 		And I save the review
 	Then the feedback is not saved
-		And I see the message "Please fill out all categories"
+		And I see the message "Please fill out all ratings"
 
 #register for review
 

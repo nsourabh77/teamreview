@@ -195,7 +195,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 52
  testRunner.Then("the feedback is not saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 53
-  testRunner.And("I see the message \"Please fill out all categories\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I see the message \"Please fill out all ratings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
