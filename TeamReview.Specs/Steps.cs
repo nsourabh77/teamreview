@@ -528,12 +528,16 @@ namespace TeamReview.Specs {
 			_browser.Visit("/Review/Provide/" + reviewId);
 		}
 
-		[Then(@"I see all categories")]
-		public void ThenISeeAllCategories() {
+		[Then(@"I see for each category all peers")]
+		public void ThenISeeForEachCategoryAllPeers() {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
 			foreach (var category in review.Categories) {
-				Assert.IsTrue(_browser.HasContent(category.Name));
-				Assert.IsTrue(_browser.HasContent(category.Description));
+				var elementScope = _browser.FindId("category_" + category.CatId);
+				Assert.IsTrue(elementScope.HasContent(category.Name));
+				Assert.IsTrue(elementScope.HasContent(category.Description));
+				foreach (var peer in review.Peers) {
+					Assert.IsTrue(elementScope.HasContent(peer.UserName));
+				}
 			}
 		}
 
@@ -543,14 +547,16 @@ namespace TeamReview.Specs {
 			Assert.IsTrue(_browser.HasContent(review.Name));
 		}
 
-		[Then(@"I have input options from (.*) to (.*) for each category")]
-		public void ThenIHaveInputOptionsFromToForEachCategory(int start, int end) {
+		[Then(@"I have input options from (.*) to (.*) for each peer for each category")]
+		public void ThenIHaveInputOptionsFromToForEachForEachCategory(int start, int end) {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
 			foreach (var category in review.Categories) {
-				var element = _browser.FindId("category_" + category.CatId);
-				for (var i = start; i <= end; i++) {
-					Assert.IsTrue(element.FindCss(@"input[type=""radio""][value=""" + i + @"""]").Exists());
-					Assert.IsTrue(element.HasContent(i.ToString()));
+				foreach (var peer in review.Peers) {
+					var element = _browser.FindId("category_" + category.CatId + "_peer_" + peer.UserId);
+					for (var i = start; i <= end; i++) {
+						Assert.IsTrue(element.FindCss(@"input[type=""radio""][value=""" + i + @"""]").Exists());
+						Assert.IsTrue(element.HasContent(i.ToString()));
+					}
 				}
 			}
 		}

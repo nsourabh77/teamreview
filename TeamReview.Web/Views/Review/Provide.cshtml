@@ -8,7 +8,7 @@
     <p>@TempData["Message"]</p>
 }
 
-<h2>Provide Review "@Model.ReviewName"</h2>
+<h2>Provide review "@Model.ReviewName"</h2>
 
 @using (Html.BeginForm())
 {
@@ -20,21 +20,24 @@
         @Html.HiddenFor(x => Model.ReviewId)
         @for (int i = 0; i < Model.CategoriesWithPeersAndRatings.Count; i++)
         {
-            var category = "category_" + Model.CategoriesWithPeersAndRatings[i].Category.Id;
+            var category = "category_" + Model.CategoriesWithPeersAndRatings[i].Category.CatId;
             <div id="@category">
-            @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].Category.Id)
+            @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].Category.CatId)
             <li>
                 <span>@Model.CategoriesWithPeersAndRatings[i].Category.Name:</span>
                 <span>@Model.CategoriesWithPeersAndRatings[i].Category.Description</span>
             </li>
             @for (int j = 0; j < Model.CategoriesWithPeersAndRatings[i].PeersWithRatings.Count; j++)
-            { 
+            {
+                var peer = category + "_peer_" + Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId;
+                <div id="@peer">
                 <p>for @Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserName</p>
-                @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.Id)
-                for (int k = 1; k < 11; k++)
+                @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId)
+                @for (int k = 1; k < 11; k++)
                 { 
                     @Html.RadioButtonFor(x => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Rating, k) @k
                 }
+                </div>
             }
             </div>
         }
