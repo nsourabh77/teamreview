@@ -6,7 +6,7 @@
 body {padding-top:0; background:#F5F5F5;}
 
 #wrap:before {background:#2e2e2e; width:250px; height:100%; position:fixed; left:0; top:0; content:""; z-index:-1; line-height:20px;}
-.well{background:#fff !important;}
+.well{background:#fff; border-color:#ddd;}
 
 /* general */
 	
@@ -226,6 +226,13 @@ body {padding-top:0; background:#F5F5F5;}
 	.cr52 {@extend .btn, .btn-info, .btn-large;}
 	.cr61 {font-weight:bold;}
 	.cr71 {text-align:center;}
+		
+	.table td.rt20 {font-family:carter one; font-size:2.5em; vertical-align:middle;}	
+	.rt1 {width:9.8%; height:0; padding-top:3.9%; padding-bottom:5.9%; float:right; border:solid 1px #999; border-left:none; text-align:center; font-family:carter one; display:block; font-size:3em; font-weight:bold; background:#fefefe;}
+	.rt1:last-child  {border-left:solid 1px #999;}
+	.rt-selected, .rt1:hover , .rt1:hover ~ .rt1, .rt-selected ~ .rt1{background:#62C462; color:#fff; cursor:pointer;}
+	
+	
 	
 /* end main content */
 
