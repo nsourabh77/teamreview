@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TeamReview.Web.ViewModels {
 	public class PeerShowModel {
-		public int Id { get; set; }
+		public int UserId { get; set; }
 		public string UserName { get; set; }
 		public string EmailAddress { get; set; }
 	}

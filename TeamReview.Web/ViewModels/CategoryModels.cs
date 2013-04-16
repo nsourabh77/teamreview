@@ -2,7 +2,7 @@
 
 namespace TeamReview.Web.ViewModels {
 	public class CategoryShowModel {
-		public int Id { get; set; }
+		public int CatId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
 	}
