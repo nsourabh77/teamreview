@@ -537,6 +537,12 @@ namespace TeamReview.Specs {
 			}
 		}
 
+		[Then(@"I see the name of review")]
+		public void ThenISeeTheNameOfReview() {
+			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
+			Assert.IsTrue(_browser.HasContent(review.Name));
+		}
+
 		[Then(@"I have input options from (.*) to (.*) for each category")]
 		public void ThenIHaveInputOptionsFromToForEachCategory(int start, int end) {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
@@ -585,8 +591,7 @@ namespace TeamReview.Specs {
 		}
 
 		[Then(@"I do not see ""(.*)"" for my review")]
-		public void ThenIDoNotSeeForMyReview(string text)
-		{
+		public void ThenIDoNotSeeForMyReview(string text) {
 			Assert.IsFalse(
 				_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).HasContent(text));
 		}

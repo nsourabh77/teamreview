@@ -79,6 +79,7 @@ namespace TeamReview.Web.Models {
 		public int AssessmentId { get; set; }
 
 		public ReviewCategory ReviewCategory { get; set; }
+		public UserProfile ReviewedPeer { get; set; }
 		public int Rating { get; set; }
 	}
 

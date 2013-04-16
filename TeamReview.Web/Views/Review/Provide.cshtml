@@ -8,14 +8,14 @@
     <p>@TempData["Message"]</p>
 }
 
-<h2>Provide Review</h2>
+<h2>Provide Review "@TempData["ReviewName"]"</h2>
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Please evaluate the following categories</legend>
+        <legend>Please evaluate the following categories for each peer and yourself</legend>
         
         @Html.Hidden("reviewId", TempData["ReviewId"])
 
@@ -26,8 +26,10 @@
             <li>
                 <span>@Model.Assessments[i].ReviewCategory.Name:</span>
                 <span>@Model.Assessments[i].ReviewCategory.Description</span>
+                <span>for @Model.Assessments[i].ReviewedPeer.UserName</span>
             </li>
             @Html.Hidden("Assessments[" + i + "].ReviewCategory.CatId", Model.Assessments[i].ReviewCategory.CatId)
+            @Html.Hidden("Assessments[" + i + "].ReviewedPeer.UserId", Model.Assessments[i].ReviewedPeer.UserId)
             @for (int j = 1; j < 11; j++) 
             { 
                 @Html.RadioButtonFor(x => Model.Assessments[i].Rating, j) @j

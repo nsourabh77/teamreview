@@ -196,11 +196,16 @@ namespace TeamReview.Web.Controllers {
 				return HttpNotFound();
 			}
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
+			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
 
 			TempData["ReviewId"] = id;
+			TempData["ReviewName"] = reviewconfiguration.Name;
+
 			var newFeedback = new ReviewFeedback();
 			foreach (var reviewCategory in reviewconfiguration.Categories) {
-				newFeedback.Assessments.Add(new Assessment {ReviewCategory = reviewCategory, Rating = -1});
+				foreach (var peer in reviewconfiguration.Peers) {
+					newFeedback.Assessments.Add(new Assessment { ReviewCategory = reviewCategory, ReviewedPeer = peer, Rating = -1 });
+				}
 			}
 			return View(newFeedback);
 		}
@@ -219,6 +224,8 @@ namespace TeamReview.Web.Controllers {
 			foreach (var assessment in feedback.Assessments) {
 				var category = _db.ReviewCategories.Find(assessment.ReviewCategory.CatId);
 				assessment.ReviewCategory = category;
+				var peer = _db.UserProfiles.Find(assessment.ReviewedPeer.UserId);
+				assessment.ReviewedPeer = peer;
 			}
 			reviewconfiguration.Feedback.Add(feedback);
 			_db.SaveChanges();
