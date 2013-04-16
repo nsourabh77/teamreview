@@ -14,8 +14,53 @@
 {
     @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Please evaluate the following categories for each peer and yourself</legend>
+    <fieldset>        
+        <p class="info">Please evaluate your peers and yourself according to the following categories.</p>
+        <p class="info">1 beeing the lowest, 10 being the highest rating.</p>
+        <h2>My First Category</h2>
+        <p class="info">This is the description for "My First Category", that can be long or short or inbetween or anything about the size of 2 or 3 lines of text.</p>        
+        <table class="table table-bordered">
+            <!-- prob not needed
+            <thead>
+                <tr>
+                    <th>Peer</th>
+                    <th>Your Rating</th>
+                </tr>
+            </thead>
+            -->
+            <tbody>
+                <tr>
+                    <td class="rt20">Andrej</td>
+                    <td>                        
+                        <div class="rt1">10</div>                    
+                        <div class="rt1">9</div>
+                        <div class="rt1">8</div>
+                        <div class="rt1">7</div>
+                        <div class="rt1">6</div>
+                        <div class="rt1">5</div>
+                        <div class="rt1">4</div>
+                        <div class="rt1">3</div>
+                        <div class="rt1">2</div>
+                        <div class="rt1">1</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="rt20">Anton</td>
+                    <td>                        
+                        <div class="rt1">10</div>                    
+                        <div class="rt1">9</div>
+                        <div class="rt1">8</div>
+                        <div class="rt1">7</div>
+                        <div class="rt1">6</div>
+                        <div class="rt1">5</div>
+                        <div class="rt1">4</div>
+                        <div class="rt1">3</div>
+                        <div class="rt1">2</div>
+                        <div class="rt1">1</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         
         @Html.HiddenFor(x => Model.ReviewId)
         @for (int i = 0; i < Model.CategoriesWithPeersAndRatings.Count; i++)
@@ -47,3 +92,12 @@
         </p>
     </fieldset>
 }
+
+
+<script>
+    $(document).ready(function () {
+        $('.rt1').click(function () {
+            $(this).addClass("rt-selected");
+        });
+    });
+</script>
