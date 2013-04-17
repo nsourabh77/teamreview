@@ -1,0 +1,50 @@
+﻿@model TeamReview.Web.ViewModels.ResultViewModel
+
+@{
+    ViewBag.Title = "Results";
+}
+
+<h2>Results for Review "@Model.ReviewName"</h2>
+
+<h3>Your Results:</h3>
+<div>
+    @foreach (var category in Model.CategoriesWithMyResults)
+    { 
+        <div>
+            <p>@category.CategoryName : @category.CategoryDescription</p>
+            <p>Peer rating = @category.PeerRating</p>
+            <p>Peer rating = @category.MyRating</p>
+        </div>
+    }
+</div>
+<div>
+    Stacked rating by peers = @Model.PeerStackedRating
+</div>
+<div>
+    Stacked rating by yourself = @Model.MyStackedRating
+</div>
+
+<h3>Everyones Results:</h3>
+<div>
+    @foreach (var category in Model.CategoriesWithPeersWithResults)
+    { 
+        <div>
+            <p>@category.CategoryName : @category.CategoryDescription</p>
+            @foreach (var peer in category.PeersWithResult)
+            { 
+                <p>Name = @peer.PeerName : peer rating = @peer.PeerRating</p>
+            }
+        </div>
+    }
+</div>
+Stacked results:
+<div>
+    @foreach (var peer in Model.PeersWithStackedRatings)
+    { 
+        <p>Name = @peer.PeerName : peer rating = @peer.PeerStackedRating</p>
+    }
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

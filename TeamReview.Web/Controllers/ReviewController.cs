@@ -198,15 +198,13 @@ namespace TeamReview.Web.Controllers {
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
 			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
 
-			var feedback = new FeedbackViewModel { ReviewId = id, ReviewName = reviewconfiguration.Name };
+			var feedback = new FeedbackViewModel {ReviewId = id, ReviewName = reviewconfiguration.Name};
 
-			foreach (var reviewCategory in reviewconfiguration.Categories)
-			{
+			foreach (var reviewCategory in reviewconfiguration.Categories) {
 				var categoryWithPeersAndRatings = new CategoryWithPeersAndRatings();
 				categoryWithPeersAndRatings.Category = Mapper.Map<CategoryShowModel>(reviewCategory);
-				foreach (var peer in reviewconfiguration.Peers)
-				{
-					var peerWithRating = new PeerWithRating { Peer = Mapper.Map<PeerShowModel>(peer), Rating = -1 };
+				foreach (var peer in reviewconfiguration.Peers) {
+					var peerWithRating = new PeerWithRating {Peer = Mapper.Map<PeerShowModel>(peer), Rating = -1};
 					categoryWithPeersAndRatings.PeersWithRatings.Add(peerWithRating);
 				}
 				feedback.CategoriesWithPeersAndRatings.Add(categoryWithPeersAndRatings);
@@ -215,9 +213,10 @@ namespace TeamReview.Web.Controllers {
 		}
 
 		[HttpPost]
-		public ActionResult Provide(FeedbackViewModel feedback)
-		{
-			if (feedback.CategoriesWithPeersAndRatings.SelectMany(c => c.PeersWithRatings.Select(p => p.Rating)).Any(a => a < 1 || a > 10)) {
+		public ActionResult Provide(FeedbackViewModel feedback) {
+			if (
+				feedback.CategoriesWithPeersAndRatings.SelectMany(c => c.PeersWithRatings.Select(p => p.Rating)).Any(
+					a => a < 1 || a > 10)) {
 				TempData["Message"] = "Please fill out all ratings";
 				return View(feedback);
 			}
@@ -248,6 +247,78 @@ namespace TeamReview.Web.Controllers {
 
 			TempData["Message"] = "Review has been completed";
 			return RedirectToAction("Index");
+		}
+
+		public ActionResult Results(int id = 0) {
+			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
+			if (reviewconfiguration == null) {
+				return HttpNotFound();
+			}
+
+			var results = new ResultViewModel {ReviewName = reviewconfiguration.Name};
+			var myId = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name).UserId;
+
+			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
+			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
+			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
+			foreach (var reviewFeedback in reviewconfiguration.Feedback) {
+				_db.Entry(reviewFeedback).Collection(f => f.Assessments).Load();
+			}
+
+			var allAssessments = reviewconfiguration.Feedback.SelectMany(f => f.Assessments);
+
+			// my results
+			foreach (var category in reviewconfiguration.Categories) {
+				var categoryWithResults = new CategoryWithResults
+				                          	{
+				                          		CategoryName = category.Name,
+				                          		CategoryDescription = category.Description
+				                          	};
+				categoryWithResults.MyRating =
+					allAssessments.Where(
+						a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId == myId).
+						Single().Rating;
+				categoryWithResults.PeerRating =
+					allAssessments.Where(
+						a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
+						Select(a => a.Rating).Sum();
+				results.CategoriesWithMyResults.Add(categoryWithResults);
+			}
+
+			// my stacked results
+			results.MyStackedRating = results.CategoriesWithMyResults.Select(c => c.MyRating).Sum();
+			results.PeerStackedRating = results.CategoriesWithMyResults.Select(c => c.PeerRating).Sum();
+
+			// everybodys results
+			foreach (var category in reviewconfiguration.Categories) {
+				var categoryWithPeersWithResults = new CategoryWithPeersWithResults
+				                                   	{
+				                                   		CategoryName = category.Name,
+				                                   		CategoryDescription = category.Description
+				                                   	};
+
+				foreach (var peer in reviewconfiguration.Peers) {
+					var peerWithResult = new PeerWithResult {PeerName = peer.UserName};
+					peerWithResult.PeerRating =
+						allAssessments.Where(
+							a =>
+							a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == peer.UserId &&
+							a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum();
+					categoryWithPeersWithResults.PeersWithResult.Add(peerWithResult);
+				}
+				results.CategoriesWithPeersWithResults.Add(categoryWithPeersWithResults);
+			}
+
+			// everybodys stacked results
+			foreach (var peer in reviewconfiguration.Peers) {
+				var peerWithStackedRating = new PeerWithStackedRating {PeerName = peer.UserName};
+				peerWithStackedRating.PeerStackedRating =
+					results.CategoriesWithPeersWithResults.SelectMany(c => c.PeersWithResult).Where(p => p.PeerName == peer.UserName).
+						Select(p => p.PeerRating).Sum();
+				results.PeersWithStackedRatings.Add(peerWithStackedRating);
+			}
+
+			return View(results);
 		}
 
 		public ActionResult StartReview(int id = 0) {

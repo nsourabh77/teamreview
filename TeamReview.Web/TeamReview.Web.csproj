@@ -180,6 +180,7 @@
     <Compile Include="ViewModels\CategoryModels.cs" />
     <Compile Include="ViewModels\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\PeerModels.cs" />
+    <Compile Include="ViewModels\ResultViewModel.cs" />
     <Compile Include="ViewModels\ReviewCreateModel.cs" />
     <Compile Include="ViewModels\ReviewEditModel.cs" />
     <Compile Include="ViewModels\ReviewViewModel.cs" />
@@ -252,6 +253,7 @@
     <Content Include="Views\Review\AddCategory.cshtml" />
     <Content Include="Views\Review\AddPeer.cshtml" />
     <Content Include="Views\Review\Provide.cshtml" />
+    <Content Include="Views\Review\Results.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
