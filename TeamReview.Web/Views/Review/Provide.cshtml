@@ -97,6 +97,7 @@
 <script>
     $(document).ready(function () {
         $('.rt1').click(function () {
+            $(this).siblings().removeClass('rt-selected');            
             $(this).addClass("rt-selected");
         });
     });
