@@ -266,6 +266,7 @@ namespace TeamReview.Web.Controllers {
 			}
 
 			var allAssessments = reviewconfiguration.Feedback.SelectMany(f => f.Assessments);
+			var numberOfPeersWithoutMe = reviewconfiguration.Peers.Count - 1;
 
 			// my results
 			foreach (var category in reviewconfiguration.Categories) {
@@ -278,44 +279,48 @@ namespace TeamReview.Web.Controllers {
 					allAssessments.Where(
 						a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId == myId).
 						Single().Rating;
-				categoryWithResults.PeerRating =
-					allAssessments.Where(
-						a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
-						Select(a => a.Rating).Sum();
+
+				if (numberOfPeersWithoutMe > 0) {
+					categoryWithResults.PeerRating =
+						allAssessments.Where(
+							a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
+							Select(a => a.Rating).Sum()/numberOfPeersWithoutMe;
+				}
 				results.CategoriesWithMyResults.Add(categoryWithResults);
 			}
 
 			// my stacked results
 			results.MyStackedRating = results.CategoriesWithMyResults.Select(c => c.MyRating).Sum();
 			results.PeerStackedRating = results.CategoriesWithMyResults.Select(c => c.PeerRating).Sum();
-
 			// everybodys results
-			foreach (var category in reviewconfiguration.Categories) {
-				var categoryWithPeersWithResults = new CategoryWithPeersWithResults
-				                                   	{
-				                                   		CategoryName = category.Name,
-				                                   		CategoryDescription = category.Description
-				                                   	};
+			if (numberOfPeersWithoutMe > 0) {
+				foreach (var category in reviewconfiguration.Categories) {
+					var categoryWithPeersWithResults = new CategoryWithPeersWithResults
+					                                   	{
+					                                   		CategoryName = category.Name,
+					                                   		CategoryDescription = category.Description
+					                                   	};
 
-				foreach (var peer in reviewconfiguration.Peers) {
-					var peerWithResult = new PeerWithResult {PeerName = peer.UserName};
-					peerWithResult.PeerRating =
-						allAssessments.Where(
-							a =>
-							a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == peer.UserId &&
-							a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum();
-					categoryWithPeersWithResults.PeersWithResult.Add(peerWithResult);
+					foreach (var peer in reviewconfiguration.Peers) {
+						var peerWithResult = new PeerWithResult {PeerName = peer.UserName};
+						peerWithResult.PeerRating =
+							allAssessments.Where(
+								a =>
+								a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == peer.UserId &&
+								a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum()/numberOfPeersWithoutMe;
+						categoryWithPeersWithResults.PeersWithResult.Add(peerWithResult);
+					}
+					results.CategoriesWithPeersWithResults.Add(categoryWithPeersWithResults);
 				}
-				results.CategoriesWithPeersWithResults.Add(categoryWithPeersWithResults);
-			}
 
-			// everybodys stacked results
-			foreach (var peer in reviewconfiguration.Peers) {
-				var peerWithStackedRating = new PeerWithStackedRating {PeerName = peer.UserName};
-				peerWithStackedRating.PeerStackedRating =
-					results.CategoriesWithPeersWithResults.SelectMany(c => c.PeersWithResult).Where(p => p.PeerName == peer.UserName).
-						Select(p => p.PeerRating).Sum();
-				results.PeersWithStackedRatings.Add(peerWithStackedRating);
+				// everybodys stacked results
+				foreach (var peer in reviewconfiguration.Peers) {
+					var peerWithStackedRating = new PeerWithStackedRating {PeerName = peer.UserName};
+					peerWithStackedRating.PeerStackedRating =
+						results.CategoriesWithPeersWithResults.SelectMany(c => c.PeersWithResult).Where(p => p.PeerName == peer.UserName).
+							Select(p => p.PeerRating).Sum();
+					results.PeersWithStackedRatings.Add(peerWithStackedRating);
+				}
 			}
 
 			return View(results);

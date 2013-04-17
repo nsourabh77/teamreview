@@ -285,13 +285,50 @@ namespace TeamReview.Specs {
 				ctx.Entry(reviewConfiguration).Collection(c => c.Feedback).Load();
 				ctx.Entry(reviewConfiguration).Collection(c => c.Categories).Load();
 				var newFeedback = new ReviewFeedback();
-				foreach (var reviewCategory in reviewConfiguration.Categories) {
-					newFeedback.Assessments.Add(new Assessment {ReviewCategory = reviewCategory, Rating = 7});
-				}
 				var thisIsMyId = ScenarioContext.Current.Get<UserProfile>().UserId;
 				newFeedback.Reviewer = ctx.UserProfiles.Find(thisIsMyId);
+				foreach (var reviewCategory in reviewConfiguration.Categories) {
+					foreach (var peer in reviewConfiguration.Peers) {
+						newFeedback.Assessments.Add(new Assessment
+						                            	{
+						                            		ReviewCategory = reviewCategory,
+						                            		Rating = 7,
+						                            		ReviewedPeer = peer,
+						                            		Reviewer = newFeedback.Reviewer
+						                            	});
+					}
+				}
 				reviewConfiguration.Feedback.Add(newFeedback);
 
+				ctx.SaveChanges();
+				ScenarioContext.Current.Set(reviewConfiguration);
+			}
+		}
+
+		[Given(@"all peers have provided the review")]
+		public void GivenAllPeersHaveProvidedTheReview() {
+			var reviewId = ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId;
+			using (var ctx = new DelayedDatabaseContext()) {
+				var reviewConfiguration = ctx.ReviewConfigurations.Find(reviewId);
+				ctx.Entry(reviewConfiguration).Collection(c => c.Feedback).Load();
+				ctx.Entry(reviewConfiguration).Collection(c => c.Categories).Load();
+				ctx.Entry(reviewConfiguration).Collection(c => c.Peers).Load();
+				foreach (var reviewer in reviewConfiguration.Peers) {
+					var newFeedback = new ReviewFeedback();
+					foreach (var reviewCategory in reviewConfiguration.Categories) {
+						foreach (var peer in reviewConfiguration.Peers) {
+							newFeedback.Assessments.Add(new Assessment
+							                            	{
+							                            		ReviewCategory = reviewCategory,
+							                            		Rating = 7,
+							                            		Reviewer = reviewer,
+							                            		ReviewedPeer = peer
+							                            	});
+						}
+					}
+					newFeedback.Reviewer = reviewer;
+					reviewConfiguration.Feedback.Add(newFeedback);
+				}
 				ctx.SaveChanges();
 				ScenarioContext.Current.Set(reviewConfiguration);
 			}
@@ -430,8 +467,11 @@ namespace TeamReview.Specs {
 				case "Dashboard":
 					path = "/Review";
 					break;
+				case "Results":
+					path = "/Review/Results/1";
+					break;
 				default:
-					throw new ArgumentOutOfRangeException("pageName", "No mapping from '{0}' to concrete url path exists!");
+					throw new ArgumentOutOfRangeException("pageName", "No mapping from '"+pageName+"' to concrete url path exists!");
 			}
 			_browser.Visit(path);
 		}
@@ -600,6 +640,50 @@ namespace TeamReview.Specs {
 		public void ThenIDoNotSeeForMyReview(string text) {
 			Assert.IsFalse(
 				_browser.FindId("ReviewId_" + ScenarioContext.Current.Get<ReviewConfiguration>().ReviewId).HasContent(text));
+		}
+
+		[Then(@"for each category I see the peer rating of me \(average rating of all peers except mine\) and my rating of me"
+			)]
+		public void ThenForEachCategoryISeeThePeerRatingOfMeAverageRatingOfAllPeersExceptMineAndMyRatingOfMe() {
+			var yourResults = _browser.FindId("yourResults");
+			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
+			foreach (var category in review.Categories) {
+				var elementScope = yourResults.FindId("catMyResults" + category.Name);
+				Assert.IsTrue(elementScope.HasContent(category.Name));
+				Assert.IsTrue(elementScope.HasContent(category.Description));
+				Assert.IsTrue(elementScope.HasContent("Peer rating = 7"));
+				Assert.IsTrue(elementScope.HasContent("My rating = 7"));
+			}
+		}
+
+		[Then(@"for each category and each peer I see their peer rating \(average rating of all peers except his/hers\)")]
+		public void ThenForEachCategoryAndEachPeerISeeTheirPeerRatingAverageRatingOfAllPeersExceptHisHers() {
+			var everyonesResults = _browser.FindId("everyonesResults");
+			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
+			foreach (var category in review.Categories) {
+				var elementScope = everyonesResults.FindId("catPeerResults" + category.Name);
+				Assert.IsTrue(elementScope.HasContent(category.Name));
+				Assert.IsTrue(elementScope.HasContent(category.Description));
+				foreach (var peer in review.Peers) {
+					Assert.IsTrue(elementScope.HasContent("Name = " + peer.UserName + " : peer rating = 7"));
+				}
+			}
+		}
+
+		[Then(@"I see the stacked rating of me \(sum of ratings of all categories\)")]
+		public void ThenISeeTheStackedRatingOfMeSumOfRatingsOfAllCategories() {
+			var yourResults = _browser.FindId("yourResults");
+			Assert.IsTrue(yourResults.HasContent("Stacked rating by peers = 14"));
+			Assert.IsTrue(yourResults.HasContent("Stacked rating by yourself = 14"));
+		}
+
+		[Then(@"I see the stacked rating of each peer \(sum of ratings of all categories\)")]
+		public void ThenISeeTheStackedRatingOfEachPeerSumOfRatingsOfAllCategories() {
+			var everyonesStackedResults = _browser.FindId("everyonesStackedResults");
+			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
+			foreach (var peer in review.Peers) {
+				Assert.IsTrue(everyonesStackedResults.HasContent("Name = " + peer.UserName + " : peer rating = 14"));
+			}
 		}
 
 		#region Helpers
