@@ -235,6 +235,7 @@ namespace TeamReview.Web.Controllers {
 					var assessment = new Assessment
 					                 	{
 					                 		Rating = peersWithRating.Rating,
+					                 		Reviewer = reviewFeedback.Reviewer,
 					                 		ReviewCategory = _db.ReviewCategories.Find(categoriesWithPeersAndRating.Category.CatId),
 					                 		ReviewedPeer = _db.UserProfiles.Find(peersWithRating.Peer.UserId)
 					                 	};

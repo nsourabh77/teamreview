@@ -78,6 +78,7 @@ namespace TeamReview.Web.Models {
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int AssessmentId { get; set; }
 
+		public UserProfile Reviewer { get; set; }
 		public ReviewCategory ReviewCategory { get; set; }
 		public UserProfile ReviewedPeer { get; set; }
 		public int Rating { get; set; }
