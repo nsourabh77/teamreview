@@ -105,7 +105,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
  testRunner.When("I click on the \"Show results\" link of the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19
- testRunner.Then("I am on the \"Show results\" page for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("I am on the \"Results\" page for my review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -120,16 +120,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 23
-  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with 2 categories and 2 additional peers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
   testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
-  testRunner.And("I am on the \"Show results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am on the \"Results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
- testRunner.Then("for each category I see the peer rating (average rating of all peers except mine)" +
-                    " and my rating", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("for each category I see the peer rating of me (average rating of all peers except" +
+                    " mine) and my rating of me", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 27
-  testRunner.And("I see the stacked rating (sum of ratings of all categories)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I see the stacked rating of me (sum of ratings of all categories)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -144,16 +144,16 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 31
-  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with 2 categories and 2 additional peers", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
   testRunner.And("all peers have provided the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 33
-  testRunner.And("I am on the \"Show results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I am on the \"Results\" page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
- testRunner.Then("for each category and each peer I see the peer rating (average rating of all peer" +
-                    "s except his/hers)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("for each category and each peer I see their peer rating (average rating of all pe" +
+                    "ers except his/hers)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
-  testRunner.And("I see the stacked rating (sum of ratings of all categories)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I see the stacked rating of each peer (sum of ratings of all categories)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

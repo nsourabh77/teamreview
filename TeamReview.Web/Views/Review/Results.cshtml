@@ -14,7 +14,7 @@
         <div id="@categoryId">
             <p>@category.CategoryName : @category.CategoryDescription</p>
             <p>Peer rating = @category.PeerRating</p>
-            <p>Peer rating = @category.MyRating</p>
+            <p>My rating = @category.MyRating</p>
         </div>
     }
     <p>Stacked rating by peers = @Model.PeerStackedRating</p>
@@ -22,7 +22,7 @@
 </div>
 
 <h3>Everyones Results:</h3>
-<div>
+<div id="everyonesResults">
     @foreach (var category in Model.CategoriesWithPeersWithResults)
     { 
         var categoryId = "catPeerResults" + category.CategoryName;
@@ -36,7 +36,7 @@
     }
 </div>
 Stacked results:
-<div>
+<div id="everyonesStackedResults">
     @foreach (var peer in Model.PeersWithStackedRatings)
     { 
         <p>Name = @peer.PeerName : peer rating = @peer.PeerStackedRating</p>
