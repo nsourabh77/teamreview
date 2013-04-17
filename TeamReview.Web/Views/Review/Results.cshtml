@@ -4,24 +4,28 @@
     ViewBag.Title = "Results";
 }
 
-<h2>Results for Review "@Model.ReviewName"</h2>
+<h1>Results for Review "@Model.ReviewName"</h1>
 
-<h3>Your Results:</h3>
+<h2>Your Results:</h2>
 <div id="yourResults">
     @foreach (var category in Model.CategoriesWithMyResults)
     {
         var categoryId = "catMyResults" + category.CategoryName;
-        <div id="@categoryId">
+        <div id="@categoryId">            
             <p>@category.CategoryName : @category.CategoryDescription</p>
+            <p class="info">If no peers hide this. If peers havent rated yet, then: "peers havent completed their reviews yet."</p>
             <p>Peer rating = @category.PeerRating</p>
             <p>Peer rating = @category.MyRating</p>
         </div>
     }
+    <p class="info">If no peers hide this. If peers havent rated yet, then: "peers havent completed their reviews yet."</p>
     <p>Stacked rating by peers = @Model.PeerStackedRating</p>
     <p>Stacked rating by yourself = @Model.MyStackedRating</p>
 </div>
 
-<h3>Everyones Results:</h3>
+
+<h2>Everyone's Results:</h2>
+<p class="info">If no peers show: "You have not invited any peers to complete this review -> invite some peers(link to edit review). If peers havent rated yet, then: "peers havent completed their reviews yet."</p>
 <div>
     @foreach (var category in Model.CategoriesWithPeersWithResults)
     { 
@@ -36,6 +40,7 @@
     }
 </div>
 Stacked results:
+
 <div>
     @foreach (var peer in Model.PeersWithStackedRatings)
     { 
@@ -44,5 +49,5 @@ Stacked results:
 </div>
 
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to My Dashboard", "Index")
 </p>

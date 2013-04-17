@@ -12,7 +12,7 @@
 
     <fieldset class="form-horizontal">
 
-        <h1><a class="cr25"><span class="cr26">Untitled Review</span><i class="cr21"></i></a></h1>        
+        <h1 class="cr25"><span class="cr26">Untitled Review</span><i class="cr21"></i></h1>        
         @Html.TextBoxFor(model => model.Name, new {type = "hidden", @class = "cr27"}  )
         @Html.ValidationMessageFor(model => model.Name)
                        
@@ -109,9 +109,6 @@
     $(document).ready(function () {
         var replaceWith = $('<input name="temp" type="text" />'),
         connectWith = $('.cr27');
-
-        $('.cr25').click(function(){
-            $('.cr26').inlineEdit(replaceWith, connectWith);
-        });
+        $('.cr26').inlineEdit(replaceWith, connectWith);        
     });
 </script>    

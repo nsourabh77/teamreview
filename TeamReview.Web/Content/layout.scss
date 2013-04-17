@@ -51,6 +51,13 @@ body {padding-top:0; background:#F5F5F5;}
 	/* typography */
 	
 		h1, h2, h3, h4, h5, h6, legend, .logo, .button {font-family: 'Carter One', sans serif; font-weight:normal;}
+		h1, h2, h3, h4, h5, h6 {margin-top:1em;}
+	
+		h1 {font-size:3em;}
+		h1 {font-size:3em;}
+		h2 {font-size:2.4em;}
+		h3 {font-size:1.8em;}
+		h4 {font-size:1.4em;}
 	
 		a {color:#007ACC;}
 		a:hover {cursor:pointer;}
@@ -61,6 +68,10 @@ body {padding-top:0; background:#F5F5F5;}
 		.help-block {@extend .info;}
 		
 		.text-xl {font-size:2em;}	
+		
+		blockquote {font-style:italic; letter-spacing:0.01em; z-index:1; display:block; font-size:1.1em;}
+			blockquote:before, q:before {content:"\201E" ; font-size:1.3em; margin-right:2px; line-height:1em; display:inline;}
+			blockquote:after, q:after {content:"\201D" ; font-size:1.3em; margin:0 0 8px 2px; display:inline; line-height:1em; display:inline;}
 	
 	/* end typography */
 	
@@ -121,12 +132,16 @@ body {padding-top:0; background:#F5F5F5;}
 		.box1of4 {@extend .well; width:18%; padding:1.5%; margin:1.5%; float:left;}
 		.box1of2 {@extend .well; width:43%; padding:1.5%; margin:1.5%; float:left;}
 		.box1of1 {@extend .well; width:93%; padding:1.5%; margin:1.5%; float:left;}
-	
+		
+		.block1 {padding:12px; background:#eee; position:relative; color:#333; margin-top:16px; margin-bottom:0;}
+		.block1:before {display:block; content:""; border-left:16px solid transparent; border-right:solid 16px transparent; border-bottom:16px #eee solid; width:0; height:0; position:absolute; top:-16px; left:40px;}
+		
 	/* end boxes */
 	
 	/* table */
 	
-		.table {background:#f5f5f5;}
+		
+		
 	
 	/* end table */
 	
@@ -157,6 +172,7 @@ body {padding-top:0; background:#F5F5F5;}
 		input[type="radio"] {float:left;}
 		.primaryAction {@extend .btn, .btn-primary;}
 		.control-label {font-weight:bold;}	
+		.table1 label {margin-bottom:0;}
 	
 	/* end forms */	
 	
@@ -211,11 +227,12 @@ body {padding-top:0; background:#F5F5F5;}
 
 /* main content */
 	.db10{float:left; margin-right:24px;}
-	.db11 {@extend .btn, .btn-success; margin-top:24px;}
+	.db11 {@extend .btn, .btn-success; margin-top:32px;}
 	.db12 {@extend .icon, .icon-white, .icon-plus;}
 	.db13 {clear:both;}
 	
-	.cr21 {@extend .icon, .icon-pencil; opacity:0.7; margin:18px 0 0 12px;}
+	.cr26 {color:#007ACC;}
+	.cr21 {@extend .icon, .icon-pencil; opacity:0.7; margin:24px 0 0 12px;}
 	.cr40 {float:left;}
 	.cr41 {@extend .btn, .btn-success, .btn-mini; margin:24px 0 0 24px;}
 	.cr410 {clear:both; @extend .info;}
@@ -226,11 +243,27 @@ body {padding-top:0; background:#F5F5F5;}
 	.cr52 {@extend .btn, .btn-info, .btn-large;}
 	.cr61 {font-weight:bold;}
 	.cr71 {text-align:center;}
-		
-	.table td.rt20 {font-family:carter one; font-size:2.5em; vertical-align:middle;}	
-	.rt1 {width:9.8%; height:0; padding-top:3.9%; padding-bottom:5.9%; float:right; border:solid 1px #999; border-left:none; text-align:center; font-family:carter one; display:block; font-size:3em; font-weight:bold; background:#fefefe;}
-	.rt1:last-child  {border-left:solid 1px #999;}
+	.cr75 {width:98%;}		
+	
+	.table1 {@extend .table; background:#eee; border:none; padding-bottom:12px;}
+	.table1 td, .table1 th {padding:0 12px; border:none;}
+	.table1 tbody tr:hover td, .table1 tbody tr:hover th{background:#fafafa;}
+	.table1 td.rt20 {font-family:carter one; font-size:2em; vertical-align:middle;}	
+	.table1 tr:last-child td {padding-bottom:12px;}
+	
+	.rt31 {font-family:carter one; font-size:1.6em; float:left; padding:10px 12px 8px 0; color:#666;}
+	.rt32 {@extend .info; display:block;}	
+	.rt0 {display:none;}	
+	.rt1 {width:9.8%; height:0; padding-top:3.9%; padding-bottom:5.9%; float:right; border:solid 1px #ddd; border-left:none; border-bottom:none; text-align:center; font-family:carter one; display:block; font-size:3em; font-weight:bold; background:#fefefe;}
+	.rt1:last-child  {border-left:solid 1px #ddd;}
+	.table1 tr:last-child .rt1 {border-bottom:solid 1px #ddd;}
+	
 	.rt-selected, .rt1:hover , .rt1:hover ~ .rt1, .rt-selected ~ .rt1{background:#62C462; color:#fff; cursor:pointer;}
+	.rt-selected, .rt-selected:hover, .rt-selected ~ .rt1:hover {color:#333;}
+	
+	.rt81 {text-align:center;}
+	
+	.pr41 {@extend .btn, .btn-large, .btn-success;}
 	
 	
 	

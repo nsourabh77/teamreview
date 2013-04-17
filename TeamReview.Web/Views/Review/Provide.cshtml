@@ -8,87 +8,58 @@
     <p>@TempData["Message"]</p>
 }
 
-<h2>Provide review "@Model.ReviewName"</h2>
+<h1>Provide review "@Model.ReviewName"</h1>
 
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
 
     <fieldset>        
-        <p class="info">Please evaluate your peers and yourself according to the following categories.</p>
-        <p class="info">1 beeing the lowest, 10 being the highest rating.</p>
-        <h2>My First Category</h2>
-        <p class="info">This is the description for "My First Category", that can be long or short or inbetween or anything about the size of 2 or 3 lines of text.</p>        
-        <table class="table table-bordered">
-            <!-- prob not needed
-            <thead>
-                <tr>
-                    <th>Peer</th>
-                    <th>Your Rating</th>
-                </tr>
-            </thead>
-            -->
-            <tbody>
-                <tr>
-                    <td class="rt20">Andrej</td>
-                    <td>                        
-                        <div class="rt1">10</div>                    
-                        <div class="rt1">9</div>
-                        <div class="rt1">8</div>
-                        <div class="rt1">7</div>
-                        <div class="rt1">6</div>
-                        <div class="rt1">5</div>
-                        <div class="rt1">4</div>
-                        <div class="rt1">3</div>
-                        <div class="rt1">2</div>
-                        <div class="rt1">1</div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="rt20">Anton</td>
-                    <td>                        
-                        <div class="rt1">10</div>                    
-                        <div class="rt1">9</div>
-                        <div class="rt1">8</div>
-                        <div class="rt1">7</div>
-                        <div class="rt1">6</div>
-                        <div class="rt1">5</div>
-                        <div class="rt1">4</div>
-                        <div class="rt1">3</div>
-                        <div class="rt1">2</div>
-                        <div class="rt1">1</div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
+        <div class="block1">
+            <p class="info">Please evaluate your peers and yourself according to the following categories.</p>
+            <p class="info">1 beeing the lowest, 10 being the highest rating.</p>
+        </div>
         @Html.HiddenFor(x => Model.ReviewId)
         @for (int i = 0; i < Model.CategoriesWithPeersAndRatings.Count; i++)
         {
             var category = "category_" + Model.CategoriesWithPeersAndRatings[i].Category.CatId;
             <div id="@category">
-            @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].Category.CatId)
-            <li>
-                <span>@Model.CategoriesWithPeersAndRatings[i].Category.Name:</span>
-                <span>@Model.CategoriesWithPeersAndRatings[i].Category.Description</span>
-            </li>
-            @for (int j = 0; j < Model.CategoriesWithPeersAndRatings[i].PeersWithRatings.Count; j++)
-            {
-                var peer = category + "_peer_" + Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId;
-                <div id="@peer">
-                <p>for @Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserName</p>
-                @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId)
-                @for (int k = 1; k < 11; k++)
-                { 
-                    @Html.RadioButtonFor(x => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Rating, k) @k
-                }
-                </div>
-            }
+                @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].Category.CatId)
+            
+                <h2>@Model.CategoriesWithPeersAndRatings[i].Category.Name</h2>
+                <div class="block1 clear"><strong class="rt31">description:</strong> <blockquote class="rt32">@Model.CategoriesWithPeersAndRatings[i].Category.Description</blockquote></div>
+                
+                <table class="table1">
+                    <colgroup>
+                        <col width="30%" />
+                        <col width="70%" />
+                    </colgroup>
+
+                    @for (int j = 0; j < Model.CategoriesWithPeersAndRatings[i].PeersWithRatings.Count; j++)
+                    {
+                        
+                        var peer = category + "_peer_" + Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId;
+                        <tr id="@peer">
+                            
+                            <td class="rt20">@Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserName</td>
+                            @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId)
+                            <td>
+                                @for (int k = 10; k > 0; k--)
+                                { 
+                                    var radioButtonId = "CategoriesWithPeersAndRatings_"+i+"__PeersWithRatings_"+j+"__Rating_"+k;
+                                    @Html.RadioButtonFor(x => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Rating, k, new { @class = "rt0", id = radioButtonId })
+                                    <label class="rt1" for="@radioButtonId">@k</label>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
             </div>
         }
 
-        <p>
-            <input type="submit" value="Save" />
+        <p class="rt81">
+            <input class="pr41" type="submit" value="Save and Submit your Review" />            
+            @Html.ActionLink("Cancel and Back to My Dashboard", "Index")
         </p>
     </fieldset>
 }

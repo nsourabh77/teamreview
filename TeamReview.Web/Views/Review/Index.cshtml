@@ -34,7 +34,7 @@
                     @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId })
                     break;
                 case TeamReview.Web.ViewModels.ActionStatus.ProvideReview:
-                    @Html.ActionLink("Provide review", "Provide", new { @class = "Andréj, hier bitte Klasse setzen.", id = item.ReviewId }) 
+                    @Html.ActionLink("Provide review", "Provide", new { id = item.ReviewId }) 
                     break;
                 case TeamReview.Web.ViewModels.ActionStatus.WaitForReviews:
                     <p>Waiting for reviews</p>
