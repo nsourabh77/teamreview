@@ -5,18 +5,30 @@
 }
 
 <h1>Results for Review "@Model.ReviewName"</h1>
-
-<h2>Your Results:</h2>
+<td><p class="info">todo Anton: If no peers show: "You have not invited any peers to complete this review -> invite some peers(link to edit review). If peers havent rated yet, then: "peers havent completed their reviews yet."</p></td>
+<h2>My Results</h2>
 <div id="yourResults">
     @foreach (var category in Model.CategoriesWithMyResults)
     {
         var categoryId = "catMyResults" + category.CategoryName;
         var myRatingValue = "rv" + category.MyRating;
         <div id="@categoryId">
-            <p>@category.CategoryName : @category.CategoryDescription</p>
-            <p class="info">If no peers show: "You have not invited any peers to complete this review -> invite some peers(link to edit review). If peers havent rated yet, then: "peers havent completed their reviews yet."</p>
-            <p>Peer rating = @category.PeerRating</p>
-            <p>My rating = <span class="@category.MyRating"></span></p>
+            <strong class="rt31">@category.CategoryName:</strong> 
+            <blockquote class="rt32">@category.CategoryDescription</blockquote>
+            <table class="table1">
+                <colgroup>
+                    <col width="30%" />
+                    <col width="70%" />
+                </colgroup>
+                <tr>
+                    <td class="rt20">Peer Rating</td>
+                    <td>@category.PeerRating</td>
+                </tr>
+                <tr>
+                    <td class="rt20">My Rating</td>
+                    <td><span class="@myRatingValue">@category.MyRating</span></td>
+                </tr>
+            </table>
         </div>
     }
     <p class="info">If no peers show: "You have not invited any peers to complete this review -> invite some peers(link to edit review). If peers havent rated yet, then: "peers havent completed their reviews yet."</p>

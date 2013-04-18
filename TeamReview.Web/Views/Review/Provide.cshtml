@@ -15,7 +15,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>        
-        <div class="block1">
+        <div class="block-top">
             <p class="info">Please evaluate your peers and yourself according to the following categories.</p>
             <p class="info">1 beeing the lowest, 10 being the highest rating.</p>
         </div>
@@ -27,21 +27,21 @@
                 @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].Category.CatId)
             
                 <h2>@Model.CategoriesWithPeersAndRatings[i].Category.Name</h2>
-                <div class="block1 clear"><strong class="rt31">description:</strong> <blockquote class="rt32">@Model.CategoriesWithPeersAndRatings[i].Category.Description</blockquote></div>
+                <div class="rt32 block-top" title="category description"><blockquote>@Model.CategoriesWithPeersAndRatings[i].Category.Description</blockquote></div>
                 
                 <table class="table1">
                     <colgroup>
                         <col width="30%" />
                         <col width="70%" />
                     </colgroup>
-
+                    
                     @for (int j = 0; j < Model.CategoriesWithPeersAndRatings[i].PeersWithRatings.Count; j++)
                     {
                         
                         var peer = category + "_peer_" + Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId;
                         <tr id="@peer">
                             
-                            <td class="rt20">@Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserName</td>
+                            <th>@Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserName</th>
                             @Html.HiddenFor(model => Model.CategoriesWithPeersAndRatings[i].PeersWithRatings[j].Peer.UserId)
                             <td>
                                 @for (int k = 10; k > 0; k--)

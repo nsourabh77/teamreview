@@ -3,7 +3,7 @@
 @import "_reset";
 @import "_bootstrap";
   
-body {padding-top:0; background:#F5F5F5;}
+body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 
 #wrap:before {background:#2e2e2e; width:250px; height:100%; position:fixed; left:0; top:0; content:""; z-index:-1; line-height:20px;}
 .well{background:#fff; border-color:#ddd;}
@@ -53,23 +53,24 @@ body {padding-top:0; background:#F5F5F5;}
 		h1, h2, h3, h4, h5, h6, legend, .logo, .button {font-family: 'Carter One', sans serif; font-weight:normal;}
 		h1, h2, h3, h4, h5, h6 {margin-top:1em;}
 	
-		h1 {font-size:3em;}
-		h1 {font-size:3em;}
-		h2 {font-size:2.4em;}
+		h1 {font-size:3.2em;}		
+		h2 {font-size:2.6em; margin-top:1.6em;}
 		h3 {font-size:1.8em;}
 		h4 {font-size:1.4em;}
 	
+		p {font-size:1.1em;}
+		
 		a {color:#007ACC;}
 		a:hover {cursor:pointer;}
 	
 		.well p:last-child {margin-bottom:0;}
 
-		.info {font-style:italic; color:#777;}
+		.info {font-style:italic; color:#666;}
 		.help-block {@extend .info;}
 		
 		.text-xl {font-size:2em;}	
 		
-		blockquote {font-style:italic; letter-spacing:0.01em; z-index:1; display:block; font-size:1.1em;}
+		blockquote {font-style:italic; letter-spacing:0.01em; z-index:1; display:block; font-size:1.1em; line-height:1.8;}
 			blockquote:before, q:before {content:"\201E" ; font-size:1.3em; margin-right:2px; line-height:1em; display:inline;}
 			blockquote:after, q:after {content:"\201D" ; font-size:1.3em; margin:0 0 8px 2px; display:inline; line-height:1em; display:inline;}
 	
@@ -133,8 +134,19 @@ body {padding-top:0; background:#F5F5F5;}
 		.box1of2 {@extend .well; width:43%; padding:1.5%; margin:1.5%; float:left;}
 		.box1of1 {@extend .well; width:93%; padding:1.5%; margin:1.5%; float:left;}
 		
-		.block1 {padding:12px; background:#eee; position:relative; color:#333; margin-top:16px; margin-bottom:0;}
-		.block1:before {display:block; content:""; border-left:16px solid transparent; border-right:solid 16px transparent; border-bottom:16px #eee solid; width:0; height:0; position:absolute; top:-16px; left:40px;}
+		.block-top {padding:12px; background:#eee; position:relative; color:#333; margin-top:16px; margin-bottom:0;}
+		.block-top:before {display:block; content:""; border-left:16px solid transparent; border-right:solid 16px transparent; border-bottom:16px #eee solid; width:0; height:0; position:absolute; top:-16px; left:40px;}
+		
+		.block-top-2 {@extend .block-top; background:#eee; margin-top:0;}
+		.block-top-2:before {@extend .block-top:before; border-bottom:16px #eee solid;}
+		
+		
+		.block-left {padding:12px; background:#ddd; position:relative; color:#333; display:block;}
+		.block-left:before {display:block; content:""; border-top:16px solid transparent; border-bottom:solid 16px transparent; border-right:16px #ddd solid; width:0; height:0; position:absolute; left:-16px; top:9px;}
+		
+		.b-left {float:left; margin-right:12px;}
+        .b-right {float:right; margin-left:12px;}
+        .flex {display:table-cell; zoom:1; float:none; width:1000px;}
 		
 	/* end boxes */
 	
@@ -218,9 +230,9 @@ body {padding-top:0; background:#F5F5F5;}
 	.subnav a {display:block; white-space:nowrap;}
 	
 	.mini-nav {list-style:none; margin:0; font-family:open sans; float:right;}
-	.hd14 {@extend .icon, .icon-white, .icon-user; display:inline-block;}
+	.hd14 {@extend .icon, .icon-white, .icon-user; display:inline-block; margin-top:2px;}
 	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:15px; float:left; margin-left:24px;}	
-	.hd19 {@extend .icon, .icon-white, .icon-off;}
+	.hd19 {@extend .icon, .icon-white, .icon-off; margin-top:2px;}
 	#logoutForm {display:inline-block; margin-left:12px;}
 	
 	
@@ -256,16 +268,20 @@ body {padding-top:0; background:#F5F5F5;}
 	.cr71 {text-align:center;}
 	.cr75 {width:98%;}		
 	
-	.table1 {@extend .table; background:#eee; border:none; padding-bottom:12px;}
-	.table1 td, .table1 th {padding:0 12px; border:none;}
-	.table1 tbody tr:hover td, .table1 tbody tr:hover th{background:#fafafa;}
-	.table1 td.rt20 {font-family:carter one; font-size:2em; vertical-align:middle;}	
-	.table1 tr:last-child td {padding-bottom:12px;}
+	.table1 {@extend .table; border:none; padding-bottom:12px;}	
+	.table1 td, .table1 th {padding:0 0 0 12px; border:none; background:#fafafa;}
+	.table tr {border-bottom:solid 1px #ddd;}
+	.table tr:last-child {border:none;}
+	.table tr:last-child .rt1 {border-top:none;}
+	.table1 th {padding:12px;}
+	.table1 tbody tr:hover td, .table1 tbody tr:hover th{background:#FFD42A;}
+	.table1 th {font-family:carter one; font-size:1.8em; vertical-align:middle;}	
+	.t-head td, .t-head th {background:#ddd;}
+	.t-head th {color:#999;}
 	
-	.rt31 {font-family:carter one; font-size:1.6em; float:left; padding:10px 12px 8px 0; color:#666;}
-	.rt32 {@extend .info; display:block;}	
+	.rt31 {font-family:carter one; font-size:1.6em; padding:10px 12px 8px 0; color:#666;}	
 	.rt0 {display:none;}	
-	.rt1 {width:9.8%; height:0; padding-top:3.9%; padding-bottom:5.9%; float:right; border:solid 1px #ddd; border-left:none; border-bottom:none; text-align:center; font-family:carter one; display:block; font-size:3em; font-weight:bold; background:#fefefe;}
+	.rt1 {width:9.8%; height:0; padding-top:3.9%; padding-bottom:5.9%; float:right; border:solid 1px #ddd; border-left:none; border-bottom:none; text-align:center; font-family:carter one; display:block; font-size:2.4em; font-weight:bold; background:#fefefe;}
 	.rt1:last-child  {border-left:solid 1px #ddd;}
 	.table1 tr:last-child .rt1 {border-bottom:solid 1px #ddd;}
 	

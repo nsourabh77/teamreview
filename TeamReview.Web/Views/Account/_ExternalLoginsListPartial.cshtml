@@ -13,7 +13,7 @@ else
     {
     @Html.AntiForgeryToken()
     <fieldset id="socialLoginList">
-        <p class="block1">
+        <p class="block-top">
         @foreach (AuthenticationClientData p in Model)
         {
             <button class="lg1" type="submit" name="provider" value="@p.AuthenticationClient.ProviderName" title="Log in using your @p.DisplayName account"><img src="http://www.google.com/favicon.ico" alt="google" />@p.DisplayName</button>
