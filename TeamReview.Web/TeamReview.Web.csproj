@@ -254,6 +254,13 @@
     <Content Include="Views\Review\AddPeer.cshtml" />
     <Content Include="Views\Review\Provide.cshtml" />
     <Content Include="Views\Review\Results.cshtml" />
+    <Content Include="Views\Home\StackRanking.cshtml" />
+    <Content Include="Views\Home\HistoricalData.cshtml" />
+    <Content Include="Views\Home\PerformanceReview.cshtml" />
+    <Content Include="Views\Home\PeerReviews.cshtml" />
+    <Content Include="Views\Home\Features.cshtml" />
+    <Content Include="Views\Home\AboutUs.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

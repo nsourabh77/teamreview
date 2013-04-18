@@ -11,6 +11,13 @@ namespace TeamReview.Web {
 				url: "{controller}/{action}/{id}",
 				defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
 				);
+
+            routes.MapRoute(
+                   name: "StackRanking",
+                   url: "stack-ranking",
+                   defaults: new { controller = "Home", action = "StackRanking"}
+                   );
+
 		}
 	}
 }

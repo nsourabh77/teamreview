@@ -11,11 +11,12 @@
     @foreach (var category in Model.CategoriesWithMyResults)
     {
         var categoryId = "catMyResults" + category.CategoryName;
+        var myRatingValue = "rv" + category.MyRating;
         <div id="@categoryId">
             <p>@category.CategoryName : @category.CategoryDescription</p>
             <p class="info">If no peers show: "You have not invited any peers to complete this review -> invite some peers(link to edit review). If peers havent rated yet, then: "peers havent completed their reviews yet."</p>
             <p>Peer rating = @category.PeerRating</p>
-            <p>My rating = @category.MyRating</p>
+            <p>My rating = <span class="@category.MyRating"></span></p>
         </div>
     }
     <p class="info">If no peers show: "You have not invited any peers to complete this review -> invite some peers(link to edit review). If peers havent rated yet, then: "peers havent completed their reviews yet."</p>
