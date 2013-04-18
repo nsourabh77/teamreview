@@ -16,7 +16,7 @@ Scenario: Create a review with 2 categories
 		And I save the review
 	Then my new review was created with those categories
 		And I am added to the review
-		And I am on the "Edit review" page for my review
+		And I am on the "Dashboard"
 		And I see the message "Review has been created"
 
 Scenario: Add category to existing Review
