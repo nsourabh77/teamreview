@@ -207,9 +207,16 @@ body {padding-top:0; background:#F5F5F5;}
 	.logo:hover .lg12 {color:#62C462;}
 	
 	.nav1 {float:left; list-style:none; margin:0; font-family:open sans;}
+	.nav1 li {position:relative;}
 	.nav1 li, .mini-nav li {float:left;}
 	.nav1 a, .mini-nav a {padding:18px 8px 12px 8px; display:inline-block; text-decoration:none; text-transform:uppercase;}
 	.nav1 a:hover, .mini-nav a:hover {background:#FFD42A; color:#333; text-decoration:none;}	
+	
+	.nav1 > li:hover .subnav {display:block;}
+	.subnav {display:none; list-style:none; background:#222; position:absolute; width:auto;}
+	.subnav li {display:block; float:none;}
+	.subnav a {display:block; white-space:nowrap;}
+	
 	.mini-nav {list-style:none; margin:0; font-family:open sans; float:right;}
 	.hd14 {@extend .icon, .icon-white, .icon-user; display:inline-block;}
 	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:15px; float:left; margin-left:24px;}	
@@ -226,6 +233,10 @@ body {padding-top:0; background:#F5F5F5;}
 /* end sidebar */
 
 /* main content */
+
+	.lg1 {@extend .btn, .btn-large, .btn-success;}
+	.lg1 img {display:inline-block; margin-right:5px;}
+
 	.db10{float:left; margin-right:24px;}
 	.db11 {@extend .btn, .btn-success; margin-top:32px;}
 	.db12 {@extend .icon, .icon-white, .icon-plus;}
