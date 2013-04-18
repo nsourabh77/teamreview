@@ -65,11 +65,12 @@ namespace TeamReview.Web.Controllers {
 			if (action != null) {
 				if (action == "AddCategory") {
 					reviewCreateModel.AddedCategories.Add(new CategoryAddModel());
+					return View(reviewCreateModel);
 				}
-				else if (action == "AddPeer") {
+				if (action == "AddPeer") {
 					reviewCreateModel.AddedPeers.Add(new PeerAddModel());
+					return View(reviewCreateModel);
 				}
-				return View(reviewCreateModel);
 			}
 
 			if (!ModelState.IsValid) {
@@ -94,11 +95,16 @@ namespace TeamReview.Web.Controllers {
 			if (loggedInUser != null) {
 				newReview.Peers.Add(loggedInUser);
 			}
+			
 			_db.SaveChanges();
+
+			if (action != null && action == "Save and Start the Review") {
+				return RedirectToAction("StartReview", new { id = newReview.ReviewId });
+			}
 
 			TempData["Message"] = "Review has been created";
 
-			return RedirectToAction("Edit", new {id = newReview.ReviewId});
+			return RedirectToAction("Index");
 		}
 
 		//
