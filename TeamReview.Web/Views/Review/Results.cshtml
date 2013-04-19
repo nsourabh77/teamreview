@@ -115,7 +115,8 @@ Stacked results:
                                 barPadding: 0      // number of pixels between adjacent bars in the same
                                                    // group (same category or bin).
                             },
-                        shadow: false,                        
+                        shadow: false,           
+                        pointLabels: { show: true}             
                     },
                 // Custom labels for the series are specified with the "label"
                 // option on the series option.  Here a series option object
@@ -192,7 +193,8 @@ Stacked results:
                                 barPadding: 0      // number of pixels between adjacent bars in the same
                                                    // group (same category or bin).
                             },
-                        shadow: false,                        
+                        shadow: false,   
+                        pointLabels: { show: true}                     
                     },
                 // Custom labels for the series are specified with the "label"
                 // option on the series option.  Here a series option object
@@ -260,6 +262,7 @@ Stacked results:
             var plot1 = $.jqplot('stack-ranking-chart', [s1, s2, s3, s4], 
             {
                 stackSeries: true,
+                captureRightClick: true,
                 // The "seriesDefaults" option is an options object that will
                 // be applied to all series in the chart.
                 seriesDefaults: 
@@ -272,7 +275,8 @@ Stacked results:
                                 barPadding: 0      // number of pixels between adjacent bars in the same
                                                    // group (same category or bin).
                             },
-                        shadow: false,                        
+                        shadow: false,       
+                        pointLabels: { show: true}               
                     },
                 // Custom labels for the series are specified with the "label"
                 // option on the series option.  Here a series option object

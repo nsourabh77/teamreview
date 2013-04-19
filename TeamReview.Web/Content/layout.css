@@ -4940,7 +4940,7 @@ input[type="radio"] {
 
 /* end messages */
 /* graph */
-.jqplot-axis {
+.jqplot-axis, .jqplot-point-label {
   font-family: carter one;
   font-size: 1.1em; }
 
