@@ -1605,7 +1605,7 @@ table .span24 {
   margin-left: 0; }
 
 [class^="icon-"],
-[class*=" icon-"], .icon, .hd14, .hd19, .db12, .cr21, .cr42, .cr44 {
+[class*=" icon-"], .icon, .hd14, .hd19, .db12, .cr21, .cr42, .cr44, .rs21 {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -1875,7 +1875,7 @@ table .span24 {
 .icon-ok-sign {
   background-position: -72px -96px; }
 
-.icon-question-sign {
+.icon-question-sign, .rs21 {
   background-position: -96px -96px; }
 
 .icon-info-sign {
@@ -5166,6 +5166,12 @@ header a {
 
 .rt81 {
   text-align: center; }
+
+.rs21 {
+  opacity: 0.7; }
+
+.popup {
+  display: none; }
 
 /* end main content */
 /* footer */

@@ -292,7 +292,8 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 	
 	.pr41 {@extend .btn, .btn-large, .btn-success;}
 	
-	
+	.rs21 {@extend .icon, .icon-question-sign; opacity:0.7;}
+	.popup {display:none;}
 	
 /* end main content */
 
