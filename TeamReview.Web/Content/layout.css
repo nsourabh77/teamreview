@@ -4939,6 +4939,12 @@ input[type="radio"] {
   padding-top: 0; }
 
 /* end messages */
+/* graph */
+.jqplot-axis {
+  font-family: carter one;
+  font-size: 1.1em; }
+
+/* end graph */
 /* general */
 /* header */
 header {

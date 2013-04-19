@@ -6,6 +6,7 @@
 
 <h1>Results for Review "@Model.ReviewName"</h1>
 
+<div style="display:none">
 <p class="info">todo Anton: If no peers show: "You have not invited any peers to complete this review -> invite some peers(link to edit review). If peers havent rated yet, then: "peers havent completed their reviews yet."</p>
 <h2>My Results</h2>
 <div id="yourResults">
@@ -65,73 +66,260 @@ Stacked results:
     }
 </div>
 
+</div>
+
+
+
+<h2>My Results</h2>    
+<div class="block-top">
+    <p class="info">Here you see, how your peers rated you. You can compare this information with how you rated yourself.</p>
+    <div id="my-results-chart"></div>
+</div>
+
+<h2>Peer Rating</h2>    
+<div class="block-top">
+    <p class="info">In this graph you see how all peers compare for every category.</p>
+    <div id="peer-results-chart"></div>
+</div>
+
+<h2>Stack Ranking</h2>    
+<div class="block-top">
+    <p class="info">In this graph you see how all peers compare overall, stacking all individual category results.</p>
+    <div id="stack-ranking-chart"></div>
+</div>
+
 <p>
     @Html.ActionLink("Back to My Dashboard", "Index")
 </p>
-    
-<div id="chart1"></div>
 
 <script>
-    $(document).ready(function () {
-        var s1 = [5, 6, 3, 9];
-        var s2 = [2, 6, 8, 7];        
-        // Can specify a custom tick Array.
-        // Ticks should match up one for each y value (category) in the series.
-        var ticks = ['Performance', 'Teamwork', 'Coolness', 'Stylepoints'];
+    $(document).ready(function () 
+        {
+            var s1 = [5, 6, 3, 9];
+            var s2 = [2, 6, 8, 7];        
+            // Can specify a custom tick Array.
+            // Ticks should match up one for each y value (category) in the series.
+            var ticks = ['Performance', 'Teamwork', 'Coolness', 'Stylepoints'];
 
-        var plot1 = $.jqplot('chart1', [s1, s2], {
-            // The "seriesDefaults" option is an options object that will
-            // be applied to all series in the chart.
-            seriesDefaults: {
-                renderer: $.jqplot.BarRenderer,
-                rendererOptions: { fillToZero: true }
-            },
-            // Custom labels for the series are specified with the "label"
-            // option on the series option.  Here a series option object
-            // is specified for each series.
-            series: [
-            { label: 'My Rating' },
-            { label: 'Peer Rating' },
-            
-        ],
-            // Show the legend and put it outside the grid, but inside the
-            // plot container, shrinking the grid to accomodate the legend.
-            // A value of "outside" would not shrink the grid and allow
-            // the legend to overflow the container.
-            legend: {
-                show: true,
-                placement: 'outsideGrid'
-            },
-            seriesColors: [ "#62C462", "#007ACC"],
-            grid: {
-                drawGridLines: true,        // wether to draw lines across the grid or not.
-                gridLineColor: '#dddddd',    // *Color of the grid lines.
-                background: '#eeeeee',      // CSS color spec for background color of grid.
-                borderColor: '#999999',     // CSS color spec for border around grid.
-                borderWidth: 2.0,           // pixel width of border around grid.
-                shadow: false,               // draw a shadow for grid.
-                shadowAngle: 0,            // angle of the shadow.  Clockwise from x axis.
-                shadowOffset: 0,          // offset from the line of the shadow.
-                shadowWidth: 0,             // width of the stroke for the shadow.
-                shadowDepth: 0,             // Number of strokes to make when drawing shadow.
-                                            // Each stroke offset by shadowOffset from the last.
-                shadowAlpha: 0.07,           // Opacity of the shadow
-                renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
-                rendererOptions: {}         // options to pass to the renderer.  Note, the default
-                                            // CanvasGridRenderer takes no additional options.
-            },
-            axes: {
-                // Use a category axis on the x axis and use our custom ticks.
-                xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: ticks
-                },
-                // Pad the y axis just a little so bars can get close to, but
-                // not touch, the grid boundaries.  1.2 is the default padding.
-                yaxis: {
-                    pad: 1.05,                    
-                }
-            }
+            var plot1 = $.jqplot('my-results-chart', [s1, s2], 
+            {
+                // The "seriesDefaults" option is an options object that will
+                // be applied to all series in the chart.
+                seriesDefaults: 
+                    {
+                        renderer: $.jqplot.BarRenderer,
+                        rendererOptions: 
+                            { 
+                                fillToZero: true, 
+                                barMargin: 12,      // number of pixels between adjacent groups of bars.
+                                barPadding: 0      // number of pixels between adjacent bars in the same
+                                                   // group (same category or bin).
+                            },
+                        shadow: false,                        
+                    },
+                // Custom labels for the series are specified with the "label"
+                // option on the series option.  Here a series option object
+                // is specified for each series.
+                series: 
+                    [
+                        { label: 'My Rating' },{ label: 'Peer Rating' }
+                    ],
+                // Show the legend and put it outside the grid, but inside the
+                // plot container, shrinking the grid to accomodate the legend.
+                // A value of "outside" would not shrink the grid and allow
+                // the legend to overflow the container.
+                legend: 
+                    {
+                        show: true,
+                        placement: 'outsideGrid'
+                    },
+                seriesColors: 
+                    [ "#62C462", "#007ACC"],
+                grid: 
+                    {
+                        drawGridLines: true,        // wether to draw lines across the grid or not.
+                        gridLineColor: '#dddddd',    // *Color of the grid lines.
+                        background: '#fafafa',      // CSS color spec for background color of grid.
+                        borderColor: '#999999',     // CSS color spec for border around grid.
+                        borderWidth: 0,           // pixel width of border around grid.
+                        shadow: false,               // draw a shadow for grid.                        
+                        renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
+                        rendererOptions: {}         // options to pass to the renderer.  Note, the default
+                                                    // CanvasGridRenderer takes no additional options.
+                    },
+                axes: 
+                    {
+                        // Use a category axis on the x axis and use our custom ticks.
+                        xaxis: 
+                            {
+                                renderer: $.jqplot.CategoryAxisRenderer,
+                                ticks: ticks
+                            },
+                        // Pad the y axis just a little so bars can get close to, but
+                        // not touch, the grid boundaries.  1.2 is the default padding.
+                        yaxis: 
+                            {
+                                pad: 1.05,                    
+                            },
+                    }              
+
+            });
         });
-    });
+</script>
+
+
+<script>
+    $(document).ready(function () 
+        {
+            var s1 = [5, 6, 3, 9];
+            var s2 = [2, 6, 8, 7];        
+            var s3 = [4, 2, 8, 10]; 
+            // Can specify a custom tick Array.
+            // Ticks should match up one for each y value (category) in the series.
+            var ticks = ['Performance', 'Teamwork', 'Coolness', 'Stylepoints'];
+
+            var plot1 = $.jqplot('peer-results-chart', [s1, s2, s3], 
+            {
+                // The "seriesDefaults" option is an options object that will
+                // be applied to all series in the chart.
+                seriesDefaults: 
+                    {
+                        renderer: $.jqplot.BarRenderer,
+                        rendererOptions: 
+                            { 
+                                fillToZero: true, 
+                                barMargin: 12,      // number of pixels between adjacent groups of bars.
+                                barPadding: 0      // number of pixels between adjacent bars in the same
+                                                   // group (same category or bin).
+                            },
+                        shadow: false,                        
+                    },
+                // Custom labels for the series are specified with the "label"
+                // option on the series option.  Here a series option object
+                // is specified for each series.
+                series: 
+                    [
+                        { label: 'Anton' },{ label: 'Andrej' },{ label: 'Oliver Friedrich' }
+                    ],
+                // Show the legend and put it outside the grid, but inside the
+                // plot container, shrinking the grid to accomodate the legend.
+                // A value of "outside" would not shrink the grid and allow
+                // the legend to overflow the container.
+                legend: 
+                    {
+                        show: true,
+                        placement: 'outsideGrid'
+                    },
+                seriesColors: 
+                    [ "#62C462", "#007ACC", "#FFD42A"],
+                grid: 
+                    {
+                        drawGridLines: true,        // wether to draw lines across the grid or not.
+                        gridLineColor: '#dddddd',    // *Color of the grid lines.
+                        background: '#fafafa',      // CSS color spec for background color of grid.
+                        borderColor: '#999999',     // CSS color spec for border around grid.
+                        borderWidth: 0,           // pixel width of border around grid.
+                        shadow: false,               // draw a shadow for grid.                        
+                        renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
+                        rendererOptions: {}         // options to pass to the renderer.  Note, the default
+                                                    // CanvasGridRenderer takes no additional options.
+                    },
+                axes: 
+                    {
+                        // Use a category axis on the x axis and use our custom ticks.
+                        xaxis: 
+                            {
+                                renderer: $.jqplot.CategoryAxisRenderer,
+                                ticks: ticks
+                            },
+                        // Pad the y axis just a little so bars can get close to, but
+                        // not touch, the grid boundaries.  1.2 is the default padding.
+                        yaxis: 
+                            {
+                                pad: 1.05,                    
+                            },
+                    }              
+
+            });
+        });
+</script>
+
+
+<script>
+    $(document).ready(function () 
+        {
+            // hier sind die Variablen die Personen, und die Werte die individuellen Kategorie-Ergebnisse -> 4 Categorien für je 3 peers
+            var s1 = [5, 6, 2];
+            var s2 = [2, 6, 8];        
+            var s3 = [4, 2, 3]; 
+            var s4 = [7, 9, 5];
+            // Can specify a custom tick Array.
+            // Ticks should match up one for each y value (category) in the series.
+            var ticks = ['Anton', 'Oliver', 'Andrej'];
+
+            var plot1 = $.jqplot('stack-ranking-chart', [s1, s2, s3, s4], 
+            {
+                stackSeries: true,
+                // The "seriesDefaults" option is an options object that will
+                // be applied to all series in the chart.
+                seriesDefaults: 
+                    {
+                        renderer: $.jqplot.BarRenderer,
+                        rendererOptions: 
+                            { 
+                                fillToZero: true, 
+                                barMargin: 12,      // number of pixels between adjacent groups of bars.
+                                barPadding: 0      // number of pixels between adjacent bars in the same
+                                                   // group (same category or bin).
+                            },
+                        shadow: false,                        
+                    },
+                // Custom labels for the series are specified with the "label"
+                // option on the series option.  Here a series option object
+                // is specified for each series.
+                series: 
+                    [
+                        { label: 'Performance' },{ label: 'Teamwork' },{ label: 'Coolness' },{ label: 'Stylepoints' }
+                    ],
+                // Show the legend and put it outside the grid, but inside the
+                // plot container, shrinking the grid to accomodate the legend.
+                // A value of "outside" would not shrink the grid and allow
+                // the legend to overflow the container.
+                legend: 
+                    {
+                        show: true,
+                        placement: 'outsideGrid'
+                    },
+                seriesColors: 
+                    [ "#62C462", "#007ACC", "#FFD42A", "#C46293"],
+                grid: 
+                    {
+                        drawGridLines: true,        // wether to draw lines across the grid or not.
+                        gridLineColor: '#dddddd',    // *Color of the grid lines.
+                        background: '#fafafa',      // CSS color spec for background color of grid.
+                        borderColor: '#999999',     // CSS color spec for border around grid.
+                        borderWidth: 0,           // pixel width of border around grid.
+                        shadow: false,               // draw a shadow for grid.                        
+                        renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
+                        rendererOptions: {}         // options to pass to the renderer.  Note, the default
+                                                    // CanvasGridRenderer takes no additional options.
+                    },
+                axes: 
+                    {
+                        // Use a category axis on the x axis and use our custom ticks.
+                        xaxis: 
+                            {
+                                renderer: $.jqplot.CategoryAxisRenderer,
+                                ticks: ticks
+                            },
+                        // Pad the y axis just a little so bars can get close to, but
+                        // not touch, the grid boundaries.  1.2 is the default padding.
+                        yaxis: 
+                            {
+                                pad: 1.05,                    
+                            },
+                    }              
+
+            });
+        });
 </script>
