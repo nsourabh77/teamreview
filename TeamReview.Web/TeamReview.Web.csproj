@@ -189,7 +189,12 @@
     <Content Include="Content\edit-in-place.js" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
+    <Content Include="Content\jquery.jqplot.css" />
+    <Content Include="Content\scripts\jquery.jqplot.min.js" />
     <Content Include="Content\layout.css" />
+    <Content Include="Content\scripts\jqplot.barRenderer.min.js" />
+    <Content Include="Content\scripts\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="Content\scripts\jqplot.pointLabels.min.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.9.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
