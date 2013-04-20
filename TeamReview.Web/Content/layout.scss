@@ -208,7 +208,10 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 	
 	/* graph */
 	
-		.jqplot-axis, .jqplot-point-label  {font-family:carter one; font-size:1.1em;}
+		.jqplot-table-legend, .jqplot-axis, .jqplot-point-label  {font-family:carter one; font-size:1.1em;}		
+		.jqplot-table-legend {top:-2px !important;}
+		.jqplot-table-legend td {padding: 0 4px 0 2px; line-height:2;}
+		td.jqplot-table-legend-label {padding:0 6px 0 0; position:relative; top:2px;}
 		
 	
 	/* end graph */

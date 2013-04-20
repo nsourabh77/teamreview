@@ -4940,9 +4940,21 @@ input[type="radio"] {
 
 /* end messages */
 /* graph */
-.jqplot-axis, .jqplot-point-label {
+.jqplot-table-legend, .jqplot-axis, .jqplot-point-label {
   font-family: carter one;
   font-size: 1.1em; }
+
+.jqplot-table-legend {
+  top: -2px !important; }
+
+.jqplot-table-legend td {
+  padding: 0 4px 0 2px;
+  line-height: 2; }
+
+td.jqplot-table-legend-label {
+  padding: 0 6px 0 0;
+  position: relative;
+  top: 2px; }
 
 /* end graph */
 /* general */
