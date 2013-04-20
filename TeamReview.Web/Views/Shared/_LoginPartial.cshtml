@@ -1,7 +1,15 @@
 @if (Request.IsAuthenticated) {    
     <ul class="nav1">
         <li>@Html.ActionLink("My Dashboard", "Index", "Review")</li>
-        <li><a href="#about">Help</a></li>
+        <li>
+            <a href="@Url.Action("Help", "Home")">Help</a>
+            <ul class="subnav">
+                <li><a href="@Url.Action("StackRanking", "Home")">Stack Ranking</a></li>
+                <li><a href="@Url.Action("PeerReviews", "Home")">Peer Reviews</a></li>
+                <li><a href="@Url.Action("PerformanceReview", "Home")">Performance Review</a></li>
+                <li><a href="@Url.Action("HistoricalData", "Home")">Visualize Data</a></li>
+            </ul>
+        </li>
         <li><a href="#contact">Contact</a></li>            
     </ul>
     <a class="hd15" href="@Url.Action("Create", "Review")"><i class="db12"></i>Create Review</a>

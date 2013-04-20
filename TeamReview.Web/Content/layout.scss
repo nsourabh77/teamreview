@@ -22,6 +22,35 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 		
 	/* end display */
 	
+	/* shadows */
+
+	.txt-shadow {
+		-webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+		   -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+		        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);}
+
+	.shadow-top-bot{
+		-webkit-box-shadow: 0 5px 4px rgba(0, 0, 0, 0.20), 0 -5px 4px rgba(0, 0, 0, 0.20);
+		   -moz-box-shadow: 0 5px 4px rgba(0, 0, 0, 0.20), 0 -5px 4px rgba(0, 0, 0, 0.20);
+		        box-shadow: 0 5px 4px rgba(0, 0, 0, 0.20), 0 -5px 4px rgba(0, 0, 0, 0.20);}			
+	
+	.shadow-all{
+		-webkit-box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.20);
+		   -moz-box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.20);
+		        box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.20);}		
+	
+	.shadow-no-top{
+		-webkit-box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.20), -5px 5px 5px 0 rgba(0, 0, 0, 0.20);
+		   -moz-box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.20), -5px 5px 5px 0 rgba(0, 0, 0, 0.20);
+		        box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.20), -5px 5px 5px 0 rgba(0, 0, 0, 0.20);}		
+	
+	.shadow-bot {
+		   -moz-box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.70);
+	    -webkit-box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.70);
+                box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.70);}
+				
+/* end shadows */
+	
 	/* loading */
 		/* funzt net richtig...
 		.loading { height: 100%; width: 100%; position: absolute; z-index: 11111; overflow: hidden; display:none; }
@@ -73,7 +102,9 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 		blockquote {font-style:italic; letter-spacing:0.01em; z-index:1; display:block; font-size:1.1em; line-height:1.8;}
 			blockquote:before, q:before {content:"\201E" ; font-size:1.3em; margin-right:2px; line-height:1em; display:inline;}
 			blockquote:after, q:after {content:"\201D" ; font-size:1.3em; margin:0 0 8px 2px; display:inline; line-height:1em; display:inline;}
-	
+		
+		.special {font-family: carter one; font-weight:100; font-size:1.1em;}
+		
 	/* end typography */
 	
 	/* icons */
@@ -208,6 +239,7 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 	
 	/* graph */
 	
+		#my-results-chart, #peer-results-chart, #stack-ranking-chart {height:500px;}
 		.jqplot-table-legend, .jqplot-axis, .jqplot-point-label  {font-family:carter one; font-size:1.1em;}		
 		.jqplot-table-legend {top:-2px !important;}
 		.jqplot-table-legend td {padding: 0 4px 0 2px; line-height:2;}
@@ -219,7 +251,7 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 /* general */
 
 /* header */
-	header {@include gradient(#333, #222); margin-bottom:20px; color:#eee;}
+	header {@include gradient(#333, #222); margin-bottom:20px; color:#eee; position:fixed; top: 0; right:0; left:0; z-index:1004;}
 	header a {color:#eee;}
 	.logo  {font-size:1.8em; float:left; display:block; padding:16px 0 12px 0; margin-right:32px;}
 	.logo:hover {text-decoration:none;}

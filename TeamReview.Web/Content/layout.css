@@ -4588,6 +4588,33 @@ body [id^="collapsed"] {
   color: #999; }
 
 /* end display */
+/* shadows */
+.txt-shadow {
+  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05); }
+
+.shadow-top-bot {
+  -webkit-box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2), 0 -5px 4px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2), 0 -5px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.2), 0 -5px 4px rgba(0, 0, 0, 0.2); }
+
+.shadow-all {
+  -webkit-box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.2); }
+
+.shadow-no-top, .tooltip {
+  -webkit-box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.2), -5px 5px 5px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.2), -5px 5px 5px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.2), -5px 5px 5px 0 rgba(0, 0, 0, 0.2); }
+
+.shadow-bot {
+  -moz-box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.7);
+  box-shadow: 0px 0px 12px 4px rgba(0, 0, 0, 0.7); }
+
+/* end shadows */
 /* loading */
 	/* funzt net richtig...
 		.loading { height: 100%; width: 100%; position: absolute; z-index: 11111; overflow: hidden; display:none; }
@@ -4659,6 +4686,11 @@ blockquote:after, q:after {
   display: inline;
   line-height: 1em;
   display: inline; }
+
+.special {
+  font-family: carter one;
+  font-weight: 100;
+  font-size: 1.1em; }
 
 /* end typography */
 /* icons */
@@ -4940,6 +4972,9 @@ input[type="radio"] {
 
 /* end messages */
 /* graph */
+#my-results-chart, #peer-results-chart, #stack-ranking-chart {
+  height: 500px; }
+
 .jqplot-table-legend, .jqplot-axis, .jqplot-point-label {
   font-family: carter one;
   font-size: 1.1em; }
@@ -4972,7 +5007,12 @@ header {
   filter: progid:dximagetransform.microsoft.gradient(startColorstr='$color-top', endColorstr='$color-bot', GradientType=0);
   filter: progid:dximagetransform.microsoft.gradient(enabled=false);
   margin-bottom: 20px;
-  color: #eee; }
+  color: #eee;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1004; }
 
 header a {
   color: #eee; }
