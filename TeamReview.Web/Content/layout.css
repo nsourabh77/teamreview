@@ -4541,7 +4541,7 @@ a.badge:hover {
   visibility: hidden; }
 
 body {
-  padding-top: 0;
+  padding-top: 6em;
   background: #F5F5F5;
   color: #4a4a4a; }
 
@@ -4559,6 +4559,9 @@ body {
 .well, .box1of3, .box1of4, .box1of2, .box1of1, .form {
   background: #fff;
   border-color: #ddd; }
+
+.container.well, .container.box1of3, .container.box1of4, .container.box1of2, .container.box1of1, .container.form {
+  padding-top: 0; }
 
 /* general */
 /* display */
@@ -4660,6 +4663,11 @@ a:hover {
 .info, .help-block, .cr410 {
   font-style: italic;
   color: #666; }
+
+.pic-text {
+  text-align: right;
+  font-size: 0.9em;
+  padding-top: 0.5em; }
 
 .text-xl {
   font-size: 2em; }

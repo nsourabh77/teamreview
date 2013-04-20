@@ -190,6 +190,9 @@
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\jquery.jqplot.css" />
+    <Content Include="Content\pics\my-rating.png" />
+    <Content Include="Content\pics\peer-rating.png" />
+    <Content Include="Content\pics\stack-ranking.png" />
     <Content Include="Content\scripts\jquery.jqplot.min.js" />
     <Content Include="Content\layout.css" />
     <Content Include="Content\scripts\jqplot.barRenderer.min.js" />

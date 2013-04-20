@@ -3,10 +3,11 @@
 @import "_reset";
 @import "_bootstrap";
   
-body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
+body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 
 #wrap:before {background:#2e2e2e; width:250px; height:100%; position:fixed; left:0; top:0; content:""; z-index:-1; line-height:20px;}
 .well{background:#fff; border-color:#ddd;}
+.container.well {padding-top:0;}
 
 /* general */
 	
@@ -97,13 +98,15 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 		.info {font-style:italic; color:#666;}
 		.help-block {@extend .info;}
 		
+		.pic-text {text-align:right; font-size:0.9em; padding-top:0.5em;}
+		
 		.text-xl {font-size:2em;}	
 		
 		blockquote {font-style:italic; letter-spacing:0.01em; z-index:1; display:block; font-size:1.1em; line-height:1.8;}
 			blockquote:before, q:before {content:"\201E" ; font-size:1.3em; margin-right:2px; line-height:1em; display:inline;}
 			blockquote:after, q:after {content:"\201D" ; font-size:1.3em; margin:0 0 8px 2px; display:inline; line-height:1em; display:inline;}
 		
-		.special {font-family: carter one; font-weight:100; font-size:1.1em;}
+		.special {font-family: carter one; font-weight:100; font-size:1.1em;}		
 		
 	/* end typography */
 	
@@ -252,7 +255,7 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 
 /* header */
 	header {@include gradient(#333, #222); margin-bottom:20px; color:#eee; position:fixed; top: 0; right:0; left:0; z-index:1004;}
-	header a {color:#eee;}
+	header a {color:#eee;}	
 	.logo  {font-size:1.8em; float:left; display:block; padding:16px 0 12px 0; margin-right:32px;}
 	.logo:hover {text-decoration:none;}
 	.lg11 {color:#62C462;}
@@ -286,7 +289,7 @@ body {padding-top:0; background:#F5F5F5; color:#4a4a4a;}
 	
 /* end sidebar */
 
-/* main content */
+/* main content */	
 
 	.lg1 {@extend .btn, .btn-large, .btn-success;}
 	.lg1 img {display:inline-block; margin-right:5px;}
