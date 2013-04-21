@@ -4564,6 +4564,8 @@ body {
   padding-top: 0; }
 
 /* general */
+/* colors */
+/* end colors */
 /* display */
 .hide {
   display: none; }
@@ -4630,10 +4632,12 @@ body [id^="collapsed"] {
 /* typography */
 h1, h2, h3, h4, h5, h6, legend, .logo, .button {
   font-family: 'Carter One', sans serif;
-  font-weight: normal; }
+  font-weight: normal;
+  color: #4a4a4a; }
 
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 1em; }
+  margin-top: 1em;
+  line-height: 1.4; }
 
 h1 {
   font-size: 3.2em; }
@@ -4643,7 +4647,8 @@ h2 {
   margin-top: 1.6em; }
 
 h3 {
-  font-size: 1.8em; }
+  font-size: 2em;
+  padding-bottom: 0.3em; }
 
 h4 {
   font-size: 1.4em; }
@@ -4660,7 +4665,7 @@ a:hover {
 .well p:last-child, .box1of3 p:last-child, .box1of4 p:last-child, .box1of2 p:last-child, .box1of1 p:last-child, .form p:last-child {
   margin-bottom: 0; }
 
-.info, .help-block, .cr410 {
+.info, .help-block, .pic-text, .cr410 {
   font-style: italic;
   color: #666; }
 
@@ -4673,27 +4678,36 @@ a:hover {
   font-size: 2em; }
 
 blockquote {
+  margin: 2em 0 2em 0; }
+
+blockquote:nth-child(1) {
+  margin-top: 0.5em; }
+
+blockquote .q-text {
   font-style: italic;
   letter-spacing: 0.01em;
   z-index: 1;
   display: block;
-  font-size: 1.1em;
-  line-height: 1.8; }
+  font-size: 1.5em;
+  line-height: 1.8;
+  padding-left: 52px;
+  color: #666; }
 
-blockquote:before, q:before {
+blockquote:before {
   content: "\201E";
-  font-size: 1.3em;
-  margin-right: 2px;
-  line-height: 1em;
-  display: inline; }
-
-blockquote:after, q:after {
-  content: "\201D";
-  font-size: 1.3em;
-  margin: 0 0 8px 2px;
+  font-size: 10em;
+  float: left;
+  line-height: 0.1;
   display: inline;
-  line-height: 1em;
-  display: inline; }
+  color: #62c462;
+  position: relative;
+  top: -34px; }
+
+.q-author {
+  font-weight: bold;
+  text-align: right;
+  font-style: italic;
+  padding-right: 52px; }
 
 .special {
   font-family: carter one;
@@ -4748,20 +4762,20 @@ h2 i {
 
 /* end rounded corners */
 /* clearing floats */
-.clear, .tabs {
+.clear, blockquote, .tabs {
   display: inline-block; }
 
-.clear:after, .tabs:after, .container:after {
+.clear:after, blockquote:after, .tabs:after, .container:after {
   content: ".";
   display: block;
   height: 0;
   clear: both;
   visibility: hidden; }
 
-* html .clear, * html .tabs {
+* html .clear, * html blockquote, * html .tabs {
   height: 1%; }
 
-.clear, .tabs {
+.clear, blockquote, .tabs {
   display: block; }
 
 .clearb {
@@ -4853,7 +4867,6 @@ h2 i {
   padding: 12px;
   background: #eee;
   position: relative;
-  color: #333;
   margin-top: 16px;
   margin-bottom: 0; }
 
@@ -5036,16 +5049,16 @@ header a {
   text-decoration: none; }
 
 .lg11 {
-  color: #62C462; }
+  color: #62c462; }
 
 .lg12 {
-  color: #FFD42A; }
+  color: #ffd42a; }
 
 .logo:hover .lg11 {
-  color: #FFD42A; }
+  color: #ffd42a; }
 
 .logo:hover .lg12 {
-  color: #62C462; }
+  color: #62c462; }
 
 .nav1 {
   float: left;
@@ -5066,7 +5079,7 @@ header a {
   text-transform: uppercase; }
 
 .nav1 a:hover, .mini-nav a:hover {
-  background: #FFD42A;
+  background: #ffd42a;
   color: #333;
   text-decoration: none; }
 
@@ -5178,7 +5191,7 @@ header a {
   padding: 12px; }
 
 .table1 tbody tr:hover td, .table1 tbody tr:hover th {
-  background: #FFD42A; }
+  background: #ffd42a; }
 
 .table1 th {
   font-family: carter one;
@@ -5223,7 +5236,7 @@ header a {
   border-bottom: solid 1px #ddd; }
 
 .rt-selected, .rt1:hover, .rt1:hover ~ .rt1, .rt-selected ~ .rt1 {
-  background: #62C462;
+  background: #62c462;
   color: #fff;
   cursor: pointer; }
 

@@ -11,7 +11,14 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 
 /* general */
 	
-	/* display */
+	/* colors */
+	
+		$primary: #62C462;
+		$secondary: #FFD42A;
+	
+	/* end colors */
+	
+	/* display */	
 	
 		.hide {display:none;}
 		body [id^="collapsed"]{display:none;}
@@ -80,12 +87,12 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 	
 	/* typography */
 	
-		h1, h2, h3, h4, h5, h6, legend, .logo, .button {font-family: 'Carter One', sans serif; font-weight:normal;}
-		h1, h2, h3, h4, h5, h6 {margin-top:1em;}
-	
+		h1, h2, h3, h4, h5, h6, legend, .logo, .button {font-family: 'Carter One', sans serif; font-weight:normal; color:#4a4a4a;}
+		h1, h2, h3, h4, h5, h6 {margin-top:1em; line-height:1.4;}
+		
 		h1 {font-size:3.2em;}		
 		h2 {font-size:2.6em; margin-top:1.6em;}
-		h3 {font-size:1.8em;}
+		h3 {font-size:2em; padding-bottom:0.3em;}
 		h4 {font-size:1.4em;}
 	
 		p {font-size:1.1em;}
@@ -98,13 +105,15 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 		.info {font-style:italic; color:#666;}
 		.help-block {@extend .info;}
 		
-		.pic-text {text-align:right; font-size:0.9em; padding-top:0.5em;}
+		.pic-text {@extend .info; text-align:right; font-size:0.9em; padding-top:0.5em;}
 		
 		.text-xl {font-size:2em;}	
 		
-		blockquote {font-style:italic; letter-spacing:0.01em; z-index:1; display:block; font-size:1.1em; line-height:1.8;}
-			blockquote:before, q:before {content:"\201E" ; font-size:1.3em; margin-right:2px; line-height:1em; display:inline;}
-			blockquote:after, q:after {content:"\201D" ; font-size:1.3em; margin:0 0 8px 2px; display:inline; line-height:1em; display:inline;}
+		blockquote {@extend .clear; margin:2em 0 2em 0;}
+		blockquote:nth-child(1){margin-top:0.5em;}
+		blockquote .q-text{font-style:italic; letter-spacing:0.01em; z-index:1; display:block; font-size:1.5em; line-height:1.8; padding-left:52px; color:#666;}
+			blockquote:before {content:"\201E" ; font-size:10em;  float:left; line-height:0.1; display:inline; color:$primary; position:relative; top:-34px;}
+			.q-author {font-weight:bold; text-align:right; font-style:italic; padding-right:52px;}
 		
 		.special {font-family: carter one; font-weight:100; font-size:1.1em;}		
 		
@@ -168,7 +177,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 		.box1of2 {@extend .well; width:43%; padding:1.5%; margin:1.5%; float:left;}
 		.box1of1 {@extend .well; width:93%; padding:1.5%; margin:1.5%; float:left;}
 		
-		.block-top {padding:12px; background:#eee; position:relative; color:#333; margin-top:16px; margin-bottom:0;}
+		.block-top {padding:12px; background:#eee; position:relative; margin-top:16px; margin-bottom:0;}
 		.block-top:before {display:block; content:""; border-left:16px solid transparent; border-right:solid 16px transparent; border-bottom:16px #eee solid; width:0; height:0; position:absolute; top:-16px; left:40px;}
 		
 		.block-top-2 {@extend .block-top; background:#eee; margin-top:0;}
@@ -258,16 +267,16 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 	header a {color:#eee;}	
 	.logo  {font-size:1.8em; float:left; display:block; padding:16px 0 12px 0; margin-right:32px;}
 	.logo:hover {text-decoration:none;}
-	.lg11 {color:#62C462;}
-	.lg12 {color:#FFD42A;}
-	.logo:hover .lg11 {color:#FFD42A;}
-	.logo:hover .lg12 {color:#62C462;}
+	.lg11 {color:$primary;}
+	.lg12 {color:$secondary;}
+	.logo:hover .lg11 {color:$secondary;}
+	.logo:hover .lg12 {color:$primary;}
 	
 	.nav1 {float:left; list-style:none; margin:0; font-family:open sans;}
 	.nav1 li {position:relative;}
 	.nav1 li, .mini-nav li {float:left;}
 	.nav1 a, .mini-nav a {padding:18px 8px 12px 8px; display:inline-block; text-decoration:none; text-transform:uppercase;}
-	.nav1 a:hover, .mini-nav a:hover {background:#FFD42A; color:#333; text-decoration:none;}	
+	.nav1 a:hover, .mini-nav a:hover {background:$secondary; color:#333; text-decoration:none;}	
 	
 	.nav1 > li:hover .subnav {display:block;}
 	.subnav {display:none; list-style:none; background:#222; position:absolute; width:auto;}
@@ -319,7 +328,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 	.table tr:last-child {border:none;}
 	.table tr:last-child .rt1 {border-top:none;}
 	.table1 th {padding:12px;}
-	.table1 tbody tr:hover td, .table1 tbody tr:hover th{background:#FFD42A;}
+	.table1 tbody tr:hover td, .table1 tbody tr:hover th{background:$secondary;}
 	.table1 th {font-family:carter one; font-size:1.8em; vertical-align:middle;}	
 	.t-head td, .t-head th {background:#ddd;}
 	.t-head th {color:#999;}
@@ -330,7 +339,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 	.rt1:last-child  {border-left:solid 1px #ddd;}
 	.table1 tr:last-child .rt1 {border-bottom:solid 1px #ddd;}
 	
-	.rt-selected, .rt1:hover , .rt1:hover ~ .rt1, .rt-selected ~ .rt1{background:#62C462; color:#fff; cursor:pointer;}
+	.rt-selected, .rt1:hover , .rt1:hover ~ .rt1, .rt-selected ~ .rt1{background:$primary; color:#fff; cursor:pointer;}
 	.rt-selected, .rt-selected:hover, .rt-selected ~ .rt1:hover {color:#333;}
 	
 	.rt81 {text-align:center;}
