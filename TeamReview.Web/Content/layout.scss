@@ -7,7 +7,12 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 
 #wrap:before {background:#2e2e2e; width:250px; height:100%; position:fixed; left:0; top:0; content:""; z-index:-1; line-height:20px;}
 .well{background:#fff; border-color:#ddd;}
+.container {position:relative;}
 .container.well {padding-top:0;}
+
+.content-s {width:650px; margin-right:24px; float:left;}
+.sidebar {width:250px; float:right; margin-top:3em;}
+.fix-this {position:fixed; height:90%; width:250px;}
 
 /* general */
 	
@@ -303,14 +308,14 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 
 /* sidebar */
 	
-	.sidebar {width:250px; float:right; margin-top:3em;}
+	
 	
 /* end sidebar */
 
 
 /* main content */	
 
-	.content-s {width:650px; margin-right:24px; float:left;}
+	
 	
 
 	.lg1 {@extend .btn, .btn-large, .btn-success;}
