@@ -90,7 +90,8 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 		h1, h2, h3, h4, h5, h6, legend, .logo, .button {font-family: 'Carter One', sans serif; font-weight:normal; color:#4a4a4a;}
 		h1, h2, h3, h4, h5, h6 {margin-top:1em; line-height:1.4;}
 		
-		h1 {font-size:3.2em;}		
+		h1 {font-size:3.2em;}
+		h1:first-child {margin-top:0.5em;}
 		h2 {font-size:2.6em; margin-top:1.6em;}
 		h3 {font-size:2em; padding-bottom:0.3em;}
 		h4 {font-size:1.4em;}
@@ -124,6 +125,13 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 		h2 i {margin-top:10px;}
 	
 	/* end icons */
+	
+	/* buttons */
+	
+		.btn10 {@extend .btn, .btn-large, .btn-success; font-size:1.3em; font-weight:bold; width:220px;}
+		.btn11 {@extend .btn, .btn-large, .btn-info; font-size:1.3em; font-weight:bold; width:220px;}
+	
+	/* end buttons */
 	
 	/* rounded corners */
 
@@ -294,11 +302,16 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 /* end header */
 
 /* sidebar */
-
+	
+	.sidebar {width:250px; float:right; margin-top:3em;}
 	
 /* end sidebar */
 
+
 /* main content */	
+
+	.content-s {width:650px; margin-right:24px; float:left;}
+	
 
 	.lg1 {@extend .btn, .btn-large, .btn-success;}
 	.lg1 img {display:inline-block; margin-right:5px;}
