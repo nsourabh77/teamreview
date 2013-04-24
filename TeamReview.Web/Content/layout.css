@@ -471,9 +471,6 @@ ul {
 ol {
   list-style: decimal; }
 
-li {
-  line-height: 18px; }
-
 ul.unstyled,
 ol.unstyled {
   margin-left: 0;
@@ -4605,7 +4602,8 @@ a.badge:hover {
 body {
   padding-top: 6em;
   background: #F5F5F5;
-  color: #4a4a4a; }
+  color: #4a4a4a;
+  line-height: 1.8; }
 
 #wrap:before {
   background: #2e2e2e;
@@ -4636,7 +4634,7 @@ body {
 .sidebar {
   width: 250px;
   float: right;
-  margin-top: 3em; }
+  margin-top: 1em; }
 
 .fix-this {
   position: fixed;
@@ -4731,12 +4729,13 @@ h2 {
 
 h3 {
   font-size: 2em;
-  padding-bottom: 0.3em; }
+  padding-bottom: 0.3em;
+  margin-top: 1.6em; }
 
 h4 {
   font-size: 1.4em; }
 
-p {
+ul, ol, p {
   font-size: 1.1em; }
 
 a {
@@ -4759,6 +4758,13 @@ a:hover {
 
 .text-xl {
   font-size: 2em; }
+
+.content-s ul {
+  list-style: disc outside;
+  padding-left: 16px; }
+
+.content-s ul li {
+  padding-bottom: 8px; }
 
 blockquote {
   margin: 2em 0 2em 0; }
@@ -4805,17 +4811,19 @@ h2 i {
 /* end icons */
 /* buttons */
 .btn, .btn10, .btn11, .primaryAction, .hd15, .lg1, .db11, .cr41, .cr43, .cr51, .cr52, .pr41 {
-  font-family: carter one; }
+  font-family: carter one;
+  font-weight: 100; }
 
 .btn10 {
   font-size: 1.3em;
-  font-weight: bold;
   width: 220px; }
 
 .btn11 {
   font-size: 1.3em;
-  font-weight: bold;
-  width: 220px; }
+  width: 100% !important; }
+
+.btn-large i, .btn10 i, .btn11 i, .lg1 i, .cr51 i, .cr52 i, .pr41 i {
+  margin-top: 7px; }
 
 /* end buttons */
 /* rounded corners */
@@ -5121,15 +5129,16 @@ td.jqplot-table-legend-label {
 
 .toc a {
   border-bottom: 1px solid #ddd;
-  padding: 12px 8px 8px 8px;
-  display: block; }
+  padding: 6px 8px 4px 8px;
+  display: block;
+  font-size: 0.9em; }
 
 .toc li:first-child a {
-  padding-top: 16px; }
+  padding-top: 12px; }
 
 .toc li:last-child a {
   border: none;
-  padding-bottom: 16px; }
+  padding-bottom: 12px; }
 
 .toc-active a, .toc a:hover {
   background: #007acc;
