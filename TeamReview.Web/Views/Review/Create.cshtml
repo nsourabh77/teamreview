@@ -126,15 +126,12 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-   
-}
-
- <!-- edit in place script: http://www.egstudio.biz/tiny-inline-edit-plugin-for-jquery/ -->
-    
-<script>
-    $(document).ready(function () {
-        var replaceWith = $('<input name="temp" type="text" />'),
-        connectWith = $('.cr27');
-        $('.cr26').inlineEdit(replaceWith, connectWith);        
-    });
-</script>    
+    @Scripts.Render("~/bundles/editinplace")
+    <script>
+        $(function () {
+            var replaceWith = $('<input name="temp" type="text" />'),
+            connectWith = $('.cr27');
+            $('.cr26').inlineEdit(replaceWith, connectWith);
+        });
+    </script>
+}  

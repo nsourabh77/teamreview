@@ -10,6 +10,9 @@ namespace TeamReview.Web {
 			bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
 				"~/Scripts/jquery-ui-{version}.js"));
 
+			bundles.Add(new ScriptBundle("~/bundles/editinplace").Include(
+				"~/Scripts/jquery.edit-in-place.js"));
+
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 				"~/Scripts/jquery.unobtrusive*",
 				"~/Scripts/jquery.validate*"));
