@@ -181,7 +181,6 @@
     <Compile Include="ViewModels\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\PeerModels.cs" />
     <Compile Include="ViewModels\ResultViewModel.cs" />
-    <Compile Include="ViewModels\ReviewCreateModel.cs" />
     <Compile Include="ViewModels\ReviewEditModel.cs" />
     <Compile Include="ViewModels\ReviewViewModel.cs" />
   </ItemGroup>
@@ -230,7 +229,6 @@
     <Content Include="Views\Review\Index.cshtml" />
     <Content Include="Views\Review\Details.cshtml" />
     <Content Include="Views\Review\Create.cshtml" />
-    <Content Include="Views\Review\Edit.cshtml" />
     <Content Include="Views\Review\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
