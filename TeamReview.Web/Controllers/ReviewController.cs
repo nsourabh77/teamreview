@@ -344,6 +344,7 @@ namespace TeamReview.Web.Controllers {
 			reviewconfiguration.Active = true;
 			_db.SaveChanges();
 
+			// TODO: send mail asynchronously from background task
 			SendMailToPeers(reviewconfiguration.Peers, id);
 
 			TempData["Message"] = "Review has been started and mails have been sent to peers";
