@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -15,6 +14,8 @@ namespace TeamReview.Web.Models {
 		public DbSet<UserProfile> UserProfiles { get; set; }
 		public DbSet<ReviewConfiguration> ReviewConfigurations { get; set; }
 		public DbSet<ReviewCategory> ReviewCategories { get; set; }
+		public DbSet<ReviewFeedback> ReviewFeedbacks { get; set; }
+		public DbSet<Assessment> Assessments { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder) {
 			base.OnModelCreating(modelBuilder);
