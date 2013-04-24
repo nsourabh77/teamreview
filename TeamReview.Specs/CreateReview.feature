@@ -38,6 +38,24 @@ Scenario: Show edit link to review on dashboard
 	When I click on the "Edit review" link of the review
 	Then I am on the "Edit review" page for my review
 
+Scenario: Edit review as invited peer
+	Given I am logged in
+		And I am invited to a review
+		And I am on the "Dashboard" page
+	When I click on the "Edit review" link of the review
+	Then I am on the "Edit review" page for the review
+
+Scenario: Show only Reviews I am part of
+	Given I am logged in 
+		And I own a review X
+		And I am invited to a review Y
+		And I am not part of review Z
+	When I am on the "Dashboard" page
+	Then I see X
+		And I see Y
+		And I do not see Z
+
+
 Scenario: Invite new peer to my review
 	Given I am logged in
 		And I own a review

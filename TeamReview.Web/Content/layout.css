@@ -5299,6 +5299,12 @@ header a {
 .t-head th {
   color: #999; }
 
+td.db25 {
+  font-family: carter one;
+  font-size: 1.6em;
+  padding-top: 16px;
+  padding-bottom: 12px; }
+
 .rt31 {
   font-family: carter one;
   font-size: 1.6em;
