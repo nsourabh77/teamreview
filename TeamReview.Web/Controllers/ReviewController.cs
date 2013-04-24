@@ -17,7 +17,11 @@ namespace TeamReview.Web.Controllers {
 
 		public ActionResult Index() {
 			var currentUserId = _db.UserProfiles.First(user => user.UserName == User.Identity.Name).UserId;
-			var reviewConfigurations = _db.ReviewConfigurations.Include("Feedback").Include("Peers").ToList();
+			var reviewConfigurations = _db.ReviewConfigurations
+				.Include("Feedback")
+				.Include("Peers")
+				.Where(r => r.Peers.Any(p => p.UserId == currentUserId))
+				.ToList();
 			var reviewViewModels = new List<ReviewViewModel>();
 			foreach (var reviewConfiguration in reviewConfigurations) {
 				var reviewViewModel = new ReviewViewModel {ReviewId = reviewConfiguration.ReviewId, Name = reviewConfiguration.Name};
@@ -95,11 +99,11 @@ namespace TeamReview.Web.Controllers {
 			if (loggedInUser != null) {
 				newReview.Peers.Add(loggedInUser);
 			}
-			
+
 			_db.SaveChanges();
 
 			if (action != null && action == "Save and Start the Review") {
-				return RedirectToAction("StartReview", new { id = newReview.ReviewId });
+				return RedirectToAction("StartReview", new {id = newReview.ReviewId});
 			}
 
 			TempData["Message"] = "Review has been created";

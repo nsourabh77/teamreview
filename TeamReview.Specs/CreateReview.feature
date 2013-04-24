@@ -47,14 +47,13 @@ Scenario: Edit review as invited peer
 
 Scenario: Show only Reviews I am part of
 	Given I am logged in 
-		And I own a review X
-		And I am invited to a review Y
-		And I am not part of review Z
-	When I am on the "Dashboard" page
-	Then I see X
-		And I see Y
-		And I do not see Z
-
+		And I own a review X-Review
+		And I am invited to a review Y-Review
+		And I am not part of review Z-Review
+	When I go to the "Dashboard" page
+	Then I see "X-Review"
+		And I see "Y-Review"
+		And I do not see "Z-Review"
 
 Scenario: Invite new peer to my review
 	Given I am logged in

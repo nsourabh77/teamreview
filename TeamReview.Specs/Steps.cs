@@ -227,12 +227,35 @@ namespace TeamReview.Specs {
 		}
 
 		[Given(@"I own a review")]
-		public void GivenIOwnAReview() {
+		[Given(@"I am invited to a review")]
+		public void GivenIOwnAReview(string reviewName = "NewReview") {
 			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
-			var reviewConfiguration = new ReviewConfiguration {Name = "NewReview"};
+			var reviewConfiguration = new ReviewConfiguration {Name = reviewName};
 			using (var ctx = new DelayedDatabaseContext()) {
 				Console.WriteLine("Writing review to DB");
 				reviewConfiguration.Peers.Add(ctx.UserProfiles.Find(thisIsMe.UserId));
+				ctx.ReviewConfigurations.Add(reviewConfiguration);
+				ctx.SaveChanges();
+				ScenarioContext.Current.Set(reviewConfiguration);
+			}
+		}
+
+		[Given(@"I own a review (.*)")]
+		public void GivenIOwnAReviewWithName(string reviewName) {
+			GivenIOwnAReview(reviewName);
+		}
+
+		[Given(@"I am invited to a review (.*)")]
+		public void GivenIAmInvitedToAReviewWithName(string reviewName) {
+			GivenIOwnAReview(reviewName);
+		}
+
+		[Given(@"I am not part of review (.*)")]
+		public void GivenIAmNotPartOfReview(string reviewName) {
+			var reviewConfiguration = new ReviewConfiguration {Name = reviewName};
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Writing review to DB");
+				reviewConfiguration.Peers.Add(new UserProfile {EmailAddress = "test@example.com", UserName = "somebody else"});
 				ctx.ReviewConfigurations.Add(reviewConfiguration);
 				ctx.SaveChanges();
 				ScenarioContext.Current.Set(reviewConfiguration);
@@ -451,6 +474,7 @@ namespace TeamReview.Specs {
 		}
 
 		[Then(@"I am on the ""(.*)"" page for my review")]
+		[Then(@"I am on the ""(.*)"" page for the review")]
 		public void ThenIAmOnThePageForMyReview(string pagename) {
 			Assert.IsTrue(_browser.Title.Contains(pagename));
 		}
@@ -461,6 +485,7 @@ namespace TeamReview.Specs {
 		}
 
 		[Given(@"I am on the ""(.*)"" page")]
+		[When(@"I go to the ""(.*)"" page")]
 		public void GivenIAmOnThePage(string pageName) {
 			string path;
 			switch (pageName) {
@@ -471,7 +496,7 @@ namespace TeamReview.Specs {
 					path = "/Review/Results/1";
 					break;
 				default:
-					throw new ArgumentOutOfRangeException("pageName", "No mapping from '"+pageName+"' to concrete url path exists!");
+					throw new ArgumentOutOfRangeException("pageName", "No mapping from '" + pageName + "' to concrete url path exists!");
 			}
 			_browser.Visit(path);
 		}
@@ -585,6 +610,16 @@ namespace TeamReview.Specs {
 		public void ThenISeeTheNameOfReview() {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
 			Assert.IsTrue(_browser.HasContent(review.Name));
+		}
+
+		[Then(@"I see ""(.*)""")]
+		public void ThenISee(string text) {
+			Assert.IsTrue(_browser.HasContent(text));
+		}
+
+		[Then(@"I do not see ""(.*)""")]
+		public void ThenIDoNotSee(string text) {
+			Assert.IsFalse(_browser.HasContent(text));
 		}
 
 		[Then(@"I have input options from (.*) to (.*) for each peer for each category")]
