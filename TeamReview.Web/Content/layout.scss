@@ -20,6 +20,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 	
 		$primary: #62C462;
 		$secondary: #FFD42A;
+		$tertiary:#007ACC;		
 	
 	/* end colors */
 	
@@ -133,6 +134,8 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 	
 	/* buttons */
 	
+		.btn {font-family:carter one;}
+	
 		.btn10 {@extend .btn, .btn-large, .btn-success; font-size:1.3em; font-weight:bold; width:220px;}
 		.btn11 {@extend .btn, .btn-large, .btn-info; font-size:1.3em; font-weight:bold; width:220px;}
 	
@@ -182,6 +185,8 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 		.pagination a.active, .pagination a:hover {background:#fff; font-weight:bold;}		
 	
 	/* end pager */
+	
+
 	
 	/* boxes */
 		
@@ -272,6 +277,19 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a;}
 		
 	
 	/* end graph */
+	
+	/* toc - table of contents */
+	
+		.toc {@extend .block-top; margin-bottom:32px; padding:0;}
+		.toc ul {list-style:none;}
+		.toc a {border-bottom:1px solid #ddd; padding:12px 8px 8px 8px; display:block;}
+		.toc li:first-child a {padding-top:16px;}
+		.toc li:last-child a {border:none; padding-bottom:16px;}
+		.toc-active a, .toc a:hover {background:$tertiary; color:#fff; text-decoration:none;}		
+		.toc .h3 a {padding-left:24px;}
+		
+	
+	/* end toc */
 	
 /* general */
 

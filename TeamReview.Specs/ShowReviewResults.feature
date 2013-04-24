@@ -39,4 +39,16 @@ Scenario: Show Stack Ranking Results
 	Then for each peer I see their stacked peer rating (average rating of all peers except his/hers)
 		And for each peer I see the sum of their stacked peer ratings
 
+Scenario: Show Peers That have completed review
+	Given I am logged in
+		And I have a started review with 2 categories and 2 additional peers Isabelle, Eva
+		And Eva has completed the review
+		And Isabelle has not completed the review
+		And I am on the "Results" page
+	Then I see that Eva has completed the review
+		And I see that Isabelle has not completed review
+
+
+	
+
 #done! :)	
