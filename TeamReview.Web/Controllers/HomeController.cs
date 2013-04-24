@@ -9,40 +9,40 @@ namespace TeamReview.Controllers {
 			return View();
 		}
 
-        public ActionResult Features()
-        {
-            return View();
-        }
+		public ActionResult Features()
+		{
+			return View();
+		}
 
-        public ActionResult StackRanking()
-        {
-            return View();
-        }
+		public ActionResult StackRanking()
+		{
+			return View();
+		}
 
-        public ActionResult PeerReviews()
-        {
-            return View();
-        }
+		public ActionResult PeerReviews()
+		{
+			return View();
+		}
 
-        public ActionResult PerformanceReview()
-        {
-            return View();
-        }
+		public ActionResult PerformanceReview()
+		{
+			return View();
+		}
 
-        public ActionResult HistoricalData()
-        {
-            return View();
-        }
+		public ActionResult VisualizeData()
+		{
+			return View();
+		}
 
-        public ActionResult AboutUs()
-        {
-            return View();
-        }
+		public ActionResult AboutUs()
+		{
+			return View();
+		}
 
-        public ActionResult Contact()
-        {
-            return View();
-        }
+		public ActionResult Contact()
+		{
+			return View();
+		}
 
 	}
 }
