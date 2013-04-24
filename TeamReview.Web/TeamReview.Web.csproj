@@ -264,7 +264,7 @@
     <Content Include="Views\Review\Provide.cshtml" />
     <Content Include="Views\Review\Results.cshtml" />
     <Content Include="Views\Home\StackRanking.cshtml" />
-    <Content Include="Views\Home\HistoricalData.cshtml" />
+    <Content Include="Views\Home\VisualizeData.cshtml" />
     <Content Include="Views\Home\PerformanceReview.cshtml" />
     <Content Include="Views\Home\PeerReviews.cshtml" />
     <Content Include="Views\Home\Features.cshtml" />
