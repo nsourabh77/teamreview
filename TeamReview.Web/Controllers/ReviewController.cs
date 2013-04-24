@@ -24,7 +24,8 @@ namespace TeamReview.Web.Controllers {
 				.ToList();
 			var reviewViewModels = new List<ReviewViewModel>();
 			foreach (var reviewConfiguration in reviewConfigurations) {
-				var reviewViewModel = new ReviewViewModel {ReviewId = reviewConfiguration.ReviewId, Name = reviewConfiguration.Name};
+				var reviewViewModel = new ReviewViewModel
+				                      	{ ReviewId = reviewConfiguration.ReviewId, Name = reviewConfiguration.Name };
 				if (!reviewConfiguration.Active) {
 					reviewViewModel.ActionStatus = ActionStatus.NotStarted;
 				}
@@ -56,15 +57,16 @@ namespace TeamReview.Web.Controllers {
 		//
 		// GET: /Review/Create
 
+		[HttpGet]
 		public ActionResult Create() {
-			return View(new ReviewCreateModel());
+			return View(new ReviewCreateEditModel());
 		}
 
 		//
 		// POST: /Review/Create
 
 		[HttpPost]
-		public ActionResult Create(ReviewCreateModel reviewCreateModel) {
+		public ActionResult Create(ReviewCreateEditModel reviewCreateModel) {
 			var action = Request.Form["reviewAction"];
 			if (action != null) {
 				if (action == "AddCategory") {
@@ -114,10 +116,11 @@ namespace TeamReview.Web.Controllers {
 		//
 		// GET: /Review/Edit/5
 
+		[HttpGet]
 		public ActionResult Edit(int id) {
 			object review;
 			if (TempData.TryGetValue("review", out review)) {
-				return View(review);
+				return View("Create", review);
 			}
 			var reviewFromDb = _db.ReviewConfigurations
 				.Include("Categories")
@@ -126,24 +129,24 @@ namespace TeamReview.Web.Controllers {
 			if (reviewFromDb == null) {
 				return HttpNotFound("No review found with the given id.");
 			}
-			return View(Mapper.Map<ReviewEditModel>(reviewFromDb));
+			return View("Create", Mapper.Map<ReviewCreateEditModel>(reviewFromDb));
 		}
 
 		//
 		// POST: /Review/Edit/5
 
 		[HttpPost]
-		public ActionResult Edit(ReviewEditModel reviewEditModel) {
+		public ActionResult Edit(int id, ReviewCreateEditModel reviewEditModel) {
 			var reviewFromDb = _db.ReviewConfigurations
 				.Include("Categories")
 				.Include("Peers")
-				.Single(rev => rev.ReviewId == reviewEditModel.Id);
+				.Single(rev => rev.ReviewId == id);
 
 			if (reviewFromDb == null) {
 				return new HttpNotFoundResult("The review could not be found.");
 			}
 
-			var newModel = Mapper.Map<ReviewEditModel>(reviewFromDb);
+			var newModel = Mapper.Map<ReviewCreateEditModel>(reviewFromDb);
 			var action = Request.Form["reviewAction"];
 			if (action != null) {
 				if (action == "AddCategory") {
@@ -152,11 +155,11 @@ namespace TeamReview.Web.Controllers {
 				else if (action == "AddPeer") {
 					newModel.AddedPeers.Add(new PeerAddModel());
 				}
-				return View(newModel);
+				return View("Create", newModel);
 			}
 
 			if (!ModelState.IsValid) {
-				return View(newModel);
+				return View("Create", newModel);
 			}
 
 			reviewFromDb.Name = reviewEditModel.Name;
@@ -175,7 +178,7 @@ namespace TeamReview.Web.Controllers {
 
 			TempData["Message"] = "Review has been saved";
 
-			return RedirectToAction("Edit", new {id = reviewEditModel.Id});
+			return RedirectToAction("Edit", new { id });
 		}
 
 		//
@@ -208,13 +211,13 @@ namespace TeamReview.Web.Controllers {
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
 			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
 
-			var feedback = new FeedbackViewModel {ReviewId = id, ReviewName = reviewconfiguration.Name};
+			var feedback = new FeedbackViewModel { ReviewId = id, ReviewName = reviewconfiguration.Name };
 
 			foreach (var reviewCategory in reviewconfiguration.Categories) {
 				var categoryWithPeersAndRatings = new CategoryWithPeersAndRatings();
 				categoryWithPeersAndRatings.Category = Mapper.Map<CategoryShowModel>(reviewCategory);
 				foreach (var peer in reviewconfiguration.Peers) {
-					var peerWithRating = new PeerWithRating {Peer = Mapper.Map<PeerShowModel>(peer), Rating = -1};
+					var peerWithRating = new PeerWithRating { Peer = Mapper.Map<PeerShowModel>(peer), Rating = -1 };
 					categoryWithPeersAndRatings.PeersWithRatings.Add(peerWithRating);
 				}
 				feedback.CategoriesWithPeersAndRatings.Add(categoryWithPeersAndRatings);
@@ -265,7 +268,7 @@ namespace TeamReview.Web.Controllers {
 				return HttpNotFound();
 			}
 
-			var results = new ResultViewModel {ReviewName = reviewconfiguration.Name};
+			var results = new ResultViewModel { ReviewName = reviewconfiguration.Name };
 			var myId = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name).UserId;
 
 			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
@@ -312,7 +315,7 @@ namespace TeamReview.Web.Controllers {
 					                                   	};
 
 					foreach (var peer in reviewconfiguration.Peers) {
-						var peerWithResult = new PeerWithResult {PeerName = peer.UserName};
+						var peerWithResult = new PeerWithResult { PeerName = peer.UserName };
 						peerWithResult.PeerRating =
 							allAssessments.Where(
 								a =>
@@ -325,7 +328,7 @@ namespace TeamReview.Web.Controllers {
 
 				// everybodys stacked results
 				foreach (var peer in reviewconfiguration.Peers) {
-					var peerWithStackedRating = new PeerWithStackedRating {PeerName = peer.UserName};
+					var peerWithStackedRating = new PeerWithStackedRating { PeerName = peer.UserName };
 					peerWithStackedRating.PeerStackedRating =
 						results.CategoriesWithPeersWithResults.SelectMany(c => c.PeersWithResult).Where(p => p.PeerName == peer.UserName).
 							Select(p => p.PeerRating).Sum();
@@ -344,6 +347,7 @@ namespace TeamReview.Web.Controllers {
 			reviewconfiguration.Active = true;
 			_db.SaveChanges();
 
+			// TODO: send mail asynchronously from background task
 			SendMailToPeers(reviewconfiguration.Peers, id);
 
 			TempData["Message"] = "Review has been started and mails have been sent to peers";

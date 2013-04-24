@@ -2,15 +2,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace TeamReview.Web.ViewModels {
-	public class ReviewEditModel {
-		public ReviewEditModel() {
+	public class ReviewCreateEditModel {
+		public ReviewCreateEditModel() {
 			ExistingCategories = new CategoryShowModel[0];
 			ExistingPeers = new PeerShowModel[0];
 			AddedCategories = new List<CategoryAddModel>();
 			AddedPeers = new List<PeerAddModel>();
 		}
-
-		public int Id { get; set; }
 
 		[Required]
 		public string Name { get; set; }

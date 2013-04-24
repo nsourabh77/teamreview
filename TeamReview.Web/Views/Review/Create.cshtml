@@ -1,10 +1,11 @@
-﻿@model TeamReview.Web.ViewModels.ReviewCreateModel
+﻿@model TeamReview.Web.ViewModels.ReviewCreateEditModel
 
 @{
-    ViewBag.Title = "Create Review";
+    // we can assume that the review name is always empty when calling Create
+    // and never empty when calling Edit
+    var isCreate = string.IsNullOrEmpty(Model.Name);
+    ViewBag.Title = isCreate ? "Create Review" : "Edit Review: " + Model.Name + "";
 }
-
-
 
 @using (Html.BeginForm())
 {
@@ -12,16 +13,24 @@
 
     <fieldset class="form-horizontal">
 
-        <h1 class="cr25"><span class="cr26">Untitled Review</span><i class="cr21"></i></h1>        
+        <h1 class="cr25">
+            <span class="cr26">
+                @(isCreate ? "Untitled Review" : Model.Name)
+            </span>
+            <i class="cr21"></i>
+        </h1>        
         @Html.TextBoxFor(model => model.Name, new {type = "hidden", @class = "cr27"}  )
         @Html.ValidationMessageFor(model => model.Name)
                        
         <div id="categories">            
             <h2 class="cr40">Categories</h2>
             <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>                       
-            <p class="cr410">
-                You have not yet created categories. Go ahead <a class="cr61" href="@Url.Action("Create", "Review")">add your first category</a>.
-            </p>
+            @if (!Model.ExistingCategories.Any())
+            {
+                <p class="cr410">
+                    You have not yet created any categories. Go ahead and <button class="link cr61" type="submit" name="reviewAction" value="AddCategory" >add your first category</button>.
+                </p>
+            }
             <table class="table table-bordered">
                 <colgroup>
                     <col width="200" />
@@ -36,11 +45,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Example Category</td>
-                        <td>Example Description</td>
-                        <td><a>delete</a></td>
-                    </tr>
+                    @foreach (var cat in Model.ExistingCategories)
+                    {
+                        <tr>
+                            <td>@cat.Name</td>
+                            <td>@cat.Description</td>
+                            <td><a>delete</a></td>
+                        </tr>
+                    }
                     @for (var i = 0; i < Model.AddedCategories.Count; i++)
                     {
                         Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary
@@ -50,14 +62,16 @@
                     }
                 </tbody>
             </table>
-            
         </div>
 
         <div id="peers">
             <h2 class="cr40">Peers</h2>
             <button class="cr43" type="submit" name="reviewAction" value="AddPeer" id="addPeer"><i class="cr44"></i>Invite Peers</button>
-            <p class="cr410">You have not yet invited any peers for your review. In order to give and get feedback you can invite your colleagues, team members, project members...</p> 
-            <p class="cr410">Go ahead <a class="cr61" href="@Url.Action("Create", "Review")">add invite some peers</a>.</p>
+            @if (!Model.ExistingPeers.Any(p => p.UserName != User.Identity.Name))
+            {
+                <p class="cr410">You have not yet invited any peers for your review. In order to give and get feedback you can invite your colleagues, team members, project members...</p> 
+                <p class="cr410">Go ahead and <button class="cr61 link" type="submit" name="reviewAction" value="AddPeer">invite some peers</button>.</p>
+            }
             <table class="table table-bordered">
                 <colgroup>
                     <col width="200" />
@@ -72,11 +86,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Andrej</td>
-                        <td>andrej@teamaton.com</td>
-                        <td><a>remove</a></td>
-                    </tr>
+                    @foreach (var peer in Model.ExistingPeers)
+                    {
+                        var thisIsYou = peer.UserName == User.Identity.Name;
+                        <tr>
+                            <td>@peer.UserName @(thisIsYou ? "(this is you)" : "")</td>
+                            <td>@peer.EmailAddress</td>
+                            <td>
+                                @if (!thisIsYou)
+                                {
+                                    <a>remove</a>
+                                }
+                                else {
+                                    <p class="info">(can't remove yourself)</p>
+                                }
+                            </td>
+                        </tr>
+                    }
                     @for (var i = 0; i < Model.AddedPeers.Count; i++)
                     {
                         Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
@@ -91,7 +117,7 @@
             <input type="submit" name="reviewAction" value="Save and Start the Review" class="cr51" />
             <input type="submit" value="Save for later" class="cr52" />
         </p>
-        <p class="info">Once you start the review, all your peers will get an email inviting them to take part in the review. You can start the review at any time.</p>
+        <p class="info">Once you start the review, all your peers will receive an email inviting them to take part in the review. You can start the review at any time.</p>
     </fieldset>
 }
 <div>
@@ -100,15 +126,12 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-   
-}
-
- <!-- edit in place script: http://www.egstudio.biz/tiny-inline-edit-plugin-for-jquery/ -->
-    
-<script>
-    $(document).ready(function () {
-        var replaceWith = $('<input name="temp" type="text" />'),
-        connectWith = $('.cr27');
-        $('.cr26').inlineEdit(replaceWith, connectWith);        
-    });
-</script>    
+    @Scripts.Render("~/bundles/editinplace")
+    <script>
+        $(function () {
+            var replaceWith = $('<input name="temp" type="text" />'),
+            connectWith = $('.cr27');
+            $('.cr26').inlineEdit(replaceWith, connectWith);
+        });
+    </script>
+}  

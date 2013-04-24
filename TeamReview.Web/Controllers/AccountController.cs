@@ -247,21 +247,22 @@ namespace TeamReview.Web.Controllers {
 						ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
 					}
 					else {
+						// Check if user already exists
 						user = db.UserProfiles.FirstOrDefault(u => u.EmailAddress.ToLower() == model.EmailAddress.ToLower());
 						if (user != null) {
-							ModelState.AddModelError("Email", "Email address already exists. Please enter a different email address.");
+							// Update UserName
+							user.UserName = model.UserName;
 						}
-							// Check if user already exists
 						else {
-							// Insert name into the profile table
+							// Insert new user into the profile table
 							db.UserProfiles.Add(new UserProfile { UserName = model.UserName, EmailAddress = model.EmailAddress });
-							db.SaveChanges();
-
-							OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-							OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
-							return RedirectToLocal(returnUrl);
 						}
+						db.SaveChanges();
+
+						OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
+						OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
+
+						return RedirectToLocal(returnUrl);
 					}
 				}
 			}

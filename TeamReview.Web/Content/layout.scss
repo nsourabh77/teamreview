@@ -104,8 +104,25 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	
 		ul, ol, p {font-size:1.1em;}
 		
-		a {color:#007ACC;}
-		a:hover {cursor:pointer;}
+		a, button.link {color:#007ACC;}
+		a:hover, button.link:hover {cursor:pointer;}
+		
+		/* Make button look like a link: http://stackoverflow.com/a/12642009/177710 */
+		button.link, button.link:focus, button.link:active {
+			/* Remove all decorations */
+			border: none;
+			display: inline;
+			margin: 0em;
+			padding: 0em;
+			outline: none;
+			outline-offset: 0em;
+			/* Look like a link */
+			background: none;
+			font: inherit;
+		}
+		button.link:hover { text-decoration: underline; }
+		/* Remove extra space inside buttons in Firefox */
+		button.link::-moz-focus-inner { border: none; padding: 0em;	}
 	
 		.well p:last-child {margin-bottom:0;}
 
@@ -337,7 +354,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 /* end sidebar */
 
 
-/* main content */	
+/* main content */
 
 	
 	
@@ -360,9 +377,9 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	.cr44 {@extend .icon, .icon-white, .icon-user;}
 	.cr51 {@extend .btn, .btn-success, .btn-large;}
 	.cr52 {@extend .btn, .btn-info, .btn-large;}
-	.cr61 {font-weight:bold;}
+	.cr61 {font-weight:bold !important;}
 	.cr71 {text-align:center;}
-	.cr75 {width:98%;}		
+	.cr75 {width:98%;}
 	
 	.table1 {@extend .table; border:none; padding-bottom:12px;}	
 	.table1 td, .table1 th {padding:0 0 0 12px; border:none; background:#fafafa;}

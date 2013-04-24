@@ -181,12 +181,11 @@
     <Compile Include="ViewModels\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\PeerModels.cs" />
     <Compile Include="ViewModels\ResultViewModel.cs" />
-    <Compile Include="ViewModels\ReviewCreateModel.cs" />
     <Compile Include="ViewModels\ReviewEditModel.cs" />
     <Compile Include="ViewModels\ReviewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\edit-in-place.js" />
+    <Content Include="Scripts\jquery.edit-in-place.js" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\jquery.jqplot.css" />
@@ -230,7 +229,6 @@
     <Content Include="Views\Review\Index.cshtml" />
     <Content Include="Views\Review\Details.cshtml" />
     <Content Include="Views\Review\Create.cshtml" />
-    <Content Include="Views\Review\Edit.cshtml" />
     <Content Include="Views\Review\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
