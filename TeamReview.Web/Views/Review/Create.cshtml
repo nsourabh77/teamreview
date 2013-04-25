@@ -4,7 +4,11 @@
     // we can assume that the review name is always empty when calling Create
     // and never empty when calling Edit
     var isCreate = string.IsNullOrEmpty(Model.Name);
-    ViewBag.Title = isCreate ? "Create Review" : "Edit Review: " + Model.Name + "";
+    ViewBag.Title = isCreate ? "Create review" : "Edit review: " + Model.Name + "";
+}
+
+@if (TempData["Message"] != null) { 
+    <p>@TempData["Message"]</p>
 }
 
 @using (Html.BeginForm())
@@ -19,10 +23,10 @@
             </span>
             <i class="cr21"></i>
         </h1>        
-        @Html.TextBoxFor(model => model.Name, new {type = "hidden", @class = "cr27"}  )
+        @Html.HiddenFor(model => model.Name, new { @class = "jq-name" })
         @Html.ValidationMessageFor(model => model.Name)
                        
-        <div id="categories">            
+        <div id="categories">
             <h2 class="cr40">Categories</h2>
             <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>                       
             @if (!Model.ExistingCategories.Any())
@@ -115,7 +119,7 @@
         </div>        
         <p class="cr71">            
             <input type="submit" name="reviewAction" value="Save and Start the Review" class="cr51" />
-            <input type="submit" value="Save for later" class="cr52" />
+            <input id="Save" type="submit" value="Save for later" class="cr52" />
         </p>
         <p class="info">Once you start the review, all your peers will receive an email inviting them to take part in the review. You can start the review at any time.</p>
     </fieldset>
@@ -130,7 +134,7 @@
     <script>
         $(function () {
             var replaceWith = $('<input name="temp" type="text" />'),
-            connectWith = $('.cr27');
+            connectWith = $('.jq-name');
             $('.cr26').inlineEdit(replaceWith, connectWith);
         });
     </script>
