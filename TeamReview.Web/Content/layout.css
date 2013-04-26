@@ -2749,7 +2749,7 @@ input[type="submit"].pr41::-moz-focus-inner {
   padding: 0;
   border: 0; }
 
-button.btn.btn-large, button.btn10, button.btn11, button.btn-large.primaryAction, button.btn-large.hd15, button.lg1, button.btn-large.db11, button.btn-large.cr41, button.btn-large.cr43, button.cr51, button.cr52, button.pr41,
+button.btn.btn-large, button.btn10, button.btn11, button.btn-large.primaryAction, button.primaryAction.btn10, button.primaryAction.btn11, button.primaryAction.lg1, button.primaryAction.cr51, button.primaryAction.cr52, button.primaryAction.pr41, button.btn-large.hd15, button.hd15.btn10, button.hd15.btn11, button.hd15.lg1, button.hd15.cr51, button.hd15.cr52, button.hd15.pr41, button.lg1, button.btn-large.db11, button.db11.btn10, button.db11.btn11, button.db11.lg1, button.db11.cr51, button.db11.cr52, button.db11.pr41, button.btn-large.cr41, button.cr41.btn10, button.cr41.btn11, button.cr41.lg1, button.cr41.cr51, button.cr41.cr52, button.cr41.pr41, button.btn-large.cr43, button.cr43.btn10, button.cr43.btn11, button.cr43.lg1, button.cr43.cr51, button.cr43.cr52, button.cr43.pr41, button.cr51, button.cr52, button.pr41,
 input[type="submit"].btn.btn-large,
 input[type="submit"].btn10,
 input[type="submit"].btn11,
@@ -2781,7 +2781,7 @@ input[type="submit"].btn-small.pr41 {
   *padding-top: 3px;
   *padding-bottom: 3px; }
 
-button.btn.btn-mini, button.btn-mini.btn10, button.btn-mini.btn11, button.btn-mini.primaryAction, button.hd15, button.btn-mini.lg1, button.btn-mini.db11, button.cr41, button.cr43, button.btn-mini.cr51, button.btn-mini.cr52, button.btn-mini.pr41,
+button.btn.btn-mini, button.btn-mini.btn10, button.btn10.hd15, button.btn10.cr41, button.btn10.cr43, button.btn-mini.btn11, button.btn11.hd15, button.btn11.cr41, button.btn11.cr43, button.btn-mini.primaryAction, button.primaryAction.hd15, button.primaryAction.cr41, button.primaryAction.cr43, button.hd15, button.btn-mini.lg1, button.lg1.hd15, button.lg1.cr41, button.lg1.cr43, button.btn-mini.db11, button.db11.hd15, button.db11.cr41, button.db11.cr43, button.cr41, button.cr43, button.btn-mini.cr51, button.cr51.hd15, button.cr51.cr41, button.cr51.cr43, button.btn-mini.cr52, button.cr52.hd15, button.cr52.cr41, button.cr52.cr43, button.btn-mini.pr41, button.pr41.hd15, button.pr41.cr41, button.pr41.cr43,
 input[type="submit"].btn.btn-mini,
 input[type="submit"].btn-mini.btn10,
 input[type="submit"].btn-mini.btn11,
@@ -5199,7 +5199,7 @@ header a {
   font-size: 1.8em;
   float: left;
   display: block;
-  padding: 16px 0 12px 0;
+  padding: 8px 0 0 0;
   margin-right: 32px; }
 
 .logo:hover {
@@ -5248,7 +5248,8 @@ header a {
   list-style: none;
   background: #222;
   position: absolute;
-  width: auto; }
+  width: auto;
+  font-size: 0.9em; }
 
 .subnav li {
   display: block;
@@ -5262,16 +5263,16 @@ header a {
   list-style: none;
   margin: 0;
   font-family: open sans;
-  float: right; }
+  float: right;
+  font-size: 0.9em; }
 
 .hd14 {
   display: inline-block;
   margin-top: 2px; }
 
 .hd15 {
-  margin-top: 15px;
-  float: left;
-  margin-left: 24px; }
+  margin: 18px 0 0 24px;
+  float: left; }
 
 .hd19 {
   margin-top: 2px; }

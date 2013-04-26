@@ -319,7 +319,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 /* header */
 	header {@include gradient(#333, #222); margin-bottom:20px; color:#eee; position:fixed; top: 0; right:0; left:0; z-index:1004;}
 	header a {color:#eee;}	
-	.logo  {font-size:1.8em; float:left; display:block; padding:16px 0 12px 0; margin-right:32px;}
+	.logo  {font-size:1.8em; float:left; display:block; padding:8px 0 0 0; margin-right:32px;}
 	.logo:hover {text-decoration:none;}
 	.lg11 {color:$primary;}
 	.lg12 {color:$secondary;}
@@ -333,13 +333,13 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	.nav1 a:hover, .mini-nav a:hover {background:$secondary; color:#333; text-decoration:none;}	
 	
 	.nav1 > li:hover .subnav {display:block;}
-	.subnav {display:none; list-style:none; background:#222; position:absolute; width:auto;}
+	.subnav {display:none; list-style:none; background:#222; position:absolute; width:auto; font-size:0.9em;}
 	.subnav li {display:block; float:none;}
 	.subnav a {display:block; white-space:nowrap;}
 	
-	.mini-nav {list-style:none; margin:0; font-family:open sans; float:right;}
+	.mini-nav {list-style:none; margin:0; font-family:open sans; float:right; font-size:0.9em;}
 	.hd14 {@extend .icon, .icon-white, .icon-user; display:inline-block; margin-top:2px;}
-	.hd15 {@extend .btn, .btn-mini, .btn-success; margin-top:15px; float:left; margin-left:24px;}	
+	.hd15 {@extend .btn, .btn-mini, .btn-success; margin:18px 0 0 24px; float:left;}	
 	.hd19 {@extend .icon, .icon-white, .icon-off; margin-top:2px;}
 	#logoutForm {display:inline-block; margin-left:12px;}
 	
