@@ -317,7 +317,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 /* general */
 
 /* header */
-	header {@include gradient(#333, #222); margin-bottom:20px; color:#eee; position:fixed; top: 0; right:0; left:0; z-index:1004;}
+	header {background:url("/content/img/bg-tile.png")repeat 0 0 #292929; margin-bottom:20px; color:#eee; position:fixed; top: 0; right:0; left:0; z-index:1004;}
 	header a {color:#eee;}	
 	.logo  {font-size:1.8em; float:left; display:block; padding:8px 0 0 0; margin-right:32px;}
 	.logo:hover {text-decoration:none;}
@@ -364,7 +364,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 
 	.db10{float:left; margin-right:24px;}
 	.db11 {@extend .btn, .btn-success; margin-top:32px;}
-	.db12 {@extend .icon, .icon-white, .icon-plus;}
+	.db12 {@extend .icon, .icon-white, .icon-plus; margin-top:1px;}
 	.db13 {clear:both;}
 	
 	.cr26 {color:#007ACC;}

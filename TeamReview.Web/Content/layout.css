@@ -5173,17 +5173,7 @@ td.jqplot-table-legend-label {
 /* general */
 /* header */
 header {
-  background-color: #222222;
-  *background-color: #222222;
-  background-image: -ms-linear-gradient(top, #333333, #222222);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#333333), to(#222222));
-  background-image: -webkit-linear-gradient(top, #333333, #222222);
-  background-image: -o-linear-gradient(top, #333333, #222222);
-  background-image: linear-gradient(top, #333333, #222222);
-  background-image: -moz-linear-gradient(top, #333333, #222222);
-  background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='$color-top', endColorstr='$color-bot', GradientType=0);
-  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+  background: url("/content/img/bg-tile.png") repeat 0 0 #292929;
   margin-bottom: 20px;
   color: #eee;
   position: fixed;
@@ -5295,6 +5285,9 @@ header a {
 
 .db11 {
   margin-top: 32px; }
+
+.db12 {
+  margin-top: 1px; }
 
 .db13 {
   clear: both; }

@@ -185,11 +185,12 @@
     <Compile Include="ViewModels\ReviewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\img\bg-tile.png" />
     <Content Include="Scripts\jquery.edit-in-place.js" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
     <Content Include="Content\jquery.jqplot.css" />
-    <Content Include="Content\pics\my-rating.png" />
+    <Content Include="Content\pics\performance-review.png" />
     <Content Include="Content\pics\peer-reviews.png" />
     <Content Include="Content\pics\stack-ranking.png" />
     <Content Include="Content\scripts\jquery.jqplot.min.js" />
