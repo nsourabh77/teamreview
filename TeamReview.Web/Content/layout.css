@@ -2418,7 +2418,7 @@ button.close {
   -moz-box-shadow: none;
   box-shadow: none; }
 
-.btn-large, .btn10, .btn11, .lg1, .cr51, .cr52, .pr41 {
+.btn-large, .btn10, .lg1, .cr51, .cr52, .pr41 {
   padding: 9px 14px;
   font-size: 15px;
   line-height: normal;
@@ -2426,7 +2426,7 @@ button.close {
   -moz-border-radius: 5px;
   border-radius: 5px; }
 
-.btn-large [class^="icon-"], .btn10 [class^="icon-"], .btn11 [class^="icon-"], .lg1 [class^="icon-"], .cr51 [class^="icon-"], .cr52 [class^="icon-"], .pr41 [class^="icon-"] {
+.btn-large [class^="icon-"], .btn10 [class^="icon-"], .lg1 [class^="icon-"], .cr51 [class^="icon-"], .cr52 [class^="icon-"], .pr41 [class^="icon-"] {
   margin-top: 1px; }
 
 .btn-small {
@@ -2749,10 +2749,10 @@ input[type="submit"].pr41::-moz-focus-inner {
   padding: 0;
   border: 0; }
 
-button.btn.btn-large, button.btn10, button.btn11, button.btn-large.primaryAction, button.primaryAction.btn10, button.primaryAction.btn11, button.primaryAction.lg1, button.primaryAction.cr51, button.primaryAction.cr52, button.primaryAction.pr41, button.btn-large.hd15, button.hd15.btn10, button.hd15.btn11, button.hd15.lg1, button.hd15.cr51, button.hd15.cr52, button.hd15.pr41, button.lg1, button.btn-large.db11, button.db11.btn10, button.db11.btn11, button.db11.lg1, button.db11.cr51, button.db11.cr52, button.db11.pr41, button.btn-large.cr41, button.cr41.btn10, button.cr41.btn11, button.cr41.lg1, button.cr41.cr51, button.cr41.cr52, button.cr41.pr41, button.btn-large.cr43, button.cr43.btn10, button.cr43.btn11, button.cr43.lg1, button.cr43.cr51, button.cr43.cr52, button.cr43.pr41, button.cr51, button.cr52, button.pr41,
+button.btn.btn-large, button.btn10, button.btn-large.btn11, button.btn11.btn10, button.btn11.lg1, button.btn11.cr51, button.btn11.cr52, button.btn11.pr41, button.btn-large.primaryAction, button.primaryAction.btn10, button.primaryAction.lg1, button.primaryAction.cr51, button.primaryAction.cr52, button.primaryAction.pr41, button.btn-large.hd15, button.hd15.btn10, button.hd15.lg1, button.hd15.cr51, button.hd15.cr52, button.hd15.pr41, button.lg1, button.btn-large.db11, button.db11.btn10, button.db11.lg1, button.db11.cr51, button.db11.cr52, button.db11.pr41, button.btn-large.cr41, button.cr41.btn10, button.cr41.lg1, button.cr41.cr51, button.cr41.cr52, button.cr41.pr41, button.btn-large.cr43, button.cr43.btn10, button.cr43.lg1, button.cr43.cr51, button.cr43.cr52, button.cr43.pr41, button.cr51, button.cr52, button.pr41,
 input[type="submit"].btn.btn-large,
 input[type="submit"].btn10,
-input[type="submit"].btn11,
+input[type="submit"].btn-large.btn11,
 input[type="submit"].btn-large.primaryAction,
 input[type="submit"].btn-large.hd15,
 input[type="submit"].lg1,
@@ -2930,7 +2930,7 @@ input[type="submit"].btn-mini.pr41 {
   *padding-top: 4px;
   *padding-bottom: 4px; }
 
-.btn-group > .btn-large.dropdown-toggle, .btn-group > .dropdown-toggle.btn10, .btn-group > .dropdown-toggle.btn11, .btn-group > .dropdown-toggle.lg1, .btn-group > .dropdown-toggle.cr51, .btn-group > .dropdown-toggle.cr52, .btn-group > .dropdown-toggle.pr41 {
+.btn-group > .btn-large.dropdown-toggle, .btn-group > .dropdown-toggle.btn10, .btn-group > .dropdown-toggle.lg1, .btn-group > .dropdown-toggle.cr51, .btn-group > .dropdown-toggle.cr52, .btn-group > .dropdown-toggle.pr41 {
   padding-right: 12px;
   padding-left: 12px; }
 
@@ -2976,13 +2976,13 @@ input[type="submit"].btn-mini.pr41 {
 .btn-small .caret {
   margin-top: 6px; }
 
-.btn-large .caret, .btn10 .caret, .btn11 .caret, .lg1 .caret, .cr51 .caret, .cr52 .caret, .pr41 .caret {
+.btn-large .caret, .btn10 .caret, .lg1 .caret, .cr51 .caret, .cr52 .caret, .pr41 .caret {
   margin-top: 6px;
   border-top-width: 5px;
   border-right-width: 5px;
   border-left-width: 5px; }
 
-.dropup .btn-large .caret, .dropup .btn10 .caret, .dropup .btn11 .caret, .dropup .lg1 .caret, .dropup .cr51 .caret, .dropup .cr52 .caret, .dropup .pr41 .caret {
+.dropup .btn-large .caret, .dropup .btn10 .caret, .dropup .lg1 .caret, .dropup .cr51 .caret, .dropup .cr52 .caret, .dropup .pr41 .caret {
   border-top: 0;
   border-bottom: 5px solid #000000; }
 
@@ -4840,10 +4840,10 @@ h2 i {
   width: 220px; }
 
 .btn11 {
-  font-size: 1.3em;
-  width: 100% !important; }
+  font-size: 1.1em;
+  width: 98% !important; }
 
-.btn-large i, .btn10 i, .btn11 i, .lg1 i, .cr51 i, .cr52 i, .pr41 i {
+.btn-large i, .btn10 i, .lg1 i, .cr51 i, .cr52 i, .pr41 i {
   margin-top: 7px; }
 
 /* end buttons */
@@ -5158,12 +5158,10 @@ td.jqplot-table-legend-label {
   padding-top: 12px; }
 
 .toc li:last-child a {
-  border: none;
-  padding-bottom: 12px; }
+  border: none; }
 
 .toc-active a, .toc a:hover {
-  background: #007acc;
-  color: #fff;
+  background: #f9f9f9;
   text-decoration: none; }
 
 .toc .h3 a {
@@ -5236,7 +5234,7 @@ header a {
 .subnav {
   display: none;
   list-style: none;
-  background: #222;
+  background: url("/content/img/bg-tile.png") repeat 0 0 #292929;
   position: absolute;
   width: auto;
   font-size: 0.9em; }

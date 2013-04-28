@@ -29,26 +29,20 @@
         <div id="categories">
             <h2 class="cr40">Categories</h2>
             <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>                       
-            @if (!Model.ExistingCategories.Any())
-            {
-                <p class="cr410">
-                    You have not yet created any categories. Go ahead and <button class="link cr61" type="submit" name="reviewAction" value="AddCategory" >add your first category</button>.
-                </p>
-            }
-            <table class="table table-bordered">
+            
+            <table class="table block-top">
                 <colgroup>
                     <col width="200" />
                     <col width="600" />
                     <col width="100" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>Category Name</th>
-                        <th>Category Description</th>
-                        <th></th>
-                    </tr>
-                </thead>
+                </colgroup>                
                 <tbody>
+                    @if (!Model.ExistingCategories.Any())
+                    {
+                        <tr class="cr410">
+                            <td colspan="3">You have not yet created any categories. Go ahead and <button class="link cr61" type="submit" name="reviewAction" value="AddCategory" >add your first category</button>.</td>
+                        </tr>
+                    }
                     @foreach (var cat in Model.ExistingCategories)
                     {
                         <tr>
