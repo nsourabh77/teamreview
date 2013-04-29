@@ -5231,6 +5231,12 @@ header a {
 .logo:hover {
   text-decoration: none; }
 
+.lg10 {
+  display: inline-block;
+  margin-right: 3px;
+  position: relative;
+  top: -6px; }
+
 .lg11 {
   color: #62c462; }
 

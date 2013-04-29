@@ -21,7 +21,11 @@
 <body>
     <header class="header">
         <div class="container">
-            <a class="logo" href="@Url.Action("Index", "Home")"><span class="lg11">Team</span><span class="lg12">Review</span></a>            
+            <a class="logo" href="@Url.Action("Index", "Home")">
+                <img class="lg10" src="/content/img/teamreview-logo.png" alt="teamreview logo - stack ranking chart"/>
+                <span class="lg11">Team</span>            
+                <span class="lg12">Review</span>            
+            </a>
             @Html.Partial("_LoginPartial")
         </div>
     </header>
