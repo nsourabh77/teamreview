@@ -1,7 +1,7 @@
 ﻿@model TeamReview.Web.ViewModels.PeerAddModel
 
 <tr>
-    <td>@Html.EditorFor(model => model.UserName)@Html.ValidationMessageFor(model => model.UserName)</td>
-    <td>@Html.EditorFor(model => model.EmailAddress)@Html.ValidationMessageFor(model => model.EmailAddress)</td>
+    <td>@Html.TextBoxFor(model => model.UserName, new { placeholder = "Name or Username" })@Html.ValidationMessageFor(model => model.UserName)</td>
+    <td>@Html.TextBoxFor(model => model.EmailAddress, new { placeholder = "Email" })@Html.ValidationMessageFor(model => model.EmailAddress)</td>
     <td><a>remove</a></td>
 </tr>

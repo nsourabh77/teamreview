@@ -1396,12 +1396,13 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-.table, .table1 {
+.table, .cr2, .table1 {
   width: 100%;
   margin-bottom: 18px; }
 
-.table th, .table1 th,
+.table th, .cr2 th, .table1 th,
 .table td,
+.cr2 td,
 .table1 td {
   padding: 8px;
   line-height: 18px;
@@ -1409,26 +1410,31 @@ table {
   vertical-align: top;
   border-top: 1px solid #dddddd; }
 
-.table th, .table1 th {
+.table th, .cr2 th, .table1 th {
   font-weight: bold; }
 
-.table thead th, .table1 thead th {
+.table thead th, .cr2 thead th, .table1 thead th {
   vertical-align: bottom; }
 
-.table caption + thead tr:first-child th, .table1 caption + thead tr:first-child th,
+.table caption + thead tr:first-child th, .cr2 caption + thead tr:first-child th, .table1 caption + thead tr:first-child th,
 .table caption + thead tr:first-child td,
+.cr2 caption + thead tr:first-child td,
 .table1 caption + thead tr:first-child td,
 .table colgroup + thead tr:first-child th,
+.cr2 colgroup + thead tr:first-child th,
 .table1 colgroup + thead tr:first-child th,
 .table colgroup + thead tr:first-child td,
+.cr2 colgroup + thead tr:first-child td,
 .table1 colgroup + thead tr:first-child td,
 .table thead:first-child tr:first-child th,
+.cr2 thead:first-child tr:first-child th,
 .table1 thead:first-child tr:first-child th,
 .table thead:first-child tr:first-child td,
+.cr2 thead:first-child tr:first-child td,
 .table1 thead:first-child tr:first-child td {
   border-top: 0; }
 
-.table tbody + tbody, .table1 tbody + tbody {
+.table tbody + tbody, .cr2 tbody + tbody, .table1 tbody + tbody {
   border-top: 2px solid #dddddd; }
 
 .table-condensed th,
@@ -1490,8 +1496,9 @@ table {
 .table-striped tbody tr:nth-child(odd) th {
   background-color: #f9f9f9; }
 
-.table tbody tr:hover td, .table1 tbody tr:hover td,
+.table tbody tr:hover td, .cr2 tbody tr:hover td, .table1 tbody tr:hover td,
 .table tbody tr:hover th,
+.cr2 tbody tr:hover th,
 .table1 tbody tr:hover th {
   background-color: #f5f5f5; }
 
@@ -1616,7 +1623,7 @@ table .span24 {
   margin-left: 0; }
 
 [class^="icon-"],
-[class*=" icon-"], .icon, .hd14, .hd19, .db12, .cr21, .cr42, .cr44, .rs21 {
+[class*=" icon-"], .icon, .hd14, .hd19, .db12, .cr21, .cr44, .rs21 {
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -1631,7 +1638,7 @@ table .span24 {
 [class*=" icon-"]:last-child {
   *margin-left: 0; }
 
-.icon-white, .hd14, .hd19, .db12, .cr42, .cr44 {
+.icon-white, .hd14, .hd19, .db12, .cr44 {
   background-image: url("img/glyphicons-halflings-white.png"); }
 
 .icon-glass {
@@ -1925,7 +1932,7 @@ table .span24 {
 .icon-resize-small {
   background-position: -384px -96px; }
 
-.icon-plus, .db12, .cr42 {
+.icon-plus, .db12 {
   background-position: -408px -96px; }
 
 .icon-minus {
@@ -2418,7 +2425,7 @@ button.close {
   -moz-box-shadow: none;
   box-shadow: none; }
 
-.btn-large, .btn10, .lg1, .cr51, .cr52, .pr41 {
+.btn-large, .btn10, .lg1, .cr41, .cr43, .cr51, .cr52, .pr41 {
   padding: 9px 14px;
   font-size: 15px;
   line-height: normal;
@@ -2426,7 +2433,7 @@ button.close {
   -moz-border-radius: 5px;
   border-radius: 5px; }
 
-.btn-large [class^="icon-"], .btn10 [class^="icon-"], .lg1 [class^="icon-"], .cr51 [class^="icon-"], .cr52 [class^="icon-"], .pr41 [class^="icon-"] {
+.btn-large [class^="icon-"], .btn10 [class^="icon-"], .lg1 [class^="icon-"], .cr41 [class^="icon-"], .cr43 [class^="icon-"], .cr51 [class^="icon-"], .cr52 [class^="icon-"], .pr41 [class^="icon-"] {
   margin-top: 1px; }
 
 .btn-small {
@@ -2437,7 +2444,7 @@ button.close {
 .btn-small [class^="icon-"] {
   margin-top: -1px; }
 
-.btn-mini, .hd15, .cr41, .cr43 {
+.btn-mini, .hd15 {
   padding: 2px 6px;
   font-size: 11px;
   line-height: 14px; }
@@ -2749,7 +2756,7 @@ input[type="submit"].pr41::-moz-focus-inner {
   padding: 0;
   border: 0; }
 
-button.btn.btn-large, button.btn10, button.btn-large.btn11, button.btn11.btn10, button.btn11.lg1, button.btn11.cr51, button.btn11.cr52, button.btn11.pr41, button.btn-large.primaryAction, button.primaryAction.btn10, button.primaryAction.lg1, button.primaryAction.cr51, button.primaryAction.cr52, button.primaryAction.pr41, button.btn-large.hd15, button.hd15.btn10, button.hd15.lg1, button.hd15.cr51, button.hd15.cr52, button.hd15.pr41, button.lg1, button.btn-large.db11, button.db11.btn10, button.db11.lg1, button.db11.cr51, button.db11.cr52, button.db11.pr41, button.btn-large.cr41, button.cr41.btn10, button.cr41.lg1, button.cr41.cr51, button.cr41.cr52, button.cr41.pr41, button.btn-large.cr43, button.cr43.btn10, button.cr43.lg1, button.cr43.cr51, button.cr43.cr52, button.cr43.pr41, button.cr51, button.cr52, button.pr41,
+button.btn.btn-large, button.btn10, button.btn-large.btn11, button.btn11.btn10, button.btn11.lg1, button.btn11.cr41, button.btn11.cr43, button.btn11.cr51, button.btn11.cr52, button.btn11.pr41, button.btn-large.primaryAction, button.primaryAction.btn10, button.primaryAction.lg1, button.primaryAction.cr41, button.primaryAction.cr43, button.primaryAction.cr51, button.primaryAction.cr52, button.primaryAction.pr41, button.btn-large.hd15, button.hd15.btn10, button.hd15.lg1, button.hd15.cr41, button.hd15.cr43, button.hd15.cr51, button.hd15.cr52, button.hd15.pr41, button.lg1, button.btn-large.db11, button.db11.btn10, button.db11.lg1, button.db11.cr41, button.db11.cr43, button.db11.cr51, button.db11.cr52, button.db11.pr41, button.cr41, button.cr43, button.cr51, button.cr52, button.pr41,
 input[type="submit"].btn.btn-large,
 input[type="submit"].btn10,
 input[type="submit"].btn-large.btn11,
@@ -2757,8 +2764,8 @@ input[type="submit"].btn-large.primaryAction,
 input[type="submit"].btn-large.hd15,
 input[type="submit"].lg1,
 input[type="submit"].btn-large.db11,
-input[type="submit"].btn-large.cr41,
-input[type="submit"].btn-large.cr43,
+input[type="submit"].cr41,
+input[type="submit"].cr43,
 input[type="submit"].cr51,
 input[type="submit"].cr52,
 input[type="submit"].pr41 {
@@ -2781,7 +2788,7 @@ input[type="submit"].btn-small.pr41 {
   *padding-top: 3px;
   *padding-bottom: 3px; }
 
-button.btn.btn-mini, button.btn-mini.btn10, button.btn10.hd15, button.btn10.cr41, button.btn10.cr43, button.btn-mini.btn11, button.btn11.hd15, button.btn11.cr41, button.btn11.cr43, button.btn-mini.primaryAction, button.primaryAction.hd15, button.primaryAction.cr41, button.primaryAction.cr43, button.hd15, button.btn-mini.lg1, button.lg1.hd15, button.lg1.cr41, button.lg1.cr43, button.btn-mini.db11, button.db11.hd15, button.db11.cr41, button.db11.cr43, button.cr41, button.cr43, button.btn-mini.cr51, button.cr51.hd15, button.cr51.cr41, button.cr51.cr43, button.btn-mini.cr52, button.cr52.hd15, button.cr52.cr41, button.cr52.cr43, button.btn-mini.pr41, button.pr41.hd15, button.pr41.cr41, button.pr41.cr43,
+button.btn.btn-mini, button.btn-mini.btn10, button.btn10.hd15, button.btn-mini.btn11, button.btn11.hd15, button.btn-mini.primaryAction, button.primaryAction.hd15, button.hd15, button.btn-mini.lg1, button.lg1.hd15, button.btn-mini.db11, button.db11.hd15, button.btn-mini.cr41, button.cr41.hd15, button.btn-mini.cr43, button.cr43.hd15, button.btn-mini.cr51, button.cr51.hd15, button.btn-mini.cr52, button.cr52.hd15, button.btn-mini.pr41, button.pr41.hd15,
 input[type="submit"].btn.btn-mini,
 input[type="submit"].btn-mini.btn10,
 input[type="submit"].btn-mini.btn11,
@@ -2789,8 +2796,8 @@ input[type="submit"].btn-mini.primaryAction,
 input[type="submit"].hd15,
 input[type="submit"].btn-mini.lg1,
 input[type="submit"].btn-mini.db11,
-input[type="submit"].cr41,
-input[type="submit"].cr43,
+input[type="submit"].btn-mini.cr41,
+input[type="submit"].btn-mini.cr43,
 input[type="submit"].btn-mini.cr51,
 input[type="submit"].btn-mini.cr52,
 input[type="submit"].btn-mini.pr41 {
@@ -2922,7 +2929,7 @@ input[type="submit"].btn-mini.pr41 {
   -moz-box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.125), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.125), inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05); }
 
-.btn-group > .btn-mini.dropdown-toggle, .btn-group > .dropdown-toggle.hd15, .btn-group > .dropdown-toggle.cr41, .btn-group > .dropdown-toggle.cr43 {
+.btn-group > .btn-mini.dropdown-toggle, .btn-group > .dropdown-toggle.hd15 {
   padding-right: 5px;
   padding-left: 5px; }
 
@@ -2930,7 +2937,7 @@ input[type="submit"].btn-mini.pr41 {
   *padding-top: 4px;
   *padding-bottom: 4px; }
 
-.btn-group > .btn-large.dropdown-toggle, .btn-group > .dropdown-toggle.btn10, .btn-group > .dropdown-toggle.lg1, .btn-group > .dropdown-toggle.cr51, .btn-group > .dropdown-toggle.cr52, .btn-group > .dropdown-toggle.pr41 {
+.btn-group > .btn-large.dropdown-toggle, .btn-group > .dropdown-toggle.btn10, .btn-group > .dropdown-toggle.lg1, .btn-group > .dropdown-toggle.cr41, .btn-group > .dropdown-toggle.cr43, .btn-group > .dropdown-toggle.cr51, .btn-group > .dropdown-toggle.cr52, .btn-group > .dropdown-toggle.pr41 {
   padding-right: 12px;
   padding-left: 12px; }
 
@@ -2970,19 +2977,19 @@ input[type="submit"].btn-mini.pr41 {
   opacity: 1;
   filter: alpha(opacity=100); }
 
-.btn-mini .caret, .hd15 .caret, .cr41 .caret, .cr43 .caret {
+.btn-mini .caret, .hd15 .caret {
   margin-top: 5px; }
 
 .btn-small .caret {
   margin-top: 6px; }
 
-.btn-large .caret, .btn10 .caret, .lg1 .caret, .cr51 .caret, .cr52 .caret, .pr41 .caret {
+.btn-large .caret, .btn10 .caret, .lg1 .caret, .cr41 .caret, .cr43 .caret, .cr51 .caret, .cr52 .caret, .pr41 .caret {
   margin-top: 6px;
   border-top-width: 5px;
   border-right-width: 5px;
   border-left-width: 5px; }
 
-.dropup .btn-large .caret, .dropup .btn10 .caret, .dropup .lg1 .caret, .dropup .cr51 .caret, .dropup .cr52 .caret, .dropup .pr41 .caret {
+.dropup .btn-large .caret, .dropup .btn10 .caret, .dropup .lg1 .caret, .dropup .cr41 .caret, .dropup .cr43 .caret, .dropup .cr51 .caret, .dropup .cr52 .caret, .dropup .pr41 .caret {
   border-top: 0;
   border-bottom: 5px solid #000000; }
 
@@ -4643,6 +4650,9 @@ body {
 
 /* general */
 /* colors */
+/*green */
+/* yellow */
+/* blue */
 /* end colors */
 /* display */
 .hide {
@@ -4768,7 +4778,7 @@ button.link::-moz-focus-inner {
 .well p:last-child, .box1of3 p:last-child, .box1of4 p:last-child, .box1of2 p:last-child, .box1of1 p:last-child, .form p:last-child {
   margin-bottom: 0; }
 
-.info, .help-block, .pic-text, .cr410 {
+.info, .help-block, .pic-text, .cr24, .cr410 {
   font-style: italic;
   color: #666; }
 
@@ -4789,9 +4799,6 @@ button.link::-moz-focus-inner {
 
 blockquote {
   margin: 2em 0 2em 0; }
-
-blockquote:nth-child(1) {
-  margin-top: 0.5em; }
 
 blockquote .q-text {
   font-style: italic;
@@ -4819,7 +4826,15 @@ blockquote:before {
   font-style: italic;
   padding-right: 52px; }
 
-.special {
+blockquote.small .q-text, blockquote.cr23 .q-text {
+  font-size: 1.1em;
+  padding-left: 28px; }
+
+blockquote.small:before, blockquote.cr23:before {
+  font-size: 5em;
+  top: -16px; }
+
+.special, table td.cr22 {
   font-family: carter one;
   font-weight: 100;
   font-size: 1.1em; }
@@ -4843,17 +4858,23 @@ h2 i {
   font-size: 1.1em;
   width: 98% !important; }
 
-.btn-large i, .btn10 i, .lg1 i, .cr51 i, .cr52 i, .pr41 i {
+.btn-large i, .btn10 i, .lg1 i, .cr41 i, .cr43 i, .cr51 i, .cr52 i, .pr41 i {
   margin-top: 7px; }
+
+.btn-icon, .cr41, .cr43 {
+  font-size: 4.2em;
+  line-height: 0.45;
+  padding-left: 9px;
+  padding-right: 12px; }
 
 /* end buttons */
 /* rounded corners */
-.round-no-bleed, .rounded, .tooltip, .rounded-xl, .rounded-t, .tabs a, .rounded-b, .message-Information, .message-Warning, .message-Error, .validation-summary-errors, .rounded-l, .rounded-r {
+.round-no-bleed, .rounded, .rounded-xl, .rounded-t, .tabs a, .rounded-b, .message-Information, .message-Warning, .message-Error, .validation-summary-errors, .rounded-l, .rounded-r {
   -moz-background-clip: padding-box;
   -webkit-background-clip: padding-box;
   background-clip: padding-box; }
 
-.rounded, .tooltip {
+.rounded {
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px; }
@@ -4990,14 +5011,14 @@ h2 i {
   margin: 1.5%;
   float: left; }
 
-.block-top, .block-top-2, .toc {
+.block-top, .block-top-2, .block-top-center, .tooltip, .toc, .cr2 {
   padding: 12px;
   background: #eee;
   position: relative;
   margin-top: 16px;
   margin-bottom: 0; }
 
-.block-top:before, .block-top-2:before, .toc:before {
+.block-top:before, .block-top-2:before, .block-top-center:before, .tooltip:before, .toc:before, .cr2:before {
   display: block;
   content: "";
   border-left: 16px solid transparent;
@@ -5034,6 +5055,10 @@ h2 i {
   position: absolute;
   left: -16px;
   top: 9px; }
+
+.block-top-center:before, .tooltip:before {
+  left: 50%;
+  margin-left: -16px; }
 
 .b-left {
   float: left;
@@ -5094,11 +5119,14 @@ input[type="radio"] {
 /* end forms */
 /* messages */
 .tooltip {
-  border: solid 2px #ddd;
-  background: #fff;
   padding: 8px 8px 1px 8px;
   display: none;
-  min-width: 150px; }
+  background: #ffe067;
+  font-size: 1.1em;
+  max-width: 350px; }
+
+.tooltip:before {
+  border-bottom-color: #ffe067; }
 
 .zone-messages {
   text-align: center; }
@@ -5171,7 +5199,17 @@ td.jqplot-table-legend-label {
 /* general */
 /* header */
 header {
-  background: url("/content/img/bg-tile.png") repeat 0 0 #292929;
+  background-color: #191919;
+  *background-color: #191919;
+  background-image: -ms-linear-gradient(top, #383838, #191919);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#383838), to(#191919));
+  background-image: -webkit-linear-gradient(top, #383838, #191919);
+  background-image: -o-linear-gradient(top, #383838, #191919);
+  background-image: linear-gradient(top, #383838, #191919);
+  background-image: -moz-linear-gradient(top, #383838, #191919);
+  background-repeat: repeat-x;
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='$color-top', endColorstr='$color-bot', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
   margin-bottom: 20px;
   color: #eee;
   position: fixed;
@@ -5234,7 +5272,7 @@ header a {
 .subnav {
   display: none;
   list-style: none;
-  background: url("/content/img/bg-tile.png") repeat 0 0 #292929;
+  background: #191919;
   position: absolute;
   width: auto;
   font-size: 0.9em; }
@@ -5290,6 +5328,24 @@ header a {
 .db13 {
   clear: both; }
 
+.cr2 {
+  margin-bottom: 2em; }
+
+.cr2 td {
+  border-top: none;
+  padding-top: 16px;
+  padding-bottom: 12px; }
+
+table td.cr22 {
+  font-size: 1.5em;
+  vertical-align: middle; }
+
+.cr23 {
+  margin: 0; }
+
+.cr25 {
+  display: inline-block; }
+
 .cr26 {
   color: #007ACC; }
 
@@ -5298,22 +5354,24 @@ header a {
   margin: 24px 0 0 12px; }
 
 .cr40 {
-  float: left; }
+  float: left;
+  margin-top: 1em; }
 
 .cr41 {
-  margin: 24px 0 0 24px; }
+  margin: 32px 0 0 24px; }
 
 .cr410 {
   clear: both; }
 
 .cr43 {
-  margin: 24px 0 0 24px; }
+  margin: 32px 0 0 24px; }
 
 .cr61 {
   font-weight: bold !important; }
 
 .cr71 {
-  text-align: center; }
+  text-align: center;
+  margin-top: 2em; }
 
 .cr75 {
   width: 98%; }
@@ -5327,13 +5385,13 @@ header a {
   border: none;
   background: #fafafa; }
 
-.table tr, .table1 tr {
+.table tr, .cr2 tr, .table1 tr {
   border-bottom: solid 1px #ddd; }
 
-.table tr:last-child, .table1 tr:last-child {
+.table tr:last-child, .cr2 tr:last-child, .table1 tr:last-child {
   border: none; }
 
-.table tr:last-child .rt1, .table1 tr:last-child .rt1 {
+.table tr:last-child .rt1, .cr2 tr:last-child .rt1, .table1 tr:last-child .rt1 {
   border-top: none; }
 
 .table1 th {

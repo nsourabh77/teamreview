@@ -17,7 +17,7 @@
 
     <fieldset class="form-horizontal">
 
-        <h1 class="cr25">
+        <h1 class="cr25" title="Click to edit inline">
             <span class="cr26">
                 @(isCreate ? "Untitled Review" : Model.Name)
             </span>
@@ -28,27 +28,29 @@
                        
         <div id="categories">
             <h2 class="cr40">Categories</h2>
-            <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory"><i class="cr42"></i>Add Category</button>                       
+            <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory" title="Add Category">
+                +
+            </button>                       
             
-            <table class="table block-top">
+            <table class="cr2">
                 <colgroup>
-                    <col width="200" />
-                    <col width="600" />
+                    <col width="250" />
+                    <col width="650" />
                     <col width="100" />
                 </colgroup>                
                 <tbody>
                     @if (!Model.ExistingCategories.Any())
                     {
                         <tr class="cr410">
-                            <td colspan="3">You have not yet created any categories. Go ahead and <button class="link cr61" type="submit" name="reviewAction" value="AddCategory" >add your first category</button>.</td>
+                            <td colspan="3"><p>You have not yet created any categories. Go ahead and <button class="link cr61" type="submit" name="reviewAction" value="AddCategory" >add your first category</button>.</p></td>
                         </tr>
                     }
                     @foreach (var cat in Model.ExistingCategories)
                     {
                         <tr>
-                            <td>@cat.Name</td>
-                            <td>@cat.Description</td>
-                            <td><a>delete</a></td>
+                            <td class="cr22">@cat.Name</td>
+                            <td><blockquote class="cr23"><p class="q-text">@cat.Description</p></blockquote></td>
+                            <td></td>
                         </tr>
                     }
                     @for (var i = 0; i < Model.AddedCategories.Count; i++)
@@ -64,39 +66,41 @@
 
         <div id="peers">
             <h2 class="cr40">Peers</h2>
-            <button class="cr43" type="submit" name="reviewAction" value="AddPeer" id="addPeer"><i class="cr44"></i>Invite Peers</button>
-            @if (!Model.ExistingPeers.Any(p => p.UserName != User.Identity.Name))
-            {
-                <p class="cr410">You have not yet invited any peers for your review. In order to give and get feedback you can invite your colleagues, team members, project members...</p> 
-                <p class="cr410">Go ahead and <button class="cr61 link" type="submit" name="reviewAction" value="AddPeer">invite some peers</button>.</p>
-            }
-            <table class="table table-bordered">
+            <button class="cr43" type="submit" name="reviewAction" value="AddPeer" id="addPeer" title="Invite Peers and Team Members">
+                +
+            </button>
+
+            
+            <table class="cr2">
                 <colgroup>
+                    <col width="250" />
+                    <col width="550" />
                     <col width="200" />
-                    <col width="600" />
-                    <col width="100" />
                 </colgroup>
-                <thead>
-                    <tr>
-                        <th>Peer Name or Username</th>
-                        <th>Peer Email</th>
-                        <th></th>
-                    </tr>
-                </thead>
                 <tbody>
+                    @if (!Model.ExistingPeers.Any(p => p.UserName != User.Identity.Name))
+                    {
+                        <tr>
+                            <td colspan="3">
+                                <p class="cr410">You have not yet invited any peers for your review. </p>
+                                <p class="cr410">In order to give and get feedback you can invite your colleagues, team members, project members...</p> 
+                                <p class="cr410">Go ahead and <button class="cr61 link" type="submit" name="reviewAction" value="AddPeer">invite some peers</button>.</p>
+                            </td>
+                        </tr>
+                    }
                     @foreach (var peer in Model.ExistingPeers)
                     {
                         var thisIsYou = peer.UserName == User.Identity.Name;
                         <tr>
-                            <td>@peer.UserName @(thisIsYou ? "(this is you)" : "")</td>
-                            <td>@peer.EmailAddress</td>
+                            <td class="cr22">@peer.UserName @(thisIsYou ? "(this is you)" : "")</td>
+                            <td class="cr24">@peer.EmailAddress</td>
                             <td>
                                 @if (!thisIsYou)
                                 {
                                     <a>remove</a>
                                 }
                                 else {
-                                    <p class="info">(can't remove yourself)</p>
+                                    <span class="info">(can't remove yourself)</span>
                                 }
                             </td>
                         </tr>
@@ -112,10 +116,9 @@
             </table>
         </div>        
         <p class="cr71">            
-            <input type="submit" name="reviewAction" value="Save and Start the Review" class="cr51" />
-            <input id="Save" type="submit" value="Save for later" class="cr52" />
-        </p>
-        <p class="info">Once you start the review, all your peers will receive an email inviting them to take part in the review. You can start the review at any time.</p>
+            <input type="submit" name="reviewAction" value="Save and Start the Review" class="cr51" title="Once you start the review, all your peers will receive an email inviting them to take part in the review. You can start the review at any time."/>
+            <input id="Save" type="submit" value="Save for later" class="cr52" title="This does not start the review - You can start it at any time from your dashboard" />
+        </p>        
     </fieldset>
 }
 <div>
