@@ -92,7 +92,7 @@
                     {
                         var thisIsYou = peer.UserName == User.Identity.Name;
                         <tr>
-                            <td class="cr22">@peer.UserName @(thisIsYou ? "(this is you)" : "")</td>
+                            <td class="cr22">@peer.UserName <span class="cr221">@(thisIsYou ? "(this is you)" : "")</span></td>
                             <td class="cr24">@peer.EmailAddress</td>
                             <td>
                                 @if (!thisIsYou)
@@ -100,7 +100,7 @@
                                     <a>remove</a>
                                 }
                                 else {
-                                    <span class="info">(can't remove yourself)</span>
+                                    <span class="info">(you cannot remove yourself)</span>
                                 }
                             </td>
                         </tr>

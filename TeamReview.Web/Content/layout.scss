@@ -377,6 +377,7 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	.cr2 {@extend .table, .block-top; margin-bottom:2em;}
 	.cr2 td {border-top:none; padding-top:16px; padding-bottom:12px;}
 	table td.cr22 {@extend .special; font-size:1.5em; vertical-align:middle;}
+	.cr221 {@extend .info; font-family:arial; font-size:0.6em; margin-left:5px; position:relative; top:-2px;}
 	.cr23 {@extend .small; margin:0;}
 	.cr24 {@extend .info;}
 	

@@ -4778,7 +4778,7 @@ button.link::-moz-focus-inner {
 .well p:last-child, .box1of3 p:last-child, .box1of4 p:last-child, .box1of2 p:last-child, .box1of1 p:last-child, .form p:last-child {
   margin-bottom: 0; }
 
-.info, .help-block, .pic-text, .cr24, .cr410 {
+.info, .help-block, .pic-text, .cr221, .cr24, .cr410 {
   font-style: italic;
   color: #666; }
 
@@ -5339,6 +5339,13 @@ header a {
 table td.cr22 {
   font-size: 1.5em;
   vertical-align: middle; }
+
+.cr221 {
+  font-family: arial;
+  font-size: 0.6em;
+  margin-left: 5px;
+  position: relative;
+  top: -2px; }
 
 .cr23 {
   margin: 0; }
