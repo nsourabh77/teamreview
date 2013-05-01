@@ -10,9 +10,10 @@ Scenario: Show "Waiting for reviews" for started, provided review if not all pee
 		And I am on the "Dashboard" page
 	Then I see "Waiting for reviews" for my review
 
-Scenario: Show "Show results" button for all reviews
+Scenario: Show "Show results" button for review which I have provided
 	Given I am logged in
-		And I have a started review with 2 categories and 2 additional peers		
+		And I have a started review with 2 categories and 2 additional peers
+		And I have provided review
 		And I am on the "Dashboard" page
 	When I click on the "Show results" link of the review
 	Then I am on the "Results" page for my review

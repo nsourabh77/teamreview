@@ -32,6 +32,7 @@
                             break;
                         case TeamReview.Web.ViewModels.ActionStatus.WaitForReviews:
                             <p>Waiting for reviews</p>
+                            @Html.ActionLink("Show results", "Results", new { id = item.ReviewId })
                             break;
                         case TeamReview.Web.ViewModels.ActionStatus.ShowResults:
                             @Html.ActionLink("Show results", "Results", new { id = item.ReviewId })
