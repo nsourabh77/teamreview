@@ -94,7 +94,7 @@ namespace TeamReview.Web.Controllers {
 				// Use a transaction to prevent the user from deleting their last login credential
 				using (
 					var scope = new TransactionScope(TransactionScopeOption.Required,
-					                                 new TransactionOptions { IsolationLevel = IsolationLevel.Serializable })) {
+					                                 new TransactionOptions {IsolationLevel = IsolationLevel.Serializable})) {
 					var hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
 					if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1) {
 						OAuthWebSecurity.DeleteAccount(provider, providerUserId);
@@ -104,7 +104,7 @@ namespace TeamReview.Web.Controllers {
 				}
 			}
 
-			return RedirectToAction("Manage", new { Message = message });
+			return RedirectToAction("Manage", new {Message = message});
 		}
 
 		//
@@ -145,7 +145,7 @@ namespace TeamReview.Web.Controllers {
 					}
 
 					if (changePasswordSucceeded) {
-						return RedirectToAction("Manage", new { Message = ManageMessageId.ChangePasswordSuccess });
+						return RedirectToAction("Manage", new {Message = ManageMessageId.ChangePasswordSuccess});
 					}
 					else {
 						ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
@@ -163,7 +163,7 @@ namespace TeamReview.Web.Controllers {
 				if (ModelState.IsValid) {
 					try {
 						WebSecurity.CreateAccount(User.Identity.Name, model.NewPassword);
-						return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
+						return RedirectToAction("Manage", new {Message = ManageMessageId.SetPasswordSuccess});
 					}
 					catch (Exception e) {
 						ModelState.AddModelError("", e);
@@ -182,7 +182,7 @@ namespace TeamReview.Web.Controllers {
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
 		public ActionResult ExternalLogin(string provider, string returnUrl) {
-			return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
+			return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new {ReturnUrl = returnUrl}));
 		}
 
 		//
@@ -190,7 +190,7 @@ namespace TeamReview.Web.Controllers {
 
 		[AllowAnonymous]
 		public ActionResult ExternalLoginCallback(string returnUrl) {
-			var result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
+			var result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new {ReturnUrl = returnUrl}));
 			if (!result.IsSuccessful) {
 				return RedirectToAction("ExternalLoginFailure");
 			}
@@ -242,28 +242,22 @@ namespace TeamReview.Web.Controllers {
 			if (ModelState.IsValid) {
 				// Insert a new user into the database
 				using (var db = new DatabaseContext()) {
-					var user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
+					// Check if user already exists
+					var user = db.UserProfiles.FirstOrDefault(u => u.EmailAddress.ToLower() == model.EmailAddress.ToLower());
 					if (user != null) {
-						ModelState.AddModelError("UserName", "User name already exists. Please enter a different user name.");
+						// Update UserName
+						user.UserName = model.UserName;
 					}
 					else {
-						// Check if user already exists
-						user = db.UserProfiles.FirstOrDefault(u => u.EmailAddress.ToLower() == model.EmailAddress.ToLower());
-						if (user != null) {
-							// Update UserName
-							user.UserName = model.UserName;
-						}
-						else {
-							// Insert new user into the profile table
-							db.UserProfiles.Add(new UserProfile { UserName = model.UserName, EmailAddress = model.EmailAddress });
-						}
-						db.SaveChanges();
-
-						OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
-						OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
-
-						return RedirectToLocal(returnUrl);
+						// Insert new user into the profile table
+						db.UserProfiles.Add(new UserProfile {UserName = model.UserName, EmailAddress = model.EmailAddress});
 					}
+					db.SaveChanges();
+
+					OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.EmailAddress);
+					OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
+
+					return RedirectToLocal(returnUrl);
 				}
 			}
 

@@ -32,7 +32,7 @@ namespace TeamReview.Web.Filters {
 						}
 					}
 
-					WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName",
+					WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "EmailAddress",
 					                                         autoCreateTables: true);
 				}
 				catch (Exception ex) {

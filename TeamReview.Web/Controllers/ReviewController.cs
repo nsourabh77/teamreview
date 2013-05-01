@@ -16,7 +16,7 @@ namespace TeamReview.Web.Controllers {
 		// GET: /Review/
 
 		public ActionResult Index() {
-			var currentUserId = _db.UserProfiles.First(user => user.UserName == User.Identity.Name).UserId;
+			var currentUserId = _db.UserProfiles.First(user => user.EmailAddress == User.Identity.Name).UserId;
 			var reviewConfigurations = _db.ReviewConfigurations
 				.Include("Feedback")
 				.Include("Peers")
@@ -97,7 +97,7 @@ namespace TeamReview.Web.Controllers {
 				newReview.Peers.Add(fromDb ?? newPeer);
 			}
 
-			var loggedInUser = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name);
+			var loggedInUser = _db.UserProfiles.FirstOrDefault(user => user.EmailAddress == User.Identity.Name);
 			if (loggedInUser != null) {
 				newReview.Peers.Add(loggedInUser);
 			}
@@ -236,7 +236,7 @@ namespace TeamReview.Web.Controllers {
 
 			var reviewFeedback = new ReviewFeedback
 			                     	{
-			                     		Reviewer = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name)
+			                     		Reviewer = _db.UserProfiles.FirstOrDefault(user => user.EmailAddress == User.Identity.Name)
 			                     	};
 
 			var reviewconfiguration = _db.ReviewConfigurations.Find(feedback.ReviewId);
@@ -269,7 +269,7 @@ namespace TeamReview.Web.Controllers {
 			}
 
 			var results = new ResultViewModel { ReviewName = reviewconfiguration.Name };
-			var myId = _db.UserProfiles.FirstOrDefault(user => user.UserName == User.Identity.Name).UserId;
+			var myId = _db.UserProfiles.FirstOrDefault(user => user.EmailAddress == User.Identity.Name).UserId;
 
 			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
