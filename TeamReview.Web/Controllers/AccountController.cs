@@ -314,7 +314,7 @@ namespace TeamReview.Web.Controllers {
 				return Redirect(returnUrl);
 			}
 			else {
-				return RedirectToAction("Index", "Home");
+				return RedirectToAction("Index", "Review");
 			}
 		}
 

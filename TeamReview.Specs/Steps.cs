@@ -148,7 +148,7 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I use my Google account")]
-		public void WhenIUseMyGoogleAccount() {
+		public void WhenIRegisterWithMyGoogleAccount() {
 			_browser.ClickButton("Google");
 
 			// Google login page
@@ -157,6 +157,14 @@ namespace TeamReview.Specs {
 			_browser.FillIn("Passwd").With(email.Password);
 			_browser.Uncheck("PersistentCookie"); // don't remember me
 			_browser.FindId("signIn").Click(); // sign in to Google
+
+			// Google OpenID acceptance page
+			_browser.Uncheck("remember_choices_checkbox"); // don't remember my choice
+			_browser.FindId("approve_button").Click(); // authenticate using Google
+		}
+
+		public void WhenILogInWithMyGoogleAccount() {
+			_browser.ClickButton("Google");
 
 			// Google OpenID acceptance page
 			_browser.Uncheck("remember_choices_checkbox"); // don't remember my choice
@@ -222,7 +230,7 @@ namespace TeamReview.Specs {
 		[Given(@"I am logged in")]
 		public void GivenIAmLoggedIn() {
 			GivenIOwnAGoogleAccount();
-			WhenILogInUsingMyGoogleAccount();
+			WhenIRegisterUsingMyGoogleAccount();
 			WhenIFinishRegistering();
 		}
 
@@ -365,7 +373,7 @@ namespace TeamReview.Specs {
 		public void GivenIHaveAnAccountAtTeamReview() {
 			GivenIOwnAGoogleAccount();
 			WhenIRegisterANewAccount();
-			WhenIUseMyGoogleAccount();
+			WhenIRegisterWithMyGoogleAccount();
 			WhenIFillInMyUserName();
 			WhenIFinishRegistering();
 			WhenILogOut();
@@ -373,9 +381,15 @@ namespace TeamReview.Specs {
 
 		[When(@"I log in using my Google account")]
 		public void WhenILogInUsingMyGoogleAccount() {
-			GivenIOwnAGoogleAccount();
 			_browser.Visit("/Account/Login");
-			WhenIUseMyGoogleAccount();
+			WhenILogInWithMyGoogleAccount();
+		}
+
+		[When(@"I register using my Google account")]
+		public void WhenIRegisterUsingMyGoogleAccount()
+		{
+			_browser.Visit("/Account/Login");
+			WhenIRegisterWithMyGoogleAccount();
 		}
 
 		[Given(@"I don't have an account at TeamReview")]

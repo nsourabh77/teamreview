@@ -126,7 +126,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
   testRunner.And("I don\'t have an account at TeamReview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
- testRunner.When("I log in using my Google account", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I register using my Google account", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 28
   testRunner.And("I finish registering", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29

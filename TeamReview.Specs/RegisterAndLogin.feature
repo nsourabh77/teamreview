@@ -24,7 +24,7 @@ Scenario: Login as existing user using Google account
 Scenario: Login as non-existing user using Google account
 	Given I own a Google account
 		And I don't have an account at TeamReview
-	When I log in using my Google account
+	When I register using my Google account
 		And I finish registering
 	Then a new account was created with my Google address
 		And I am logged in
