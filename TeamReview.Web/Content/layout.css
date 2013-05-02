@@ -4711,6 +4711,9 @@ h3 {
   padding-bottom: 0.3em;
   margin-top: 1.6em; }
 
+h3:first-child {
+  margin-top: 0.5em; }
+
 h4 {
   font-size: 1.4em; }
 
@@ -5009,14 +5012,14 @@ h2 i {
   margin: 1.5%;
   float: left; }
 
-.block-top, .block-top-2, .block-top-center, .tooltip, .toc, .cr2 {
+.block-top, .block-top-2, .block-top-center, .tooltip, .toc, .cr2, .nl1 {
   padding: 12px;
   background: #eee;
   position: relative;
   margin-top: 16px;
   margin-bottom: 0; }
 
-.block-top:before, .block-top-2:before, .block-top-center:before, .tooltip:before, .toc:before, .cr2:before {
+.block-top:before, .block-top-2:before, .block-top-center:before, .tooltip:before, .toc:before, .cr2:before, .nl1:before {
   display: block;
   content: "";
   border-left: 16px solid transparent;
@@ -5113,6 +5116,10 @@ input[type="radio"] {
 
 .table1 label {
   margin-bottom: 0; }
+
+.form-special label {
+  font-family: carter one;
+  font-weight: 100; }
 
 /* end forms */
 /* messages */
@@ -5478,6 +5485,9 @@ td.db25 {
 
 .popup {
   display: none; }
+
+.nl1 {
+  margin-bottom: 2.4em; }
 
 /* end main content */
 /* footer */

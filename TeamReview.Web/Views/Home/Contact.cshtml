@@ -1,5 +1,48 @@
 ﻿@{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "Contact Us | TeamReview.com";
 }
 
-<h2>Contact</h2>
+<div class="content-s">
+    <h1>Drop Us a Line</h1>    
+    <form class="form-horizontal block-top form-special">
+        <p class="info">Hi, how can we help you?</p>
+        <div class="control-group">
+            <label class="control-label" for="inputEmail">Your Email *</label>
+            <div class="controls">
+                <input type="text" id="inputEmail">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="FirstName">First Name</label>
+            <div class="controls">
+                <input type="text" id="FirstName" >
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="LastName">Last Name</label>
+            <div class="controls">
+                <input type="text" id="LastName">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="Message">Your Message *</label>
+            <div class="controls">
+                <textarea rows="3" class="input-xxlarge" id="Message"></textarea>
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-success">Send Message</button>
+            </div>
+        </div>
+            
+    </form>
+    <p class="block-top info">
+        Thank you, your message has been sent. We will try to respond as quickly as possible.
+    </p>
+</div>
+<div class="sidebar">    
+    @Html.Partial("_Newsletter")
+
+    <p><a class="btn10" href="@Url.Action("Create", "Review")"><i class="db12"></i>Create Free Review</a></p>
+</div>
