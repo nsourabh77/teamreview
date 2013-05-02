@@ -319,6 +319,7 @@ namespace TeamReview.Specs {
 				var reviewConfiguration = ctx.ReviewConfigurations.Find(reviewId);
 				ctx.Entry(reviewConfiguration).Collection(c => c.Feedback).Load();
 				ctx.Entry(reviewConfiguration).Collection(c => c.Categories).Load();
+				ctx.Entry(reviewConfiguration).Collection(c => c.Peers).Load();
 				var newFeedback = new ReviewFeedback();
 				var thisIsMyId = ScenarioContext.Current.Get<UserProfile>().UserId;
 				newFeedback.Reviewer = ctx.UserProfiles.Find(thisIsMyId);
