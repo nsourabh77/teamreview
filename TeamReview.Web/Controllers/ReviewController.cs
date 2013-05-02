@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -299,7 +298,7 @@ namespace TeamReview.Web.Controllers {
 					categoryWithResults.PeerRating =
 						allAssessments.Where(
 							a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
-							Select(a => a.Rating).Sum() / (decimal)numberOfReviewersWithoutMe;
+							Select(a => a.Rating).Sum()/(decimal) numberOfReviewersWithoutMe;
 				}
 				results.CategoriesWithMyResults.Add(categoryWithResults);
 			}
@@ -307,7 +306,11 @@ namespace TeamReview.Web.Controllers {
 			// my stacked results
 			results.MyStackedRating = results.CategoriesWithMyResults.Select(c => c.MyRating).Sum();
 			results.PeerStackedRating = results.CategoriesWithMyResults.Select(c => c.PeerRating).Sum();
+
 			// everybodys results
+			var peerStackedRatings =
+				reviewconfiguration.Peers.Select(peer => new PeerIdWithStackedRating {PeerId = peer.UserId, StackedRating = 0}).
+					ToList();
 			foreach (var category in reviewconfiguration.Categories) {
 				var categoryWithPeersWithResults = new CategoryWithPeersWithResults
 				                                   	{
@@ -323,22 +326,25 @@ namespace TeamReview.Web.Controllers {
 							allAssessments.Where(
 								a =>
 								a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == peer.UserId &&
-								a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum()/(decimal)numberOfReviewersWithoutPeer;
+								a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum()/(decimal) numberOfReviewersWithoutPeer;
 					}
 					else {
 						peerWithResult.PeerRating = 0;
 					}
 					categoryWithPeersWithResults.PeersWithResult.Add(peerWithResult);
+					peerStackedRatings.Find(p => p.PeerId == peer.UserId).StackedRating += peerWithResult.PeerRating;
 				}
 				results.CategoriesWithPeersWithResults.Add(categoryWithPeersWithResults);
 			}
 
 			// everybodys stacked results
 			foreach (var peer in reviewconfiguration.Peers) {
-				var peerWithStackedRating = new PeerWithStackedRating {PeerName = peer.UserName};
-				peerWithStackedRating.PeerStackedRating =
-					results.CategoriesWithPeersWithResults.SelectMany(c => c.PeersWithResult).Where(p => p.PeerName == peer.UserName).
-						Select(p => p.PeerRating).Sum();
+				var peerWithStackedRating = new PeerWithStackedRating
+				                            	{
+				                            		PeerName = peer.UserName,
+				                            		PeerStackedRating =
+				                            			peerStackedRatings.First(p => p.PeerId == peer.UserId).StackedRating
+				                            	};
 				results.PeersWithStackedRatings.Add(peerWithStackedRating);
 			}
 
@@ -405,6 +411,11 @@ Your teamaton team",
 			}
 			reviewConfiguration.Peers = reviewConfiguration.Peers.Distinct(new UserProfileComparer()).ToList();
 		}
+	}
+
+	public class PeerIdWithStackedRating {
+		public int PeerId;
+		public decimal StackedRating;
 	}
 
 	public class UserProfileComparer : IEqualityComparer<UserProfile> {
