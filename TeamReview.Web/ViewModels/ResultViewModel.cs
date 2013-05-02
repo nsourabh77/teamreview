@@ -11,7 +11,7 @@ namespace TeamReview.Web.ViewModels {
 		public string ReviewName { get; set; }
 		
 		public IList<CategoryWithResults> CategoriesWithMyResults { get; set; }
-		public int PeerStackedRating { get; set; }
+		public decimal PeerStackedRating { get; set; }
 		public int MyStackedRating { get; set; }
 
 		public IList<CategoryWithPeersWithResults> CategoriesWithPeersWithResults { get; set; }
@@ -21,7 +21,7 @@ namespace TeamReview.Web.ViewModels {
 	public class CategoryWithResults {
 		public string CategoryName { get; set; }
 		public string CategoryDescription { get; set; }
-		public int PeerRating { get; set; }
+		public decimal PeerRating { get; set; }
 		public int MyRating { get; set; }
 	}
 
@@ -37,11 +37,11 @@ namespace TeamReview.Web.ViewModels {
 
 	public class PeerWithResult {
 		public string PeerName { get; set; }
-		public int PeerRating { get; set; }
+		public decimal PeerRating { get; set; }
 	}
 
 	public class PeerWithStackedRating {
 		public string PeerName { get; set; }
-		public int PeerStackedRating { get; set; }		
+		public decimal PeerStackedRating { get; set; }		
 	}
 }

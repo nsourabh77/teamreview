@@ -299,7 +299,7 @@ namespace TeamReview.Web.Controllers {
 					categoryWithResults.PeerRating =
 						allAssessments.Where(
 							a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
-							Select(a => a.Rating).Sum()/numberOfReviewersWithoutMe;
+							Select(a => a.Rating).Sum() / (decimal)numberOfReviewersWithoutMe;
 				}
 				results.CategoriesWithMyResults.Add(categoryWithResults);
 			}
@@ -323,7 +323,7 @@ namespace TeamReview.Web.Controllers {
 							allAssessments.Where(
 								a =>
 								a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == peer.UserId &&
-								a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum()/numberOfReviewersWithoutPeer;
+								a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum()/(decimal)numberOfReviewersWithoutPeer;
 					}
 					else {
 						peerWithResult.PeerRating = 0;
