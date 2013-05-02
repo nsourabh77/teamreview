@@ -25,7 +25,7 @@ namespace TeamReview.Web.Controllers {
 			var reviewViewModels = new List<ReviewViewModel>();
 			foreach (var reviewConfiguration in reviewConfigurations) {
 				var reviewViewModel = new ReviewViewModel
-				                      	{ReviewId = reviewConfiguration.ReviewId, Name = reviewConfiguration.Name};
+				                      	{ ReviewId = reviewConfiguration.ReviewId, Name = reviewConfiguration.Name };
 				if (!reviewConfiguration.Active) {
 					reviewViewModel.ActionStatus = ActionStatus.NotStarted;
 				}
@@ -105,7 +105,7 @@ namespace TeamReview.Web.Controllers {
 			_db.SaveChanges();
 
 			if (action != null && action == "Save and Start the Review") {
-				return RedirectToAction("StartReview", new {id = newReview.ReviewId});
+				return RedirectToAction("StartReview", new { id = newReview.ReviewId });
 			}
 
 			TempData["Message"] = "Review has been created";
@@ -178,7 +178,7 @@ namespace TeamReview.Web.Controllers {
 
 			TempData["Message"] = "Review has been saved";
 
-			return RedirectToAction("Edit", new {id});
+			return RedirectToAction("Edit", new { id });
 		}
 
 		//
@@ -211,13 +211,13 @@ namespace TeamReview.Web.Controllers {
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
 			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
 
-			var feedback = new FeedbackViewModel {ReviewId = id, ReviewName = reviewconfiguration.Name};
+			var feedback = new FeedbackViewModel { ReviewId = id, ReviewName = reviewconfiguration.Name };
 
 			foreach (var reviewCategory in reviewconfiguration.Categories) {
 				var categoryWithPeersAndRatings = new CategoryWithPeersAndRatings();
 				categoryWithPeersAndRatings.Category = Mapper.Map<CategoryShowModel>(reviewCategory);
 				foreach (var peer in reviewconfiguration.Peers) {
-					var peerWithRating = new PeerWithRating {Peer = Mapper.Map<PeerShowModel>(peer), Rating = -1};
+					var peerWithRating = new PeerWithRating { Peer = Mapper.Map<PeerShowModel>(peer), Rating = -1 };
 					categoryWithPeersAndRatings.PeersWithRatings.Add(peerWithRating);
 				}
 				feedback.CategoriesWithPeersAndRatings.Add(categoryWithPeersAndRatings);
@@ -268,7 +268,7 @@ namespace TeamReview.Web.Controllers {
 				return HttpNotFound();
 			}
 
-			var results = new ResultViewModel {ReviewName = reviewconfiguration.Name};
+			var results = new ResultViewModel { ReviewName = reviewconfiguration.Name };
 			var myId = _db.UserProfiles.FirstOrDefault(user => user.EmailAddress == User.Identity.Name).UserId;
 
 			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
@@ -289,15 +289,16 @@ namespace TeamReview.Web.Controllers {
 				                          		CategoryName = category.Name,
 				                          		CategoryDescription = category.Description
 				                          	};
-				categoryWithResults.MyRating =
-					allAssessments.Where(
-						a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId == myId).
-						Single().Rating;
+				var cat = category;
+				var myAssessment = allAssessments.Where(
+					a => a.ReviewCategory.CatId == cat.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId == myId).
+					SingleOrDefault();
+				categoryWithResults.MyRating = myAssessment != null ? myAssessment.Rating : 0;
 
 				if (numberOfReviewersWithoutMe > 0) {
 					categoryWithResults.PeerRating =
 						allAssessments.Where(
-							a => a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
+							a => a.ReviewCategory.CatId == cat.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
 							Select(a => a.Rating).Sum()/(decimal) numberOfReviewersWithoutMe;
 				}
 				results.CategoriesWithMyResults.Add(categoryWithResults);
@@ -308,8 +309,35 @@ namespace TeamReview.Web.Controllers {
 			results.PeerStackedRating = results.CategoriesWithMyResults.Select(c => c.PeerRating).Sum();
 
 			// everybodys results
+			var categories = reviewconfiguration.Categories.Select(cat => cat.Name);
+			results.CategoryPeerRatings = new CategoryPeerRatings
+			                              	{
+			                              		Categories = categories,
+			                              		PeersWithRatings = new List<PeerWithRatings>()
+			                              	};
+			foreach (var peer in reviewconfiguration.Peers) {
+				var pee = peer;
+				var numberOfReviewersWithoutPeer = reviewers.Where(r => r.UserId != pee.UserId).Count();
+				var peerWithRatings = new PeerWithRatings
+				                      	{
+				                      		PeerName = peer.UserName,
+				                      		Ratings = new List<float>()
+				                      	};
+				results.CategoryPeerRatings.PeersWithRatings.Add(peerWithRatings);
+				foreach (var category in reviewconfiguration.Categories) {
+					var cat = category;
+					peerWithRatings.Ratings.Add(numberOfReviewersWithoutPeer > 0
+					                            	? allAssessments.Where(
+					                            		a =>
+					                            		a.ReviewCategory.CatId == cat.CatId && a.ReviewedPeer.UserId == pee.UserId &&
+					                            		a.Reviewer.UserId != pee.UserId).Sum(a => a.Rating)/
+					                            	  (float) numberOfReviewersWithoutPeer
+					                            	: 0);
+				}
+			}
+
 			var peerStackedRatings =
-				reviewconfiguration.Peers.Select(peer => new PeerIdWithStackedRating {PeerId = peer.UserId, StackedRating = 0}).
+				reviewconfiguration.Peers.Select(peer => new PeerIdWithStackedRating { PeerId = peer.UserId, StackedRating = 0 }).
 					ToList();
 			foreach (var category in reviewconfiguration.Categories) {
 				var categoryWithPeersWithResults = new CategoryWithPeersWithResults
@@ -320,7 +348,7 @@ namespace TeamReview.Web.Controllers {
 
 				foreach (var peer in reviewconfiguration.Peers) {
 					var numberOfReviewersWithoutPeer = reviewers.Where(r => r.UserId != peer.UserId).Count();
-					var peerWithResult = new PeerWithResult {PeerName = peer.UserName};
+					var peerWithResult = new PeerWithResult { PeerName = peer.UserName };
 					if (numberOfReviewersWithoutPeer > 0) {
 						peerWithResult.PeerRating =
 							allAssessments.Where(
@@ -346,6 +374,15 @@ namespace TeamReview.Web.Controllers {
 				                            			peerStackedRatings.First(p => p.PeerId == peer.UserId).StackedRating
 				                            	};
 				results.PeersWithStackedRatings.Add(peerWithStackedRating);
+			}
+
+			results.RatingsForPeersPerCategory = new List<decimal[]>();
+			foreach (var category in reviewconfiguration.Categories) {
+				var cat = category;
+				results.RatingsForPeersPerCategory.Add(
+					reviewconfiguration.Peers
+						.Select(peer => reviewconfiguration.Feedback.GetRatingForPeerForCategory(peer, cat))
+						.ToArray());
 			}
 
 			return View(results);
