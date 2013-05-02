@@ -155,9 +155,17 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	
 	/* end icons */
 	
-	/* buttons */
+	/* buttons */				
 	
 		.btn {font-family:carter one; font-weight:100;}
+		
+		.b-n {@extend .rounded; background:$primary; padding:16px; color:#fff; text-align:center; font-family:carter one; font-size:1.5em; font-weight:100; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);}
+		.b-n:hover {text-decoration:none; color:#fff; background:darken($primary, 12%);}
+		
+		.b-2 {@extend .b-n; background:$tertiary;}
+		.b-s {@extend .b-n; font-size: 1em; padding:1px 5px 0 5px;}
+	
+		.text-icon {font-size:2.1em; line-height:0; position:relative; top:4px; margin-right:3px;}
 	
 		.btn10 {@extend .btn, .btn-large, .btn-success; font-size:1.3em; width:220px;}
 		.btn11 {@extend .btn, .btn-info; font-size:1.1em; width:98% !important;}
@@ -347,7 +355,8 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	
 	.mini-nav {list-style:none; margin:0; font-family:open sans; float:right; font-size:0.9em;}
 	.hd14 {@extend .icon, .icon-white, .icon-user; display:inline-block; margin-top:2px;}
-	.hd15 {@extend .btn, .btn-mini, .btn-success; margin:18px 0 0 24px; float:left;}	
+	.hd15 {@extend .b-1, .b-s; margin:18px 0 0 24px; float:left;}		
+	.hd16 {@extend .text-icon; line-height:0;}
 	.hd19 {@extend .icon, .icon-white, .icon-off; margin-top:2px;}
 	#logoutForm {display:inline-block; margin-left:12px;}
 	

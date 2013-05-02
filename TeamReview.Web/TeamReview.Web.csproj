@@ -186,6 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\img\bg-tile.png" />
+    <Content Include="Content\img\favicon.ico" />
     <Content Include="Content\img\teamreview-logo.png" />
     <Content Include="Scripts\jquery.edit-in-place.js" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />

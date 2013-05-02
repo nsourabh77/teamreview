@@ -3,19 +3,19 @@
         <li>@Html.ActionLink("My Dashboard", "Index", "Review")</li>
         <li>
             <a href="@Url.Action("Help", "Home")">Help</a>
-            <ul class="subnav">
+            <ul class="subnav">                
                 <li><a href="@Url.Action("StackRanking", "Home")">Stack Ranking</a></li>
                 <li><a href="@Url.Action("PeerReviews", "Home")">Peer Reviews</a></li>
                 <li><a href="@Url.Action("PerformanceReview", "Home")">Performance Review</a></li>
                 <li><a href="@Url.Action("VisualizeData", "Home")">Visualize Data</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
-        </li>
-        <li><a href="#contact">Contact</a></li>            
+        </li>        
     </ul>
-    <a class="hd15" href="@Url.Action("Create", "Review")"><i class="db12"></i>Create Review</a>
+    <a class="hd15" href="@Url.Action("Create", "Review")"><span class="hd16">+</span> Create Review</a>
     <ul class="mini-nav">        
         <li>
-            <i class="hd14"></i><span class="hd16">Logged in as</span> @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "hd17", title = "Manage" })
+            <i class="hd14"></i><span class="hd17">Logged in as</span> @Html.ActionLink(User.Identity.Name, "Manage", "Account", routeValues: null, htmlAttributes: new { @class = "hd17", title = "Manage" })
         </li>
         <li>    
             @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
