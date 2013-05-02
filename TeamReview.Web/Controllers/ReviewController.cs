@@ -387,12 +387,26 @@ namespace TeamReview.Web.Controllers {
 
 		private string GetMailBody(string userName, int id) {
 			return string.Format(
-				@"Dear {0},
+				@"Hi there, {0},
 
-Please provide a review. Go to the following page:
-http://teamreview.teamaton.com/Review/Provide/{1}
---
-Your teamaton team",
+                you have been invited by {ReviewOwner} ({ReviewOwnerEmailAdress}) to provide a review.
+
+                This helps improve your team's and your own performance.                
+                
+                Please visit the following link to provide the review:
+
+                http://teamreview.teamaton.com/Review/Provide/{1}
+
+                If you would like to find our more about TeamReview, feel free to visit <a href='http://www.teamreview.net'>TeamReview.net</a>
+
+                If you have any questions, just reply to this email and we will try to get in touch with you as fast as possible.
+
+
+                Thank you for your time and cheers,
+
+                Andrej - Masterchief Head of Design of TeamReview.net
+
+                ",
 				userName, id);
 		}
 
