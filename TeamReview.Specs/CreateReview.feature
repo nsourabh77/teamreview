@@ -77,3 +77,33 @@ Scenario: Invite existing peer to my review
 		And an account exists for that peer's email address
 		And I save the review
 	Then this user is added to the review
+
+Scenario: Cannot save review with incomplete category
+	Given I am logged in
+		And I own a review
+	When I edit my review
+		And I add a category
+		And I fill in a category description
+		And I save the review
+	Then I see the message "Please give your category a name"
+		And the review is not saved
+
+Scenario: Cannot save review with peer without email
+	Given I am logged in
+		And I own a review
+	When I edit my review
+		And I invite a peer
+		And I fill in the peer's name
+		And I save the review
+	Then I see the message "Please enter your peer's email address"
+		And the review is not saved
+
+Scenario: Cannot save review with peer without name
+	Given I am logged in
+		And I own a review
+	When I edit my review
+		And I invite a peer
+		And I fill in the peer's email address
+		And I save the review
+	Then I see the message "Please enter your peer's name"
+		And the review is not saved
