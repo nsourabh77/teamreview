@@ -14,6 +14,44 @@ Scenario: Register using Google account
 		And I am logged in
 		And I am on the "Dashboard"
 
+Scenario: Standard Registration
+	Given I am not logged into TeamReview
+	When I register a new account
+		And I fill in my email address "test@teamreview.net"
+		And I finish registering
+	Then I see the message "An email has been send to test@teamreview.net. Please check your inbox for further instructions."
+		#And an email is sent to test@teamreview.net with a hard to guess validation url
+
+Scenario: Validate Email and enter UserName and Password
+	Given I registered standardly
+	When I follow link in validation email
+		And I enter UserName and Password twice
+		And I finish registering
+	Then I am on the "Dashboard"
+
+Scenario: I have lost my Password
+	Given I have a standard account with email
+		And I am not logged into TeamReview
+	When I go to the "Login" page
+		And I say that I have lost my password
+		And I enter my email address "test@teamreview.net"
+		And I request an email
+	Then I see the message "An email has been send to test@teamreview.net. Please check your inbox for further instructions."
+		#And an email is sent to test@teamreview.net with a hard to guess new password url
+
+Scenario: Standard Login
+	Given I have a standard account with email
+		And I am not logged into TeamReview
+	When I go to the "Login" page
+		And I enter UserName and Password
+		And I log in
+	Then I am logged in
+		And I am on the "Dashboard"
+
+#Scenario: Change UserName
+
+#Scenario: Change Password
+
 Scenario: Login as existing user using Google account
 	Given I have an account at TeamReview
 		And I am not logged into TeamReview
