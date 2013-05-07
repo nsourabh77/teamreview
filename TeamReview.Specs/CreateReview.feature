@@ -78,7 +78,7 @@ Scenario: Invite existing peer to my review
 		And I save the review
 	Then this user is added to the review
 
-Scenario: Cannot save review with incomplete category
+Scenario: Cannot save review with category without name
 	Given I am logged in
 		And I own a review
 	When I edit my review

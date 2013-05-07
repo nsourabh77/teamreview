@@ -237,7 +237,7 @@ namespace TeamReview.Specs {
 		[Given(@"I own a review")]
 		[Given(@"I am invited to a review")]
 		public void GivenIOwnAReview() {
-			GivenIOwnAReview("NewReview");
+			GivenIOwnAReview("Untitled Review");
 		}
 
 		private void GivenIOwnAReview(string reviewName) {
@@ -387,8 +387,7 @@ namespace TeamReview.Specs {
 		}
 
 		[When(@"I register using my Google account")]
-		public void WhenIRegisterUsingMyGoogleAccount()
-		{
+		public void WhenIRegisterUsingMyGoogleAccount() {
 			_browser.Visit("/Account/Login");
 			WhenIRegisterWithMyGoogleAccount();
 		}
@@ -737,6 +736,20 @@ namespace TeamReview.Specs {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
 			foreach (var peer in review.Peers) {
 				Assert.IsTrue(everyonesStackedResults.HasContent("Name = " + peer.UserName + " : peer rating = 14"));
+			}
+		}
+
+		[Then(@"the review is not saved")]
+		public void ThenTheReviewIsNotSaved() {
+			// works only when editing a review, for now
+			// checking against the default review: see GivenIOwnAReview()
+			var thisIsMe = ScenarioContext.Current.Get<UserProfile>();
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				var reviewFromDb = ctx.ReviewConfigurations.Include("Categories").Include("Peers").Single();
+				Assert.AreEqual("Untitled Review", reviewFromDb.Name);
+				Assert.AreEqual(thisIsMe.EmailAddress, reviewFromDb.Peers[0].EmailAddress);
+				CollectionAssert.IsEmpty(reviewFromDb.Categories);
 			}
 		}
 
