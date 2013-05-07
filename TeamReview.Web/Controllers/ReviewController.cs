@@ -435,9 +435,9 @@ Please visit the following link to provide the review:
 
 http://teamreview.teamaton.com/Review/Provide/{1}
 
-If you would like to find our more about TeamReview, feel free to visit http://www.teamreview.net/.
+If you would like to find out more about TeamReview, feel free to visit http://www.teamreview.net/.
 
-If you have any questions, just reply to this email and we will try to get in touch with you as fast as possible.
+In case you have any questions, just reply to this email and we will get in touch with you as soon as possible.
 
 
 Thank you for your time and cheers,
