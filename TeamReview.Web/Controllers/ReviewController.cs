@@ -397,15 +397,16 @@ namespace TeamReview.Web.Controllers {
 			_db.SaveChanges();
 
 			// TODO: send mail asynchronously from background task
-			SendMailToPeers(reviewconfiguration.Peers, id);
+			var owner = _db.UserProfiles.Single(user => user.EmailAddress == User.Identity.Name);
+			SendMailToPeers(reviewconfiguration.Peers, id, owner);
 
 			TempData["Message"] = "Review has been started and mails have been sent to peers";
 			return RedirectToAction("Index");
 		}
 
-		private void SendMailToPeers(IEnumerable<UserProfile> peers, int id) {
+		private static void SendMailToPeers(IEnumerable<UserProfile> peers, int reviewId, UserProfile owner) {
 			var credentials = new NetworkCredential("teamreview@teamaton.com", "TGqDYzt0ZnnbPMgzn9Hl");
-			var smtpClient = new SmtpClient("smtp.teamaton.com")
+			var smtpClient = new SmtpClient("mail.teamaton.com")
 			                 	{
 			                 		UseDefaultCredentials = false,
 			                 		Credentials = credentials
@@ -415,36 +416,35 @@ namespace TeamReview.Web.Controllers {
 				var message = new MailMessage("teamreview@teamaton.com", peer.EmailAddress)
 				              	{
 				              		Subject = "Provide Review",
-				              		Body = GetMailBody(peer.UserName, id)
+				              		Body = GetMailBody(peer.UserName, reviewId, owner)
 				              	};
 
 				smtpClient.Send(message);
 			}
 		}
 
-		private string GetMailBody(string userName, int id) {
+		private static string GetMailBody(string userName, int reviewId, UserProfile owner) {
 			return string.Format(
 				@"Hi there, {0},
 
-                you have been invited by {ReviewOwner} ({ReviewOwnerEmailAdress}) to provide a review.
+you have been invited by {2} ({3}) to provide a review.
 
-                This helps improve your team's and your own performance.                
-                
-                Please visit the following link to provide the review:
+This helps improve your team's and your own performance.                
 
-                http://teamreview.teamaton.com/Review/Provide/{1}
+Please visit the following link to provide the review:
 
-                If you would like to find our more about TeamReview, feel free to visit <a href='http://www.teamreview.net'>TeamReview.net</a>
+http://teamreview.teamaton.com/Review/Provide/{1}
 
-                If you have any questions, just reply to this email and we will try to get in touch with you as fast as possible.
+If you would like to find our more about TeamReview, feel free to visit http://www.teamreview.net/.
+
+If you have any questions, just reply to this email and we will try to get in touch with you as fast as possible.
 
 
-                Thank you for your time and cheers,
+Thank you for your time and cheers,
 
-                Andrej - Masterchief Head of Design of TeamReview.net
-
-                ",
-				userName, id);
+Andrej - Masterchief Head of Design of TeamReview.net
+",
+				userName, reviewId, owner.UserName, owner.EmailAddress);
 		}
 
 		protected override void Dispose(bool disposing) {
