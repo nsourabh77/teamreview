@@ -226,10 +226,10 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	
 	/* boxes */
 		
-		.box1of3 {@extend .well; width:27%; padding:1.5%; margin:1.5%; float:left;}
-		.box1of4 {@extend .well; width:18%; padding:1.5%; margin:1.5%; float:left;}
-		.box1of2 {@extend .well; width:43%; padding:1.5%; margin:1.5%; float:left;}
-		.box1of1 {@extend .well; width:93%; padding:1.5%; margin:1.5%; float:left;}
+		.box1of3 {width:27%; padding:1.5%; margin:1.5%; float:left;}
+		.box1of4 {width:18%; padding:1.5%; margin:1.5%; float:left;}
+		.box1of2 {width:43%; padding:1.5%; margin:1.5%; float:left;}
+		.box1of1 {width:93%; padding:1.5%; margin:1.5%; float:left;}
 		
 		.block-top {padding:12px; background:#eee; position:relative; margin-top:16px; margin-bottom:0;}
 		.block-top:before {display:block; content:""; border-left:16px solid transparent; border-right:solid 16px transparent; border-bottom:16px #eee solid; width:0; height:0; position:absolute; top:-16px; left:40px;}
@@ -285,8 +285,10 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 		.control-label {font-weight:bold;}	
 		.table1 label {margin-bottom:0;}
 	
-		.form-special label {font-family: carter one; font-weight:100;}
+		.form-special label {font-family: carter one; font-weight:100;}		
 	
+		.input-xl {height:2em; font-size:1.6em; font-family:carter one; padding-top:10px; line-height:1;}
+		
 	/* end forms */	
 	
 	/* messages */
@@ -438,6 +440,10 @@ body {padding-top:6em;; background:#F5F5F5; color:#4a4a4a; line-height:1.8;}
 	.popup {display:none;}
 	
 	.nl1 {@extend .block-top; margin-bottom:2.4em;}
+
+	input.rg11 {@extend .input-xl; width:97.5%;}
+	
+	.rg12 {@extend .btn, .btn-large, .btn-success; width:100% !important; display:block; font-size:1.4em;}
 	
 /* end main content */
 
