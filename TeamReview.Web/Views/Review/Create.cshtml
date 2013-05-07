@@ -28,7 +28,7 @@
                        
         <div id="categories">
             <h2 class="cr40">Categories</h2>
-            <button class="cr41" type="submit" name="reviewAction" value="AddCategory" id="addCategory" title="Add Category">
+            <button class="cr41" type="submit" name="submit.add" value="addCategory" id="addCategory" title="Add Category">
                 +
             </button>                       
             
@@ -42,7 +42,11 @@
                     @if (!Model.ExistingCategories.Any())
                     {
                         <tr class="cr410">
-                            <td colspan="3"><p>You have not yet created any categories. Go ahead and <button class="link cr61" type="submit" name="reviewAction" value="AddCategory" >add your first category</button>.</p></td>
+                            <td colspan="3">
+                                <p>You have not yet created any categories. Go ahead and
+                                    <button class="link cr61" type="submit" name="submit.add" value="addCategory">add your
+                                        first category</button>.</p>
+                            </td>
                         </tr>
                     }
                     @foreach (var cat in Model.ExistingCategories)
@@ -66,7 +70,7 @@
 
         <div id="peers">
             <h2 class="cr40">Peers</h2>
-            <button class="cr43" type="submit" name="reviewAction" value="AddPeer" id="addPeer" title="Invite Peers and Team Members">
+            <button class="cr43" type="submit" name="submit.add" value="addPeer" id="addPeer" title="Invite Peers and Team Members">
                 +
             </button>
 
@@ -83,8 +87,8 @@
                         <tr>
                             <td colspan="3">
                                 <p class="cr410">You have not yet invited any peers for your review. </p>
-                                <p class="cr410">In order to give and get feedback you can invite your colleagues, team members, project members...</p> 
-                                <p class="cr410">Go ahead and <button class="cr61 link" type="submit" name="reviewAction" value="AddPeer">invite some peers</button>.</p>
+                                <p class="cr410">In order to give and get feedback you can invite your colleagues, team members, project members...</p>
+                                <p class="cr410">Go ahead and <button class="cr61 link" type="submit" name="submit.add" value="addPeer">invite some peers</button>.</p>
                             </td>
                         </tr>
                     }
@@ -116,9 +120,9 @@
             </table>
         </div>        
         <p class="cr71">            
-            <input type="submit" name="reviewAction" value="Save and Start the Review" class="cr51" title="Once you start the review, all your peers will receive an email inviting them to take part in the review. You can start the review at any time."/>
-            <input id="Save" type="submit" value="Save for later" class="cr52" title="This does not start the review - You can start it at any time from your dashboard" />
         </p>        
+            <input type="submit" name="submit" value="Save and Start the Review" class="cr51" title="Once you start the review, all your peers will receive an email inviting them to take part in the review. You can start the review at any time."/>
+            <input id="Save" type="submit" name="submit" value="Save for later" class="cr52" title="This does not start the review - You can start it at any time from your dashboard" />
     </fieldset>
 }
 <div>
@@ -126,7 +130,6 @@
 </div>
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/editinplace")
     <script>
         $(function () {

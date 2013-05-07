@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace TeamReview.Web.ViewModels {
 	public class ReviewCreateEditModel {
@@ -10,7 +10,6 @@ namespace TeamReview.Web.ViewModels {
 			AddedPeers = new List<PeerAddModel>();
 		}
 
-		[Required]
 		public string Name { get; set; }
 
 		public CategoryShowModel[] ExistingCategories { get; set; }

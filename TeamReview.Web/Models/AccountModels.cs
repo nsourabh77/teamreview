@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -32,6 +33,8 @@ namespace TeamReview.Web.Models {
 
 	[Table("ReviewConfiguration")]
 	public class ReviewConfiguration {
+		public static string UntitledName = "Untitled Review";
+
 		public ReviewConfiguration() {
 			Categories = new List<ReviewCategory>();
 			Peers = new List<UserProfile>();
@@ -42,11 +45,18 @@ namespace TeamReview.Web.Models {
 		[DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
 		public int ReviewId { get; set; }
 
+		[Required]
 		public string Name { get; set; }
 		public bool Active { get; set; }
 		public IList<ReviewCategory> Categories { get; set; }
 		public IList<UserProfile> Peers { get; set; }
 		public IList<ReviewFeedback> Feedback { get; set; }
+
+		public void EnsureName() {
+			if (string.IsNullOrWhiteSpace(Name)) {
+				Name = UntitledName;
+			}
+		}
 	}
 
 	[Table("ReviewCategory")]

@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Mail;
 using System.Web.Mvc;
 using AutoMapper;
+using TeamReview.Web.Filters;
 using TeamReview.Web.Models;
 using TeamReview.Web.ViewModels;
 
@@ -66,18 +69,10 @@ namespace TeamReview.Web.Controllers {
 		// POST: /Review/Create
 
 		[HttpPost]
+		[FormValueRequired("submit")]
 		public ActionResult Create(ReviewCreateEditModel reviewCreateModel) {
-			var action = Request.Form["reviewAction"];
-			if (action != null) {
-				if (action == "AddCategory") {
-					reviewCreateModel.AddedCategories.Add(new CategoryAddModel());
-					return View(reviewCreateModel);
-				}
-				if (action == "AddPeer") {
-					reviewCreateModel.AddedPeers.Add(new PeerAddModel());
-					return View(reviewCreateModel);
-				}
-			}
+			// manual model validation
+			ValidateModel(reviewCreateModel);
 
 			if (!ModelState.IsValid) {
 				return View(reviewCreateModel);
@@ -86,6 +81,8 @@ namespace TeamReview.Web.Controllers {
 			// TODO: raise model state errors for duplicate email addresses
 
 			var newReview = Mapper.Map<ReviewConfiguration>(reviewCreateModel);
+			newReview.EnsureName();
+
 			_db.ReviewConfigurations.Add(newReview);
 
 			foreach (var cat in reviewCreateModel.AddedCategories.Select(Mapper.Map<ReviewCategory>)) {
@@ -104,7 +101,8 @@ namespace TeamReview.Web.Controllers {
 
 			_db.SaveChanges();
 
-			if (action != null && action == "Save and Start the Review") {
+			var action = Request.Form["submit"];
+			if (!string.IsNullOrEmpty(action)) {
 				return RedirectToAction("StartReview", new { id = newReview.ReviewId });
 			}
 
@@ -135,8 +133,9 @@ namespace TeamReview.Web.Controllers {
 		//
 		// POST: /Review/Edit/5
 
-		[HttpPost]
-		public ActionResult Edit(int id, ReviewCreateEditModel reviewEditModel) {
+		[HttpPost, ActionName("Edit")]
+		[FormValueRequired("submit")]
+		public ActionResult EditPost(int id) {
 			var reviewFromDb = _db.ReviewConfigurations
 				.Include("Categories")
 				.Include("Peers")
@@ -146,23 +145,19 @@ namespace TeamReview.Web.Controllers {
 				return new HttpNotFoundResult("The review could not be found.");
 			}
 
-			var newModel = Mapper.Map<ReviewCreateEditModel>(reviewFromDb);
-			var action = Request.Form["reviewAction"];
-			if (action != null) {
-				if (action == "AddCategory") {
-					newModel.AddedCategories.Add(new CategoryAddModel());
-				}
-				else if (action == "AddPeer") {
-					newModel.AddedPeers.Add(new PeerAddModel());
-				}
-				return View("Create", newModel);
-			}
+			var reviewEditModel = Mapper.Map<ReviewCreateEditModel>(reviewFromDb);
+			// load form data into new model object
+			UpdateModel(reviewEditModel);
+
+			// manual model validation
+			ValidateModel(reviewEditModel);
 
 			if (!ModelState.IsValid) {
-				return View("Create", newModel);
+				return View("Create", reviewEditModel);
 			}
 
 			reviewFromDb.Name = reviewEditModel.Name;
+			reviewFromDb.EnsureName();
 			// use this if there are more properties to set
 			// _db.Entry(reviewFromDb).CurrentValues.SetValues(reviewEditModel);
 
@@ -179,6 +174,40 @@ namespace TeamReview.Web.Controllers {
 			TempData["Message"] = "Review has been saved";
 
 			return RedirectToAction("Edit", new { id });
+		}
+
+		[HttpPost, ActionName("Create")]
+		[FormValueRequired("submit.add")]
+		public ActionResult CreateExtension(ReviewCreateEditModel reviewCreateModel) {
+			var action = Request.Form["submit.add"];
+			if (action != null) {
+				if (action == "addCategory") {
+					reviewCreateModel.AddedCategories.Add(new CategoryAddModel());
+					return View("Create", reviewCreateModel);
+				}
+				if (action == "addPeer") {
+					reviewCreateModel.AddedPeers.Add(new PeerAddModel());
+					return View("Create", reviewCreateModel);
+				}
+			}
+			throw new ArgumentNullException("reviewAction", "The given form field must not be empty!");
+		}
+
+		[HttpPost, ActionName("Edit")]
+		[FormValueRequired("submit.add")]
+		public ActionResult EditExtension(int id) {
+			var reviewFromDb = _db.ReviewConfigurations
+				.Include("Categories")
+				.Include("Peers")
+				.Single(rev => rev.ReviewId == id);
+
+			if (reviewFromDb == null) {
+				return new HttpNotFoundResult("The review could not be found.");
+			}
+
+			var newModel = Mapper.Map<ReviewCreateEditModel>(reviewFromDb);
+
+			return CreateExtension(newModel);
 		}
 
 		//
@@ -461,6 +490,47 @@ Andrej - Masterchief Head of Design of TeamReview.net
 				}
 			}
 			reviewConfiguration.Peers = reviewConfiguration.Peers.Distinct(new UserProfileComparer()).ToList();
+		}
+
+		private void ValidateModel(ReviewCreateEditModel reviewCreateModel) {
+			// 1. Remove empty entries from categories and peers
+			for (var index = 0; index < reviewCreateModel.AddedCategories.Count; index++) {
+				var category = reviewCreateModel.AddedCategories[index];
+				if (string.IsNullOrWhiteSpace(category.Name) && string.IsNullOrWhiteSpace(category.Description)) {
+					reviewCreateModel.AddedCategories.Remove(category);
+				}
+			}
+			for (var index = 0; index < reviewCreateModel.AddedPeers.Count; index++) {
+				var peer = reviewCreateModel.AddedPeers[index];
+				if (string.IsNullOrWhiteSpace(peer.UserName) && string.IsNullOrWhiteSpace(peer.EmailAddress)) {
+					reviewCreateModel.AddedPeers.Remove(peer);
+				}
+			}
+			// 2. Check for categories with only a description
+			for (var i = 0; i < reviewCreateModel.AddedCategories.Count; i++) {
+				var index = i;
+				var category = reviewCreateModel.AddedCategories[index];
+				if (string.IsNullOrWhiteSpace(category.Name)) {
+					Expression<Func<ReviewCreateEditModel, string>> expression = x => x.AddedCategories[index].Name;
+					var key = ExpressionHelper.GetExpressionText(expression);
+					ModelState.AddModelError(key, "Please give your category a name.");
+				}
+			}
+			// 3. Check for peers without one of the fields
+			for (var i = 0; i < reviewCreateModel.AddedPeers.Count; i++) {
+				var index = i;
+				var peer = reviewCreateModel.AddedPeers[index];
+				if (string.IsNullOrWhiteSpace(peer.UserName)) {
+					Expression<Func<ReviewCreateEditModel, string>> expression = x => x.AddedPeers[index].UserName;
+					var key = ExpressionHelper.GetExpressionText(expression);
+					ModelState.AddModelError(key, "Please enter your peer's name.");
+				}
+				else if (string.IsNullOrWhiteSpace(peer.EmailAddress)) {
+					Expression<Func<ReviewCreateEditModel, string>> expression = x => x.AddedPeers[index].EmailAddress;
+					var key = ExpressionHelper.GetExpressionText(expression);
+					ModelState.AddModelError(key, "Please enter your peer's email address.");
+				}
+			}
 		}
 	}
 

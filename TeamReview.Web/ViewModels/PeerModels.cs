@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace TeamReview.Web.ViewModels {
 	public class PeerShowModel {
 		public int UserId { get; set; }
@@ -8,10 +6,7 @@ namespace TeamReview.Web.ViewModels {
 	}
 
 	public class PeerAddModel {
-		[Required]
 		public string UserName { get; set; }
-
-		[Required]
 		public string EmailAddress { get; set; }
 	}
 }

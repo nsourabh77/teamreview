@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace TeamReview.Web.ViewModels {
+﻿namespace TeamReview.Web.ViewModels {
 	public class CategoryShowModel {
 		public int CatId { get; set; }
 		public string Name { get; set; }
@@ -8,9 +6,7 @@ namespace TeamReview.Web.ViewModels {
 	}
 
 	public class CategoryAddModel {
-		[Required]
 		public string Name { get; set; }
-
 		public string Description { get; set; }
 	}
 }
