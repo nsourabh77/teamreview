@@ -1,51 +1,51 @@
 ﻿@model IEnumerable<TeamReview.Web.ViewModels.ReviewViewModel>
-
 @{
     ViewBag.Title = "Index";
 }
-
 @if (TempData["Message"] != null) { 
     <p>@TempData["Message"]</p>
 }
-
 <h1 class="db10">My TeamReview Dashboard</h1>
 <a class="db11" href="@Url.Action("Create", "Review")"><i class="db12"></i>Create Review</a>
-
 <h2 class="db13">Your Reviews</h2>
 <div class="block-top">
-    <p class="info">You have not create a review yet. Go ahead, <a href="@Url.Action("Create", "Review")">create your first review</a></p>
-    <table class="table table-striped">        
-        @foreach (var item in Model) {
+    @if (!Model.Any())
+    {
+        <p class="info">You have not created any review, yet. Go ahead, <a href="@Url.Action("Create", "Review")">
+            create your first review</a>!</p>
+    }
+    <table class="table table-striped">
+        @foreach (var item in Model)
+        {
             var rowId = "ReviewId_" + item.ReviewId;
             <tr id="@rowId">
                 <td class="db25">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @switch (item.ActionStatus) 
+                    @switch (item.ActionStatus)
                     {
                         case TeamReview.Web.ViewModels.ActionStatus.NotStarted:
-                            @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId })
-                            break;
+                        @Html.ActionLink("Start review", "StartReview", new { id = item.ReviewId })
+                   break;
                         case TeamReview.Web.ViewModels.ActionStatus.ProvideReview:
-                            @Html.ActionLink("Provide review", "Provide", new { id = item.ReviewId }) 
-                            break;
+                        @Html.ActionLink("Provide review", "Provide", new { id = item.ReviewId }) 
+                   break;
                         case TeamReview.Web.ViewModels.ActionStatus.WaitForReviews:
-                            <p>Waiting for reviews</p>
-                            @Html.ActionLink("Show results", "Results", new { id = item.ReviewId })
-                            break;
+                        <p>Waiting for reviews</p>
+                        @Html.ActionLink("Show results", "Results", new { id = item.ReviewId })
+                   break;
                         case TeamReview.Web.ViewModels.ActionStatus.ShowResults:
-                            @Html.ActionLink("Show results", "Results", new { id = item.ReviewId })
-                            break;
+                        @Html.ActionLink("Show results", "Results", new { id = item.ReviewId })
+                   break;
                         default:
-                            break;
+                   break;
                     }
-                     | @Html.ActionLink("Edit review", "Edit", new { id = item.ReviewId })
+                    | @Html.ActionLink("Edit review", "Edit", new { id = item.ReviewId })
                     @* | @Html.ActionLink("Details", "Details", new { id = item.ReviewId }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.ReviewId })*@
                 </td>
             </tr>
         }
-
     </table>
 </div>

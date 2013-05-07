@@ -4,14 +4,26 @@ namespace TeamReview.Web {
 	public class BundleConfig {
 		// For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
 		public static void RegisterBundles(BundleCollection bundles) {
+			// http://stackoverflow.com/questions/13246327/asp-net-scriptbundle-does-not-work-with-min-js
+			bundles.IgnoreList.Clear();
+
 			bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
 				"~/Scripts/jquery-{version}.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/jquery-stuff").Include(
+				"~/Scripts/jquery.toc.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
 				"~/Scripts/jquery-ui-{version}.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/editinplace").Include(
 				"~/Scripts/jquery.edit-in-place.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/jqplot").Include(
+				"~/Scripts/jquery.jqplot.min.js",
+				"~/Scripts/jqplot.barRenderer.min.js*",
+				"~/Scripts/jqplot.categoryAxisRenderer.min.js*",
+				"~/Scripts/jqplot.pointLabels.min.js*"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 				"~/Scripts/jquery.unobtrusive*",
@@ -22,7 +34,11 @@ namespace TeamReview.Web {
 			bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
 				"~/Scripts/modernizr-*"));
 
-			bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/layout.css"));
+			bundles.Add(new StyleBundle("~/Content/css").Include(
+				"~/Content/layout.css"));
+
+			bundles.Add(new StyleBundle("~/Content/jqplotcss").Include(
+				"~/Content/jquery.jqplot.css"));
 		}
 	}
 }
