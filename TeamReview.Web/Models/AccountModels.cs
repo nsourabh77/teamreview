@@ -140,8 +140,8 @@ namespace TeamReview.Web.Models {
 
 	public class LoginModel {
 		[Required]
-		[Display(Name = "User name")]
-		public string UserName { get; set; }
+		[Display(Name = "Email Address")]
+		public string EmailAddress { get; set; }
 
 		[Required]
 		[DataType(DataType.Password)]
@@ -167,6 +167,8 @@ namespace TeamReview.Web.Models {
 		[Display(Name = "Confirm password")]
 		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
 		public string ConfirmPassword { get; set; }
+
+		public string EmailAddress { get; set; }
 	}
 
 	public class ExternalLogin {

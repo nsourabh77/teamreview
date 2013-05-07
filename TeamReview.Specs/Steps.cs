@@ -430,6 +430,11 @@ namespace TeamReview.Specs {
 			            "Should be on the login page but am on " + _browser.Location);
 		}
 
+		[When(@"I fill in my email address ""(.*)""")]
+		public void WhenIFillInMyEmailAddress(string emailAddress) {
+			_browser.FillIn("emailAddress").With(emailAddress);
+		}
+
 		[When(@"I fill in a review name")]
 		public void WhenIFillInAReviewName() {
 			const string reviewName = "NewReview";

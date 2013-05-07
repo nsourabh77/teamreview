@@ -276,6 +276,7 @@
     <Content Include="Views\Shared\_Sidebar.cshtml" />
     <Content Include="Views\Shared\_Newsletter.cshtml" />
     <Content Include="Views\Shared\_TableOfContent.cshtml" />
+    <Content Include="Views\Account\CompleteRegistration.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

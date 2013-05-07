@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Transactions;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -13,6 +15,7 @@ namespace TeamReview.Web.Controllers {
 	[Authorize]
 	[InitializeSimpleMembership]
 	public class AccountController : Controller {
+		private const string PasswordPlaceholder = "passwordPlaceholder";
 		//
 		// GET: /Account/Login
 
@@ -29,7 +32,7 @@ namespace TeamReview.Web.Controllers {
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
 		public ActionResult Login(LoginModel model, string returnUrl) {
-			if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe)) {
+			if (ModelState.IsValid && WebSecurity.Login(model.EmailAddress, model.Password, persistCookie: model.RememberMe)) {
 				return RedirectToLocal(returnUrl);
 			}
 
@@ -63,13 +66,81 @@ namespace TeamReview.Web.Controllers {
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
-		public ActionResult Register(RegisterModel model) {
+		public ActionResult Register(string emailAddress) {
 			if (ModelState.IsValid) {
 				// Attempt to register the user
 				try {
-					WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
-					WebSecurity.Login(model.UserName, model.Password);
-					return RedirectToAction("Index", "Home");
+
+					var confirmationToken = WebSecurity.CreateUserAndAccount(emailAddress, PasswordPlaceholder, new { UserName = "not_set"}, true);
+					var credentials = new NetworkCredential("teamreview@teamaton.com", "TGqDYzt0ZnnbPMgzn9Hl");
+					var smtpClient = new SmtpClient("smtp.teamaton.com")
+										{
+											UseDefaultCredentials = false,
+											Credentials = credentials
+										};
+
+					var message = new MailMessage("teamreview@teamaton.com", emailAddress)
+									{
+										Subject = "Confirm Registration",
+										Body = GetMailBody(confirmationToken, emailAddress)
+									};
+					smtpClient.Send(message);
+					TempData["Message"] = "An email has been send to "+ emailAddress +". Please check your inbox for further instructions.";
+					ModelState.Clear();
+					return View();
+				}
+				catch (MembershipCreateUserException e) {
+					ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+				}
+			}
+
+			// If we got this far, something failed, redisplay form
+			return View();
+		}
+
+		private string GetMailBody(string confirmationToken, string emailAddress) {
+			return string.Format(
+				@"Hi there,
+
+you have completed the first step for the registration to TeamReview.
+
+Please follow this link to complete your registration: {0}
+
+If you would like to find our more about TeamReview, feel free to visit <a href='http://www.teamreview.net'>TeamReview.net</a>
+
+If you did not register with your email address for TeamReview, we are sorry that somebody misused your email address.
+
+Thank you for your time and cheers,
+
+Andrej - Masterchief Head of Design of TeamReview.net
+
+",
+				"http://teamreview.teamaton.com/Account/CompleteRegistration?confirmationToken=" + confirmationToken + "&email=" + emailAddress);
+		}
+
+		[AllowAnonymous]
+		public ActionResult CompleteRegistration(string confirmationToken, string email)
+		{
+			if (WebSecurity.ConfirmAccount(confirmationToken))
+			{
+				return View(new RegisterModel(){EmailAddress = email});				
+			}
+			return RedirectToAction("Index", "Home");
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public ActionResult CompleteRegistration(RegisterModel model) {
+			if (ModelState.IsValid) {
+				try {
+					WebSecurity.ChangePassword(model.EmailAddress, PasswordPlaceholder, model.Password);
+					var db = new DatabaseContext();
+					var user = db.UserProfiles.Find(WebSecurity.GetUserId(model.EmailAddress));
+					user.UserName = model.UserName;
+					db.SaveChanges();
+					WebSecurity.Login(model.EmailAddress, model.Password);
+					return RedirectToAction("Index", "Review");
 				}
 				catch (MembershipCreateUserException e) {
 					ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
@@ -94,7 +165,7 @@ namespace TeamReview.Web.Controllers {
 				// Use a transaction to prevent the user from deleting their last login credential
 				using (
 					var scope = new TransactionScope(TransactionScopeOption.Required,
-					                                 new TransactionOptions {IsolationLevel = IsolationLevel.Serializable})) {
+													 new TransactionOptions {IsolationLevel = IsolationLevel.Serializable})) {
 					var hasLocalAccount = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
 					if (hasLocalAccount || OAuthWebSecurity.GetAccountsFromUserName(User.Identity.Name).Count > 1) {
 						OAuthWebSecurity.DeleteAccount(provider, providerUserId);
@@ -115,10 +186,10 @@ namespace TeamReview.Web.Controllers {
 				message == ManageMessageId.ChangePasswordSuccess
 					? "Your password has been changed."
 					: message == ManageMessageId.SetPasswordSuccess
-					  	? "Your password has been set."
-					  	: message == ManageMessageId.RemoveLoginSuccess
-					  	  	? "The external login was removed."
-					  	  	: "";
+						? "Your password has been set."
+						: message == ManageMessageId.RemoveLoginSuccess
+							? "The external login was removed."
+							: "";
 			ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
 			ViewBag.ReturnUrl = Url.Action("Manage");
 			return View();
@@ -215,12 +286,12 @@ namespace TeamReview.Web.Controllers {
 				ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
 				ViewBag.ReturnUrl = returnUrl;
 				return View("ExternalLoginConfirmation",
-				            new RegisterExternalLoginModel
-				            	{
-				            		EmailAddress = email,
-				            		UserName = userName,
-				            		ExternalLoginData = loginData
-				            	});
+							new RegisterExternalLoginModel
+								{
+									EmailAddress = email,
+									UserName = userName,
+									ExternalLoginData = loginData
+								});
 			}
 		}
 
@@ -235,7 +306,7 @@ namespace TeamReview.Web.Controllers {
 			string providerUserId;
 
 			if (User.Identity.IsAuthenticated ||
-			    !OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId)) {
+				!OAuthWebSecurity.TryDeserializeProviderUserId(model.ExternalLoginData, out provider, out providerUserId)) {
 				return RedirectToAction("Manage");
 			}
 
@@ -289,15 +360,15 @@ namespace TeamReview.Web.Controllers {
 				var clientData = OAuthWebSecurity.GetOAuthClientData(account.Provider);
 
 				externalLogins.Add(new ExternalLogin
-				                   	{
-				                   		Provider = account.Provider,
-				                   		ProviderDisplayName = clientData.DisplayName,
-				                   		ProviderUserId = account.ProviderUserId,
-				                   	});
+									{
+										Provider = account.Provider,
+										ProviderDisplayName = clientData.DisplayName,
+										ProviderUserId = account.ProviderUserId,
+									});
 			}
 
 			ViewBag.ShowRemoveButton = externalLogins.Count > 1 ||
-			                           OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
+									   OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
 			return PartialView("_RemoveExternalLoginsPartial", externalLogins);
 		}
 

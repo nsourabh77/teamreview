@@ -29,6 +29,7 @@ Scenario: Validate Email and enter UserName and Password
 		And I finish registering
 	Then I am on the "Dashboard"
 
+# not yet needed
 Scenario: I have lost my Password
 	Given I have a standard account with email
 		And I am not logged into TeamReview

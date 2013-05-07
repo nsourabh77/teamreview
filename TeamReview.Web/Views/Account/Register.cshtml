@@ -1,12 +1,25 @@
-﻿@model TeamReview.Web.Models.RegisterModel
-@{
+﻿@{
     ViewBag.Title = "Register";
+}
+
+@if (TempData["Message"] != null) { 
+    <p>@TempData["Message"]</p>
 }
 
 <hgroup class="title">
     <h1>@ViewBag.Title</h1>
     <h2>Create a new TeamReview account</h2>
 </hgroup>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    <fieldset>
+        <legend>Registration Form</legend>
+        <label for="emailAddress">Please enter your email address:</label>
+        @Html.TextBox("emailAddress")
+        <input type="submit" id="Register" value="Register" />
+    </fieldset>
+}
 
 <section class="social" id="socialLoginForm">
     <h3>Use one of the following services to register:</h3>
