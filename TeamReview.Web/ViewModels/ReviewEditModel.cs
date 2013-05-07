@@ -19,5 +19,13 @@ namespace TeamReview.Web.ViewModels {
 		public IList<CategoryAddModel> AddedCategories { get; set; }
 
 		public IList<PeerAddModel> AddedPeers { get; set; }
+
+		public bool NoCategoriesAddedYet {
+			get { return !ExistingCategories.Any() && !AddedCategories.Any(); }
+		}
+
+		public bool NoPeersInvitedYet {
+			get { return ExistingPeers.Count() <= 1 && !AddedPeers.Any(); }
+		}
 	}
 }

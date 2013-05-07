@@ -7,14 +7,12 @@
     ViewBag.Title = isCreate ? "Create review" : "Edit review: " + Model.Name + "";
 }
 
-@if (TempData["Message"] != null) { 
+@if (TempData["Message"] != null) {
     <p>@TempData["Message"]</p>
 }
 
 @using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
-
     <fieldset class="form-horizontal">
 
         <h1 class="cr25" title="Click to edit inline">
@@ -22,24 +20,24 @@
                 @(isCreate ? "Untitled Review" : Model.Name)
             </span>
             <i class="cr21"></i>
-        </h1>        
+        </h1>
         @Html.HiddenFor(model => model.Name, new { @class = "jq-name" })
         @Html.ValidationMessageFor(model => model.Name)
-                       
+
         <div id="categories">
             <h2 class="cr40">Categories</h2>
             <button class="cr41" type="submit" name="submit.add" value="addCategory" id="addCategory" title="Add Category">
                 +
-            </button>                       
-            
+            </button>
+
             <table class="cr2">
                 <colgroup>
                     <col width="250" />
                     <col width="650" />
                     <col width="100" />
-                </colgroup>                
+                </colgroup>
                 <tbody>
-                    @if (!Model.ExistingCategories.Any())
+                    @if (Model.NoCategoriesAddedYet)
                     {
                         <tr class="cr410">
                             <td colspan="3">
@@ -59,7 +57,7 @@
                     }
                     @for (var i = 0; i < Model.AddedCategories.Count; i++)
                     {
-                        Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary
+                        Html.RenderPartial("AddCategory", Model.AddedCategories[i], new ViewDataDictionary(ViewData)
                         {
                             TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedCategories[" + i + "]" }
                         });
@@ -74,7 +72,6 @@
                 +
             </button>
 
-            
             <table class="cr2">
                 <colgroup>
                     <col width="250" />
@@ -82,7 +79,7 @@
                     <col width="200" />
                 </colgroup>
                 <tbody>
-                    @if (!Model.ExistingPeers.Any(p => p.UserName != User.Identity.Name))
+                    @if (Model.NoPeersInvitedYet)
                     {
                         <tr>
                             <td colspan="3">
@@ -94,35 +91,35 @@
                     }
                     @foreach (var peer in Model.ExistingPeers)
                     {
-                        var thisIsYou = peer.UserName == User.Identity.Name;
+                        var thisIsYou = peer.EmailAddress == User.Identity.Name;
                         <tr>
                             <td class="cr22">@peer.UserName <span class="cr221">@(thisIsYou ? "(this is you)" : "")</span></td>
                             <td class="cr24">@peer.EmailAddress</td>
                             <td>
-                                @if (!thisIsYou)
+                                @*@if (!thisIsYou)
                                 {
                                     <a>remove</a>
                                 }
                                 else {
                                     <span class="info">(you cannot remove yourself)</span>
-                                }
+                                }*@
                             </td>
                         </tr>
                     }
                     @for (var i = 0; i < Model.AddedPeers.Count; i++)
                     {
-                        Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary
+                        Html.RenderPartial("AddPeer", Model.AddedPeers[i], new ViewDataDictionary(ViewData)
                         {
                             TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "AddedPeers[" + i + "]" }
                         });
                     }
                 </tbody>
             </table>
-        </div>        
-        <p class="cr71">            
-        </p>        
+        </div>
+        <p class="cr71">
             <input type="submit" name="submit" value="Save and Start the Review" class="cr51" title="Once you start the review, all your peers will receive an email inviting them to take part in the review. You can start the review at any time."/>
             <input id="Save" type="submit" name="submit" value="Save for later" class="cr52" title="This does not start the review - You can start it at any time from your dashboard" />
+        </p>
     </fieldset>
 }
 <div>
@@ -133,9 +130,18 @@
     @Scripts.Render("~/bundles/editinplace")
     <script>
         $(function () {
+            // scroll down so that at least the first validation error will be visible
+            var firstError = $('.field-validation-error');
+            if (firstError.length > 0) {
+                // get the element's vertical offset and account for the height of the static header
+                var offset = firstError.offset().top - $('header').outerHeight(true /* include margin */);
+                scrollTo(0, offset);
+            }
+
+            // in-place edit
             var replaceWith = $('<input name="temp" type="text" />'),
-            connectWith = $('.jq-name');
+                connectWith = $('.jq-name');
             $('.cr26').inlineEdit(replaceWith, connectWith);
         });
     </script>
-}  
+}
