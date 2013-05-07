@@ -190,6 +190,7 @@
     <Content Include="Content\img\bg-tile.png" />
     <Content Include="Content\img\favicon.ico" />
     <Content Include="Content\img\teamreview-logo.png" />
+    <Content Include="Scripts\jquery.toc.js" />
     <Content Include="Scripts\jquery.edit-in-place.js" />
     <Content Include="Content\img\glyphicons-halflings-white.png" />
     <Content Include="Content\img\glyphicons-halflings.png" />
@@ -197,12 +198,12 @@
     <Content Include="Content\pics\performance-review.png" />
     <Content Include="Content\pics\peer-reviews.png" />
     <Content Include="Content\pics\stack-ranking.png" />
-    <Content Include="Content\scripts\jquery.jqplot.min.js" />
+    <Content Include="Scripts\jquery.jqplot.min.js" />
     <Content Include="Content\layout.css" />
-    <Content Include="Content\scripts\jqplot.barRenderer.min.js" />
-    <Content Include="Content\scripts\jqplot.categoryAxisRenderer.min.js" />
-    <Content Include="Content\scripts\jqplot.pointLabels.min.js" />
-    <Content Include="Content\scripts\jquery.toc.min.js" />
+    <Content Include="Scripts\jqplot.barRenderer.min.js" />
+    <Content Include="Scripts\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="Scripts\jqplot.pointLabels.min.js" />
+    <Content Include="Scripts\jquery.toc.min.js" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.9.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />

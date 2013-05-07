@@ -2,6 +2,9 @@
 @{
     ViewBag.Title = "Results";
 }
+@section head {
+    @Styles.Render("~/Content/jqplotcss")
+}
 <h1>Results for Review "@Model.ReviewName"</h1>
 <div class="block-top">
     <p>The following users have participated in this review: <strong class="special">Anton,
@@ -106,10 +109,12 @@
     var peerResults = string.Join("|", Model.CategoryPeerRatings.PeersWithRatings.Select(r => string.Join(",", r.Ratings)));
     var stackedResults = string.Format("[{0}]", string.Join("], [", Model.RatingsForPeersPerCategory.Select(ratings => string.Join(",", ratings))));
 }
-<div id="data" class="hide" data-categories="@categories" data-myresults="@myResults"
-    data-peers="@peers" data-peerresults="@peerResults"></div>
-<script>
-    $(document).ready(function () {
+<div id="data" class="hide" data-categories="@categories" data-myresults="@myResults" data-peers="@peers" data-peerresults="@peerResults">
+</div>
+@section scripts {
+    @Scripts.Render("~/bundles/jqplot")
+    <script>
+    $(function () {
 
         var globalPlotOptions = {
             // The "seriesDefaults" option is an options object that will
@@ -251,4 +256,5 @@
             })
         );
     });
-</script>
+    </script>
+}
