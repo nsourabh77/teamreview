@@ -20,10 +20,10 @@ namespace TeamReview.Web {
 				"~/Scripts/jquery.edit-in-place.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqplot").Include(
-				"~/Scripts/jquery.jqplot.min.js",
-				"~/Scripts/jqplot.barRenderer.min.js*",
-				"~/Scripts/jqplot.categoryAxisRenderer.min.js*",
-				"~/Scripts/jqplot.pointLabels.min.js*"));
+				"~/Scripts/jquery.jqplot.js",
+				"~/Scripts/jqplot.pointLabels.js",
+				"~/Scripts/jqplot.barRenderer.js",
+				"~/Scripts/jqplot.categoryAxisRenderer.js"));
 
 			bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
 				"~/Scripts/jquery.unobtrusive*",
