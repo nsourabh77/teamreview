@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web.Mvc;
 using AutoMapper;
+using Newtonsoft.Json;
 using TeamReview.Web.Filters;
 using TeamReview.Web.Models;
 using TeamReview.Web.ViewModels;
@@ -256,6 +257,7 @@ namespace TeamReview.Web.Controllers {
 
 		[HttpPost]
 		public ActionResult Provide(FeedbackViewModel feedback) {
+			// TODO: don't allow if already provided by this user
 			if (
 				feedback.CategoriesWithPeersAndRatings.SelectMany(c => c.PeersWithRatings.Select(p => p.Rating)).Any(
 					a => a < 1 || a > 10)) {
@@ -292,127 +294,62 @@ namespace TeamReview.Web.Controllers {
 		}
 
 		public ActionResult Results(int id = 0) {
-			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
-			if (reviewconfiguration == null) {
+			var review = _db.ReviewConfigurations.Find(id);
+			if (review == null) {
 				return HttpNotFound();
 			}
-
-			var results = new ResultViewModel { ReviewName = reviewconfiguration.Name };
+			Func<object, string> toJson = obj => JsonConvert.SerializeObject(obj);
 			var myId = _db.UserProfiles.FirstOrDefault(user => user.EmailAddress == User.Identity.Name).UserId;
 
-			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
-			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
-			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
-			foreach (var reviewFeedback in reviewconfiguration.Feedback) {
+			_db.Entry(review).Collection(c => c.Feedback).Load();
+			_db.Entry(review).Collection(c => c.Categories).Load();
+			_db.Entry(review).Collection(c => c.Peers).Load();
+			foreach (var reviewFeedback in review.Feedback) {
 				_db.Entry(reviewFeedback).Collection(f => f.Assessments).Load();
 			}
+			var reviewers = review.Feedback.Select(f => f.Reviewer);
 
-			var allAssessments = reviewconfiguration.Feedback.SelectMany(f => f.Assessments);
-			var reviewers = reviewconfiguration.Feedback.Select(f => f.Reviewer);
-			var numberOfReviewersWithoutMe = reviewers.Where(r => r.UserId != myId).Count();
+			var results = new ResultViewModel
+			              	{
+			              		ReviewId = review.ReviewId,
+			              		ReviewName = review.Name,
+			              		Peers = review.Peers,
+			              		Reviewers = reviewers,
+			              		CategoriesJson = toJson(review.Categories.Select(cat => cat.Name)),
+			              		PeersJson = toJson(review.Peers.Names()),
+			              	};
 
 			// my results
-			foreach (var category in reviewconfiguration.Categories) {
-				var categoryWithResults = new CategoryWithResults
-				                          	{
-				                          		CategoryName = category.Name,
-				                          		CategoryDescription = category.Description
-				                          	};
-				var cat = category;
-				var myAssessment = allAssessments.Where(
-					a => a.ReviewCategory.CatId == cat.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId == myId).
-					SingleOrDefault();
-				categoryWithResults.MyRating = myAssessment != null ? myAssessment.Rating : 0;
+			var myResults = new
+			                	{
+			                		byMe = review.Categories.Select(cat => review.Feedback.GetOwnRatingForCategory(myId, cat)),
+			                		byPeers =
+			                			review.Categories.Select(cat => review.Feedback.GetPeerRatingForPeerForCategory(myId, cat))
+			                	};
+			results.MyResultsJson = toJson(myResults);
 
-				if (numberOfReviewersWithoutMe > 0) {
-					categoryWithResults.PeerRating =
-						allAssessments.Where(
-							a => a.ReviewCategory.CatId == cat.CatId && a.ReviewedPeer.UserId == myId && a.Reviewer.UserId != myId).
-							Select(a => a.Rating).Sum()/(decimal) numberOfReviewersWithoutMe;
-				}
-				results.CategoriesWithMyResults.Add(categoryWithResults);
-			}
+			// all peer results
+			var peerResultsPerCategory =
+				review.Peers.Select(
+					peer => review.Categories.Select(
+						cat => review.Feedback.GetPeerRatingForPeerForCategory(peer.UserId, cat)));
+			results.PeerRatingsPerCategoryJson = toJson(peerResultsPerCategory);
 
-			// my stacked results
-			results.MyStackedRating = results.CategoriesWithMyResults.Select(c => c.MyRating).Sum();
-			results.PeerStackedRating = results.CategoriesWithMyResults.Select(c => c.PeerRating).Sum();
+			// results for stacked ranking
+			var categoryResultsPerPeer =
+				review.Categories
+					.Select(cat => review.Peers
+					               	.Select(peer => review.Feedback.GetPeerRatingForPeerForCategory(peer.UserId, cat))
+					               	.ToList())
+					.ToList();
 
-			// everybodys results
-			var categories = reviewconfiguration.Categories.Select(cat => cat.Name);
-			results.CategoryPeerRatings = new CategoryPeerRatings
-			                              	{
-			                              		Categories = categories,
-			                              		PeersWithRatings = new List<PeerWithRatings>()
-			                              	};
-			foreach (var peer in reviewconfiguration.Peers) {
-				var pee = peer;
-				var numberOfReviewersWithoutPeer = reviewers.Where(r => r.UserId != pee.UserId).Count();
-				var peerWithRatings = new PeerWithRatings
-				                      	{
-				                      		PeerName = peer.UserName,
-				                      		Ratings = new List<float>()
-				                      	};
-				results.CategoryPeerRatings.PeersWithRatings.Add(peerWithRatings);
-				foreach (var category in reviewconfiguration.Categories) {
-					var cat = category;
-					peerWithRatings.Ratings.Add(numberOfReviewersWithoutPeer > 0
-					                            	? allAssessments.Where(
-					                            		a =>
-					                            		a.ReviewCategory.CatId == cat.CatId && a.ReviewedPeer.UserId == pee.UserId &&
-					                            		a.Reviewer.UserId != pee.UserId).Sum(a => a.Rating)/
-					                            	  (float) numberOfReviewersWithoutPeer
-					                            	: 0);
-				}
-			}
+			// add fake value for each peer as last point in series for sum labels to show
+			categoryResultsPerPeer.Add(review.Peers.Select(peer => 0.001m).ToList());
+			results.CategoryResultsPerPeerJson = toJson(categoryResultsPerPeer);
 
-			var peerStackedRatings =
-				reviewconfiguration.Peers.Select(peer => new PeerIdWithStackedRating { PeerId = peer.UserId, StackedRating = 0 }).
-					ToList();
-			foreach (var category in reviewconfiguration.Categories) {
-				var categoryWithPeersWithResults = new CategoryWithPeersWithResults
-				                                   	{
-				                                   		CategoryName = category.Name,
-				                                   		CategoryDescription = category.Description
-				                                   	};
-
-				foreach (var peer in reviewconfiguration.Peers) {
-					var numberOfReviewersWithoutPeer = reviewers.Where(r => r.UserId != peer.UserId).Count();
-					var peerWithResult = new PeerWithResult { PeerName = peer.UserName };
-					if (numberOfReviewersWithoutPeer > 0) {
-						peerWithResult.PeerRating =
-							allAssessments.Where(
-								a =>
-								a.ReviewCategory.CatId == category.CatId && a.ReviewedPeer.UserId == peer.UserId &&
-								a.Reviewer.UserId != peer.UserId).Select(a => a.Rating).Sum()/(decimal) numberOfReviewersWithoutPeer;
-					}
-					else {
-						peerWithResult.PeerRating = 0;
-					}
-					categoryWithPeersWithResults.PeersWithResult.Add(peerWithResult);
-					peerStackedRatings.Find(p => p.PeerId == peer.UserId).StackedRating += peerWithResult.PeerRating;
-				}
-				results.CategoriesWithPeersWithResults.Add(categoryWithPeersWithResults);
-			}
-
-			// everybodys stacked results
-			foreach (var peer in reviewconfiguration.Peers) {
-				var peerWithStackedRating = new PeerWithStackedRating
-				                            	{
-				                            		PeerName = peer.UserName,
-				                            		PeerStackedRating =
-				                            			peerStackedRatings.First(p => p.PeerId == peer.UserId).StackedRating
-				                            	};
-				results.PeersWithStackedRatings.Add(peerWithStackedRating);
-			}
-
-			results.RatingsForPeersPerCategory = new List<decimal[]>();
-			foreach (var category in reviewconfiguration.Categories) {
-				var cat = category;
-				results.RatingsForPeersPerCategory.Add(
-					reviewconfiguration.Peers
-						.Select(peer => reviewconfiguration.Feedback.GetRatingForPeerForCategory(peer, cat))
-						.ToArray());
-			}
+			// sum labels
+			var sums = peerResultsPerCategory.Select(peerResults => string.Format("∑ {0:#.##}", peerResults.Sum())).ToList();
+			results.StackRankingSumLabels = toJson(sums);
 
 			return View(results);
 		}

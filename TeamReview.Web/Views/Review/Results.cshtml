@@ -1,4 +1,5 @@
 ﻿@model TeamReview.Web.ViewModels.ResultViewModel
+@using TeamReview.Web.Models
 @{
     ViewBag.Title = "Results";
 }
@@ -7,79 +8,15 @@
 }
 <h1>Results for Review "@Model.ReviewName"</h1>
 <div class="block-top">
-    <p>The following users have participated in this review: <strong class="special">Anton,
-        Eva, Isabelle, Oliver, Andrej</strong></p>
-</div>
-<!-- hidden for layout testing -->
-<div>
-    <p class="info">todo Anton: If no peers show: "You have not invited any peers to complete
-        this review -> invite some peers(link to edit review). If peers havent rated yet,
-        then: "peers havent completed their reviews yet."</p>
-    <h2>My Results</h2>
-    <div id="yourResults">
-        <p class="info block-top">Overview of how your peers rated you</p>
-        @foreach (var category in Model.CategoriesWithMyResults)
-        {
-            var categoryId = "catMyResults" + category.CategoryName;
-            var myRatingValue = "rv" + category.MyRating;
-            <div id="@categoryId">
-                <table class="table1">
-                    <colgroup>
-                        <col width="36%" />
-                        <col width="64%" />
-                    </colgroup>
-                    <tr>
-                        <th>
-                            @category.CategoryName
-                            <i class="rs21"></i>
-                            <div class="popup">
-                                <blockquote class="rt32">@category.CategoryDescription</blockquote>
-                            </div>
-                        </th>
-                        <td>@category.PeerRating
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="rt20">
-                            My Rating
-                        </td>
-                        <td>
-                            <span class="@myRatingValue">@category.MyRating</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        }
-        <p class="info">If no peers show: "You have not invited any peers to complete this review
-            -> invite some peers(link to edit review). If peers havent rated yet, then: "peers
-            havent completed their reviews yet."</p>
-        <p>Stacked rating by peers = @Model.PeerStackedRating</p>
-        <p>Stacked rating by yourself = @Model.MyStackedRating</p>
-    </div>
-    <h2>Everyone's Results:</h2>
-    <p class="info">If no peers show: "You have not invited any peers to complete this review
-        -> invite some peers(link to edit review). If peers havent rated yet, then: "peers
-        havent completed their reviews yet."</p>
-    <div id="everyonesResults">
-        @foreach (var category in Model.CategoriesWithPeersWithResults)
-        {
-            var catPeerId = "catPeerResults" + category.CategoryName;
-            <div id="@catPeerId">
-                <p>@category.CategoryName : @category.CategoryDescription</p>
-                @foreach (var peer in category.PeersWithResult)
-                { 
-                    <p>Name = @peer.PeerName : peer rating = @peer.PeerRating</p>
-                }
-            </div>
-        }
-    </div>
-    Stacked results:
-    <div id="everyonesStackedResults">
-        @foreach (var peer in Model.PeersWithStackedRatings)
-        { 
-            <p>Name = @peer.PeerName : peer rating = @peer.PeerStackedRating</p>
-        }
-    </div>
+    <p>The following users have participated in this review: <strong class="special">@string.Join(", ", Model.Reviewers.Names())</strong></p>
+    @if (!Model.Peers.Any(u => u.UserId != Model.LoggedInUserId))
+    {
+        <p class="info">No other peers have been invited to participate in this review -> @Html.ActionLink("invite some peers now", "Edit", new { id = Model.ReviewId }).</p>
+    }
+    @if (!Model.Reviewers.Any())
+    {
+        <p class="info">Noone has completed the review, yet.</p>
+    }
 </div>
 <h2>My Results</h2>
 <div class="block-top">
@@ -101,160 +38,150 @@
 <p>
     @Html.ActionLink("Back to My Dashboard", "Index")
 </p>
-@{
-    var categories = string.Join(",", Model.CategoriesWithMyResults.Select(res => res.CategoryName));
-    var myResults = string.Join(",", Model.CategoriesWithMyResults.Select(res => res.MyRating)) +
-        "|" + string.Join(",", Model.CategoriesWithMyResults.Select(res => res.PeerRating));
-    var peers = string.Join(",", Model.CategoryPeerRatings.PeersWithRatings.Select(r => r.PeerName));
-    var peerResults = string.Join("|", Model.CategoryPeerRatings.PeersWithRatings.Select(r => string.Join(",", r.Ratings)));
-    var stackedResults = string.Format("[{0}]", string.Join("], [", Model.RatingsForPeersPerCategory.Select(ratings => string.Join(",", ratings))));
-}
-<div id="data" class="hide" data-categories="@categories" data-myresults="@myResults" data-peers="@peers" data-peerresults="@peerResults">
-</div>
+<div id="data" class="hide"
+    data-categories='@(Model.CategoriesJson)'
+    data-peers='@(Model.PeersJson)'
+    data-my-results='@(Model.MyResultsJson)'
+    data-peer-results='@(Model.PeerRatingsPerCategoryJson)'
+    data-stack-results='@(Model.CategoryResultsPerPeerJson)'
+    data-stack-sum-labels='@(Model.StackRankingSumLabels)'
+    ></div>
+@* For debugging: *@
+<pre class="hide">
+Categories  : @(Model.CategoriesJson)
+MyResults   : @(Model.MyResultsJson)
+PeerRatings : @(Model.PeerRatingsPerCategoryJson)
+StackRatings: @(Model.CategoryResultsPerPeerJson)
+</pre>
 @section scripts {
     @Scripts.Render("~/bundles/jqplot")
     <script>
-    $(function () {
-
-        var globalPlotOptions = {
-            // The "seriesDefaults" option is an options object that will
-            // be applied to all series in the chart.
-            seriesDefaults: {
-                renderer: $.jqplot.BarRenderer,
-                rendererOptions: {
-                    fillToZero: true,
-                    barMargin: 12,      // number of pixels between adjacent groups of bars.
-                    barPadding: 0      // number of pixels between adjacent bars in the same
-                    // group (same category or bin).
-                },
-                shadow: false,
-                pointLabels: {
-                    show: true,
-                    location: 's' /* 's' = south, default is 'n'(orth) */
-                }
-            },
-            // Custom peerLabels for the series are specified with the "label"
-            // option on the series option.  Here a series option object
-            // is specified for each series.
-            series: [],
-            // Show the legend and put it outside the grid, but inside the
-            // plot container, shrinking the grid to accomodate the legend.
-            // A value of "outside" would not shrink the grid and allow
-            // the legend to overflow the container.
-            legend: {
-                show: true,
-                placement: 'outsideGrid'
-            },
-            seriesColors: ["#62C462", "#FFD42A", "#007ACC", "#FAA732", "#49AFCD"],
-            grid: {
-                drawGridLines: true,        // wether to draw lines across the grid or not.
-                gridLineColor: '#dddddd',    // *Color of the grid lines.
-                background: '#fafafa',      // CSS color spec for background color of grid.
-                borderColor: '#999999',     // CSS color spec for border around grid.
-                borderWidth: 0,           // pixel width of border around grid.
-                shadow: false,               // draw a shadow for grid.                        
-                renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
-                rendererOptions: {}         // options to pass to the renderer.  Note, the default
-                // CanvasGridRenderer takes no additional options.
-            },
-            axes: {
-                // Use a category axis on the x axis and use our custom ticks.
-                xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    ticks: null
-                },
-                // Pad the y axis just a little so bars can get close to, but
-                // not touch, the grid boundaries.  1.2 is the default padding.
-                yaxis: {
-                    pad: 1.05,
-                    min: 0,
-                    max: 10
-                }
-            }
-        };
-
-        var $data = $('#data');
-
-        // global data
-        var categories = $data.data("categories").split(','),
-            peers = $data.data("peers").split(',');
-
-        //
-        // first plot
-        //
-        var myresults = $data.data("myresults").split('|'),
-            myResultsByMe = myresults[0].split(','),
-            myResultsByPeers = myresults[1].split(',');
-
-        $.jqplot('my-results-chart', [myResultsByMe, myResultsByPeers],
-            $.extend(true /* recursive */, {}, globalPlotOptions, {
-                series: [{ label: 'My Rating' }, { label: 'Peer Rating'}],
-                axes: {
-                    xaxis: {
-                        ticks: categories
-                    }
-                }
-            })
-        );
-
-        //
-        // second plot
-        //
-        var peerResultsData = $data.data("peerresults").split('|'),
-            peerResults = [],
-            peerLabels = [];
-        for (var i = 0, length = peerResultsData.length; i < length; i++) {
-            peerResults.push(peerResultsData[i].split(','));
-        }
-        for (var i = 0, length = peers.length; i < length; i++) {
-            peerLabels.push({ label: peers[i] });
-        }
-        $.jqplot('peer-results-chart', peerResults,
-            $.extend(true /* recursive */, {}, globalPlotOptions, {
-                series: peerLabels,
-                axes: {
-                    xaxis: {
-                        ticks: categories
-                    }
-                }
-            })
-        );
-
-        //
-        // third plot
-        //
-        // hier sind die Variablen die Personen, und die Werte die individuellen Kategorie-Ergebnisse -> 4 Categorien für je 3 peers
-        var catLabels = $.map(categories, function (cat) { return { label: cat} }),
-            ratingsPerPeerPerCategory = [@(stackedResults)];
-
-        // see: http://jsfiddle.net/Boro/aQX8F/
-//        catLabels.push({
-//            label:'INVISIBLE',
-//            pointLabels:{labels: ['∑ 8','∑ 12','∑ 18','∑ 20']},
-//            show: false,
-//            shadowAngle: 90,
-//            rendererOptions: {shadowDepth: 25, shadowOffset: 2.5, shadowAlpha: 0.01}
-//        });
-
-        $.jqplot('stack-ranking-chart', ratingsPerPeerPerCategory,
-            $.extend(true /* recursive */, {}, globalPlotOptions, {
-                stackSeries: true,
-                captureRightClick: true,
-                pointLabels: {
-                    stackedValue: true,
-                    stackSeries: true
-                },
-                series: catLabels,
-                axes: {
-                    xaxis: {
-                        ticks: peers
+        $(function () {
+            var globalPlotOptions = {
+                // The "seriesDefaults" option is an options object that will
+                // be applied to all series in the chart.
+                seriesDefaults: {
+                    renderer: $.jqplot.BarRenderer,
+                    rendererOptions: {
+                        fillToZero: true,
+                        barMargin: 12,     // number of pixels between adjacent groups of bars.
+                        barPadding: 0      // number of pixels between adjacent bars in the same
+                                           // group (same category or bin).
                     },
+                    shadow: false,
+                    pointLabels: {
+                        show: true,
+                        location: 's' /* 's' = south, default is 'n'(orth) */,
+                        hideZeros: true,
+                        formatString: '%.10p' /* see jquery.jqplot.js: $.jqplot.sprintf() */
+                    }
+                },
+                // Custom peerLabels for the series are specified with the "label"
+                // option on the series option.  Here a series option object
+                // is specified for each series.
+                series: [],
+                // Show the legend and put it outside the grid, but inside the
+                // plot container, shrinking the grid to accomodate the legend.
+                // A value of "outside" would not shrink the grid and allow
+                // the legend to overflow the container.
+                legend: {
+                    show: true,
+                    placement: 'outsideGrid'
+                },
+                seriesColors: ["#62C462", "#FFD42A", "#007ACC", "#FAA732", "#49AFCD"],
+                grid: {
+                    drawGridLines: true,        // wether to draw lines across the grid or not.
+                    gridLineColor: '#dddddd',   // Color of the grid lines.
+                    background: '#fafafa',      // CSS color spec for background color of grid.
+                    borderColor: '#999999',     // CSS color spec for border around grid.
+                    borderWidth: 0,             // pixel width of border around grid.
+                    shadow: false,              // draw a shadow for grid.                        
+                    renderer: $.jqplot.CanvasGridRenderer,  // renderer to use to draw the grid.
+                    rendererOptions: {}         // options to pass to the renderer.  Note, the default
+                    // CanvasGridRenderer takes no additional options.
+                },
+                axes: {
+                    // Use a category axis on the x axis and use our custom ticks.
+                    xaxis: {
+                        renderer: $.jqplot.CategoryAxisRenderer,
+                        ticks: null
+                    },
+                    // Pad the y axis just a little so bars can get close to, but
+                    // not touch, the grid boundaries.  1.2 is the default padding.
                     yaxis: {
-                        max: categories.length * 10
+                        pad: 1.05,
+                        min: 0,
+                        max: 10,
+                        tickInterval: 1 /* for grid lines and yaxis labels */
                     }
                 }
-            })
-        );
-    });
+            };
+
+            // see: http://api.jquery.com/data/#data-html5
+            // retrieve all data at once and put it into a javascript object
+            var $data = $('#data').data();
+
+            //
+            // first plot
+            //
+            $.jqplot('my-results-chart', [$data.myResults.byMe, $data.myResults.byPeers],
+                $.extend(true /* recursive */, {}, globalPlotOptions, {
+                    series: [{ label: 'My Rating' }, { label: 'Peer Rating'}],
+                    axes: {
+                        xaxis: {
+                            ticks: $data.categories
+                        }
+                    }
+                })
+            );
+
+            //
+            // second plot
+            //
+            var peerLabels = [];
+            for (var i = 0, length = $data.peers.length; i < length; i++) {
+                peerLabels.push({ label: $data.peers[i] });
+            }
+            $.jqplot('peer-results-chart', $data.peerResults,
+                $.extend(true /* recursive */, {}, globalPlotOptions, {
+                    series: peerLabels,
+                    axes: {
+                        xaxis: {
+                            ticks: $data.categories
+                        }
+                    }
+                })
+            );
+
+            //
+            // third plot
+            //
+            var catLabels = $.map($data.categories, function (cat) { return { label: cat} });
+            catLabels.push({
+                label: "Stack Ranking",
+                pointLabels: { labels: $data.stackSumLabels },
+                color: '#fafafa' /* same as grid background color */
+            });
+
+            $.jqplot('stack-ranking-chart', $data.stackResults,
+                $.extend(true /* recursive */, {}, globalPlotOptions, {
+                    stackSeries: true,
+                    captureRightClick: true,
+                    pointLabels: {
+                        stackSeries: true
+                    },
+                    series: catLabels,
+                    axes: {
+                        xaxis: {
+                            ticks: $data.peers
+                        },
+                        yaxis: {
+                            max: $data.categories.length * 10, /* 10 = max rating per category */
+                            tickInterval: $data.categories.length
+                        }
+                    }
+                })
+            );
+        });
     </script>
 }
