@@ -371,13 +371,7 @@ namespace TeamReview.Web.Controllers {
 		}
 
 		private static void SendMailToPeers(IEnumerable<UserProfile> peers, int reviewId, UserProfile owner) {
-			var credentials = new NetworkCredential("teamreview@teamaton.com", "TGqDYzt0ZnnbPMgzn9Hl");
-			var smtpClient = new SmtpClient("mail.teamaton.com")
-			                 	{
-			                 		UseDefaultCredentials = false,
-			                 		Credentials = credentials
-			                 	};
-
+			var smtpClient = new SmtpClient();
 			foreach (var peer in peers) {
 				var message = new MailMessage("teamreview@teamaton.com", peer.EmailAddress)
 				              	{

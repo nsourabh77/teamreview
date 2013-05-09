@@ -72,19 +72,12 @@ namespace TeamReview.Web.Controllers {
 				try {
 
 					var confirmationToken = WebSecurity.CreateUserAndAccount(emailAddress, PasswordPlaceholder, new { UserName = "not_set"}, true);
-					var credentials = new NetworkCredential("teamreview@teamaton.com", "TGqDYzt0ZnnbPMgzn9Hl");
-					var smtpClient = new SmtpClient("smtp.teamaton.com")
-										{
-											UseDefaultCredentials = false,
-											Credentials = credentials
-										};
-
 					var message = new MailMessage("teamreview@teamaton.com", emailAddress)
 									{
 										Subject = "Confirm Registration",
 										Body = GetMailBody(confirmationToken, emailAddress)
 									};
-					smtpClient.Send(message);
+					new SmtpClient().Send(message);
 					TempData["Message"] = "An email has been send to "+ emailAddress +". Please check your inbox for further instructions.";
 					ModelState.Clear();
 					return View();
