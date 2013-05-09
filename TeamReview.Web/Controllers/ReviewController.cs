@@ -14,6 +14,7 @@ using TeamReview.Web.ViewModels;
 namespace TeamReview.Web.Controllers {
 	[Authorize]
 	[AccessControl(actionNamesToIgnore: new[] { "Create", "Index" })]
+	[HttpNotFoundIfInvalidId]
 	public class ReviewController : Controller {
 		private readonly DatabaseContext _db = new DatabaseContext();
 
@@ -53,9 +54,6 @@ namespace TeamReview.Web.Controllers {
 
 		public ActionResult Details(int id = 0) {
 			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
-			if (reviewconfiguration == null) {
-				return HttpNotFound();
-			}
 			return View(reviewconfiguration);
 		}
 
@@ -118,17 +116,10 @@ namespace TeamReview.Web.Controllers {
 
 		[HttpGet]
 		public ActionResult Edit(int id = 0) {
-			object review;
-			if (TempData.TryGetValue("review", out review)) {
-				return View("Create", review);
-			}
 			var reviewFromDb = _db.ReviewConfigurations
 				.Include("Categories")
 				.Include("Peers")
 				.SingleOrDefault(rev => rev.ReviewId == id);
-			if (reviewFromDb == null) {
-				return HttpNotFound("No review found with the given id.");
-			}
 			return View("Create", Mapper.Map<ReviewCreateEditModel>(reviewFromDb));
 		}
 
@@ -142,10 +133,6 @@ namespace TeamReview.Web.Controllers {
 				.Include("Categories")
 				.Include("Peers")
 				.Single(rev => rev.ReviewId == id);
-
-			if (reviewFromDb == null) {
-				return new HttpNotFoundResult("The review could not be found.");
-			}
 
 			var reviewEditModel = Mapper.Map<ReviewCreateEditModel>(reviewFromDb);
 			// load form data into new model object
@@ -203,10 +190,6 @@ namespace TeamReview.Web.Controllers {
 				.Include("Peers")
 				.Single(rev => rev.ReviewId == id);
 
-			if (reviewFromDb == null) {
-				return new HttpNotFoundResult("The review could not be found.");
-			}
-
 			var newModel = Mapper.Map<ReviewCreateEditModel>(reviewFromDb);
 
 			return CreateExtension(newModel);
@@ -215,11 +198,9 @@ namespace TeamReview.Web.Controllers {
 		//
 		// GET: /Review/Delete/5
 
+		[HttpGet]
 		public ActionResult Delete(int id = 0) {
 			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
-			if (reviewconfiguration == null) {
-				return HttpNotFound();
-			}
 			return View(reviewconfiguration);
 		}
 
@@ -237,9 +218,6 @@ namespace TeamReview.Web.Controllers {
 		[HttpGet]
 		public ActionResult Provide(int id = 0) {
 			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
-			if (reviewconfiguration == null) {
-				return HttpNotFound();
-			}
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
 			_db.Entry(reviewconfiguration).Collection(c => c.Peers).Load();
 
@@ -344,11 +322,9 @@ Andrej - Masterchief Head of Design of TeamReview.net
 		[HttpGet]
 		public ActionResult Results(int id = 0) {
 			var review = _db.ReviewConfigurations.Find(id);
-			if (review == null) {
-				return HttpNotFound();
-			}
-			Func<object, string> toJson = obj => JsonConvert.SerializeObject(obj);
 			var myId = _db.UserProfiles.FirstOrDefault(user => user.EmailAddress == User.Identity.Name).UserId;
+
+			Func<object, string> toJson = obj => JsonConvert.SerializeObject(obj);
 
 			_db.Entry(review).Collection(c => c.Feedback).Load();
 			_db.Entry(review).Collection(c => c.Categories).Load();
@@ -405,9 +381,6 @@ Andrej - Masterchief Head of Design of TeamReview.net
 
 		public ActionResult StartReview(int id = 0) {
 			var reviewconfiguration = _db.ReviewConfigurations.Include("Peers").Single(rc => rc.ReviewId == id);
-			if (reviewconfiguration == null) {
-				return HttpNotFound();
-			}
 			reviewconfiguration.Active = true;
 			_db.SaveChanges();
 
