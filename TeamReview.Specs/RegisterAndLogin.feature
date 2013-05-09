@@ -29,6 +29,15 @@ Scenario: Validate Email and enter UserName and Password
 		And I finish registering
 	Then I am on the "Dashboard"
 
+Scenario: Standard Login
+	Given I have a standard account with email
+		And I am not logged into TeamReview
+	When I go to the "Login" page
+		And I enter UserName and Password
+		And I finish login
+	Then I am logged in
+		And I am on the "Dashboard"
+
 # not yet needed
 Scenario: I have lost my Password
 	Given I have a standard account with email
@@ -39,15 +48,6 @@ Scenario: I have lost my Password
 		And I request an email
 	Then I see the message "An email has been send to test@teamreview.net. Please check your inbox for further instructions."
 		#And an email is sent to test@teamreview.net with a hard to guess new password url
-
-Scenario: Standard Login
-	Given I have a standard account with email
-		And I am not logged into TeamReview
-	When I go to the "Login" page
-		And I enter UserName and Password
-		And I log in
-	Then I am logged in
-		And I am on the "Dashboard"
 
 #Scenario: Change UserName
 

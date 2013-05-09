@@ -14,7 +14,7 @@ namespace TeamReview.Tests {
 			var database = new DynamicModel("DefaultConnection", "UserProfile", "UserId").SetConnectionString(connectionString);
 			var results = database.Query("SELECT UserName FROM UserProfile");
 			foreach (var result in results) {
-				Console.WriteLine(result);
+				Console.WriteLine(result.UserName);
 			}
 		}
 	}
