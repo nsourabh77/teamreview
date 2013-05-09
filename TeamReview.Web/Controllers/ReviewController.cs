@@ -289,8 +289,54 @@ namespace TeamReview.Web.Controllers {
 			reviewconfiguration.Feedback.Add(reviewFeedback);
 			_db.SaveChanges();
 
+			SendMailToPeersIfAllHaveProvidedFeedback(reviewconfiguration);
+
 			TempData["Message"] = "Review has been completed";
 			return RedirectToAction("Index");
+		}
+
+		private void SendMailToPeersIfAllHaveProvidedFeedback(ReviewConfiguration review) {
+			_db.Entry(review).Collection(c => c.Peers).Load();
+			_db.Entry(review).Collection(c => c.Feedback).Load();
+
+			if (review.Peers.Any(peer => !review.Feedback.Select(f => f.Reviewer).Any(r => r.UserId == peer.UserId))) {
+				return;
+			}
+
+			var smtpClient = new SmtpClient();
+			foreach (var peer in review.Peers)
+			{
+				var message = new MailMessage("teamreview@teamaton.com", peer.EmailAddress)
+				{
+					Subject = "Review Complete",
+					Body = GetMailBodyForFinishedReview(peer.UserName, review.ReviewId, review.Name)
+				};
+
+				smtpClient.Send(message);
+			}
+		}
+
+		private static string GetMailBodyForFinishedReview(string userName, int reviewId, string reviewName)
+		{
+			return string.Format(
+				@"Hi there, {0},
+
+All peers have provided their feedback for review '{1}'.
+
+Please visit the following link to view the results of the review:
+
+http://teamreview.teamaton.com/Review/Results/{2}
+
+If you would like to find out more about TeamReview, feel free to visit http://www.teamreview.net/.
+
+In case you have any questions, just reply to this email and we will get in touch with you as soon as possible.
+
+
+Thank you for your time and cheers,
+
+Andrej - Masterchief Head of Design of TeamReview.net
+",
+				userName, reviewName, reviewId);
 		}
 
 		public ActionResult Results(int id = 0) {
@@ -376,14 +422,14 @@ namespace TeamReview.Web.Controllers {
 				var message = new MailMessage("teamreview@teamaton.com", peer.EmailAddress)
 				              	{
 				              		Subject = "Provide Review",
-				              		Body = GetMailBody(peer.UserName, reviewId, owner)
+				              		Body = GetMailBodyForStartedReview(peer.UserName, reviewId, owner)
 				              	};
 
 				smtpClient.Send(message);
 			}
 		}
 
-		private static string GetMailBody(string userName, int reviewId, UserProfile owner) {
+		private static string GetMailBodyForStartedReview(string userName, int reviewId, UserProfile owner) {
 			return string.Format(
 				@"Hi there, {0},
 
