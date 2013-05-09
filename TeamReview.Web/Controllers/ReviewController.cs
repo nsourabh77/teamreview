@@ -458,17 +458,6 @@ Andrej - Masterchief Head of Design of TeamReview.net
 			base.Dispose(disposing);
 		}
 
-		private void RemovePeerDuplicates(ReviewConfiguration reviewConfiguration) {
-			for (var i = 0; i < reviewConfiguration.Peers.Count(); i++) {
-				var peer = reviewConfiguration.Peers[i];
-				var peerFromDb = _db.UserProfiles.Where(p => p.EmailAddress == peer.EmailAddress).FirstOrDefault();
-				if (peerFromDb != null) {
-					reviewConfiguration.Peers[i] = peerFromDb;
-				}
-			}
-			reviewConfiguration.Peers = reviewConfiguration.Peers.Distinct(new UserProfileComparer()).ToList();
-		}
-
 		private void ValidateModel(ReviewCreateEditModel reviewCreateModel) {
 			// 1. Remove empty entries from categories and peers
 			for (var index = 0; index < reviewCreateModel.AddedCategories.Count; index++) {
@@ -509,24 +498,5 @@ Andrej - Masterchief Head of Design of TeamReview.net
 				}
 			}
 		}
-	}
-
-	public class PeerIdWithStackedRating {
-		public int PeerId;
-		public decimal StackedRating;
-	}
-
-	public class UserProfileComparer : IEqualityComparer<UserProfile> {
-		#region IEqualityComparer<UserProfile> Members
-
-		public bool Equals(UserProfile x, UserProfile y) {
-			return x.EmailAddress == y.EmailAddress;
-		}
-
-		public int GetHashCode(UserProfile userProfile) {
-			return userProfile.EmailAddress.GetHashCode();
-		}
-
-		#endregion
 	}
 }
