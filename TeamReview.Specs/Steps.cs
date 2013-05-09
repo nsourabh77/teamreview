@@ -159,9 +159,12 @@ namespace TeamReview.Specs {
 			_browser.Uncheck("PersistentCookie"); // don't remember me
 			_browser.FindId("signIn").Click(); // sign in to Google
 
-			// Google OpenID acceptance page
-			_browser.Uncheck("remember_choices_checkbox"); // don't remember my choice
-			_browser.FindId("approve_button").Click(); // authenticate using Google
+			// Google OpenID acceptance page: to revoke access, go to: https://www.google.com/accounts/b/0/IssuedAuthSubTokens
+			var notApprovedYet = new State(() => _browser.Has(_browser.FindId("submit_approve_access")));
+			var approved = new State(() => _browser.HasNo(_browser.FindId("submit_approve_access")));
+			if (_browser.FindState(notApprovedYet, approved) == notApprovedYet) {
+				_browser.FindId("submit_approve_access").Click(); // authenticate using Google
+			}
 		}
 
 		public void WhenILogInWithMyGoogleAccount() {
