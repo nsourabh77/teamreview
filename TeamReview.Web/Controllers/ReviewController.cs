@@ -13,6 +13,7 @@ using TeamReview.Web.ViewModels;
 
 namespace TeamReview.Web.Controllers {
 	[Authorize]
+	[AccessControl(actionNamesToIgnore: new[] { "Create", "Index" })]
 	public class ReviewController : Controller {
 		private readonly DatabaseContext _db = new DatabaseContext();
 
@@ -256,7 +257,7 @@ namespace TeamReview.Web.Controllers {
 		}
 
 		[HttpPost]
-		public ActionResult Provide(FeedbackViewModel feedback) {
+		public ActionResult Provide(int id, FeedbackViewModel feedback) {
 			// TODO: don't allow if already provided by this user
 			if (
 				feedback.CategoriesWithPeersAndRatings.SelectMany(c => c.PeersWithRatings.Select(p => p.Rating)).Any(
