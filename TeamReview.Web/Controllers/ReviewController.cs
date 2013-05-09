@@ -117,7 +117,7 @@ namespace TeamReview.Web.Controllers {
 		// GET: /Review/Edit/5
 
 		[HttpGet]
-		public ActionResult Edit(int id) {
+		public ActionResult Edit(int id = 0) {
 			object review;
 			if (TempData.TryGetValue("review", out review)) {
 				return View("Create", review);
@@ -137,7 +137,7 @@ namespace TeamReview.Web.Controllers {
 
 		[HttpPost, ActionName("Edit")]
 		[FormValueRequired("submit")]
-		public ActionResult EditPost(int id) {
+		public ActionResult EditPost(int id = 0) {
 			var reviewFromDb = _db.ReviewConfigurations
 				.Include("Categories")
 				.Include("Peers")
@@ -234,6 +234,7 @@ namespace TeamReview.Web.Controllers {
 			return RedirectToAction("Index");
 		}
 
+		[HttpGet]
 		public ActionResult Provide(int id = 0) {
 			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
 			if (reviewconfiguration == null) {
@@ -340,6 +341,7 @@ Andrej - Masterchief Head of Design of TeamReview.net
 				userName, reviewName, reviewId);
 		}
 
+		[HttpGet]
 		public ActionResult Results(int id = 0) {
 			var review = _db.ReviewConfigurations.Find(id);
 			if (review == null) {
