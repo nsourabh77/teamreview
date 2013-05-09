@@ -104,7 +104,7 @@ namespace TeamReview.Web.Controllers {
 			_db.SaveChanges();
 
 			var action = Request.Form["submit"];
-			if (!string.IsNullOrEmpty(action)) {
+			if (action == "Save and Start the Review") {
 				return RedirectToAction("StartReview", new { id = newReview.ReviewId });
 			}
 
