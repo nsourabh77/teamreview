@@ -675,6 +675,17 @@ namespace TeamReview.Specs {
 			_browser.Visit("/Review/Provide/" + reviewId);
 		}
 
+		[When(@"I visit the Provide review url for (.+)")]
+		public void WhenIVisitTheProvideReviewUrlFor(string reviewName) {
+			ReviewConfiguration reviewFromDb;
+			using (var ctx = new DelayedDatabaseContext()) {
+				Console.WriteLine("Retrieving review from DB");
+				reviewFromDb = ctx.ReviewConfigurations.SingleOrDefault(r => r.Name == reviewName);
+				Assert.IsNotNull(reviewFromDb, "The review with name '{0}' could not be found in the DB!", reviewName);
+			}
+			_browser.Visit("/Review/Provide/" + reviewFromDb.ReviewId);
+		}
+
 		[Then(@"I see for each category all peers")]
 		public void ThenISeeForEachCategoryAllPeers() {
 			var review = ScenarioContext.Current.Get<ReviewConfiguration>();
@@ -815,6 +826,11 @@ namespace TeamReview.Specs {
 				Assert.AreEqual(thisIsMe.EmailAddress, reviewFromDb.Peers[0].EmailAddress);
 				CollectionAssert.IsEmpty(reviewFromDb.Categories);
 			}
+		}
+
+		[Then(@"access is denied")]
+		public void ThenAccessIsDenied() {
+			Assert.That(_browser.HasContent("You don't have permission to access this page."));
 		}
 
 		#region Helpers

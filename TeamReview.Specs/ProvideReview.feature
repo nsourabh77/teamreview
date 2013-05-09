@@ -51,6 +51,12 @@ Scenario: Providing partial Review is not allowed
 	Then the feedback is not saved
 		And I see the message "Please fill out all ratings"
 
+Scenario: Deny user access to review they're not invited to
+	Given I am logged in
+		And I am not part of review SomeOtherReview
+	When I visit the Provide review url for SomeOtherReview
+	Then access is denied
+
 #register for review
 
 #login for review
