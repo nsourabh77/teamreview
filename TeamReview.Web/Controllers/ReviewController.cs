@@ -216,6 +216,7 @@ namespace TeamReview.Web.Controllers {
 		}
 
 		[HttpGet]
+		[DenyDuplicateFeedback]
 		public ActionResult Provide(int id = 0) {
 			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
 			_db.Entry(reviewconfiguration).Collection(c => c.Categories).Load();
@@ -236,12 +237,15 @@ namespace TeamReview.Web.Controllers {
 		}
 
 		[HttpPost]
+		[DenyDuplicateFeedback]
 		public ActionResult Provide(int id, FeedbackViewModel feedback) {
-			// TODO: don't allow if already provided by this user
-			if (
-				feedback.CategoriesWithPeersAndRatings.SelectMany(c => c.PeersWithRatings.Select(p => p.Rating)).Any(
-					a => a < 1 || a > 10)) {
-				TempData["Message"] = "Please fill out all ratings";
+			// Check for request integrity
+			if (id != feedback.ReviewId) {
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden, "Not allowed.");
+			}
+
+			if (feedback.IsIncomplete) {
+				TempData["Message"] = "Please fill out all ratings.";
 				return View(feedback);
 			}
 
@@ -250,7 +254,7 @@ namespace TeamReview.Web.Controllers {
 			                     		Reviewer = _db.UserProfiles.FirstOrDefault(user => user.EmailAddress == User.Identity.Name)
 			                     	};
 
-			var reviewconfiguration = _db.ReviewConfigurations.Find(feedback.ReviewId);
+			var reviewconfiguration = _db.ReviewConfigurations.Find(id);
 			_db.Entry(reviewconfiguration).Collection(c => c.Feedback).Load();
 
 			foreach (var categoriesWithPeersAndRating in feedback.CategoriesWithPeersAndRatings) {
@@ -271,7 +275,7 @@ namespace TeamReview.Web.Controllers {
 
 			SendMailToPeersIfAllHaveProvidedFeedback(reviewconfiguration);
 
-			TempData["Message"] = "Review has been completed";
+			TempData["Message"] = "Review has been completed.";
 			return RedirectToAction("Index");
 		}
 
@@ -284,20 +288,18 @@ namespace TeamReview.Web.Controllers {
 			}
 
 			var smtpClient = new SmtpClient();
-			foreach (var peer in review.Peers)
-			{
+			foreach (var peer in review.Peers) {
 				var message = new MailMessage("teamreview@teamaton.com", peer.EmailAddress)
-				{
-					Subject = "Review Complete",
-					Body = GetMailBodyForFinishedReview(peer.UserName, review.ReviewId, review.Name)
-				};
+				              	{
+				              		Subject = "Review Complete",
+				              		Body = GetMailBodyForFinishedReview(peer.UserName, review.ReviewId, review.Name)
+				              	};
 
 				smtpClient.Send(message);
 			}
 		}
 
-		private static string GetMailBodyForFinishedReview(string userName, int reviewId, string reviewName)
-		{
+		private static string GetMailBodyForFinishedReview(string userName, int reviewId, string reviewName) {
 			return string.Format(
 				@"Hi there, {0},
 

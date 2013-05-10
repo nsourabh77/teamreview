@@ -13,24 +13,11 @@ namespace TeamReview.Web.Filters {
 		}
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext) {
-			if (!_actionNamesToIgnore.Contains(filterContext.ActionDescriptor.ActionName)) {
-				object reviewIdObj;
-				if (!filterContext.ActionParameters.TryGetValue("id", out reviewIdObj)) {
-					throw new ArgumentNullException(
-						"id", string.Format(
-							"Could not find 'id' parameter in action method '{0}' but need it to control access!",
-							filterContext.ActionDescriptor.ActionName));
-				}
+			Func<string, bool> containsCurrentActionName =
+				name => name.Equals(filterContext.ActionDescriptor.ActionName, StringComparison.OrdinalIgnoreCase);
 
-				int reviewId;
-				try {
-					reviewId = Convert.ToInt32(reviewIdObj);
-				}
-				catch (SystemException se) {
-					throw new ArgumentException(
-						string.Format("The 'id' parameter must be of type 'int' but was of type '{0}'!", reviewIdObj.GetType().Name),
-						"id", se);
-				}
+			if (!_actionNamesToIgnore.Any(containsCurrentActionName)) {
+				var reviewId = this.GetIdValue(filterContext);
 
 				var db = new DatabaseContext();
 				if (db.ReviewConfigurations.Count(r => r.ReviewId == reviewId) == 1) {

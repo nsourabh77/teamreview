@@ -171,6 +171,8 @@
     <Compile Include="Controllers\LogOnController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Filters\AccessControlAttribute.cs" />
+    <Compile Include="Filters\ActionFilterExtensions.cs" />
+    <Compile Include="Filters\DenyDuplicateFeedbackAttribute.cs" />
     <Compile Include="Filters\FormValueRequiredAttribute.cs" />
     <Compile Include="Filters\HttpNotFoundIfInvalidIdAttribute.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
