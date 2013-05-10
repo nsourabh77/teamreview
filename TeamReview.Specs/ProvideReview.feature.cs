@@ -201,19 +201,46 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Deny user access to review they\'re not invited to")]
-        public virtual void DenyUserAccessToReviewTheyReNotInvitedTo()
+        [NUnit.Framework.DescriptionAttribute("Cannot provide the same review twice")]
+        public virtual void CannotProvideTheSameReviewTwice()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deny user access to review they\'re not invited to", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cannot provide the same review twice", ((string[])(null)));
 #line 54
 this.ScenarioSetup(scenarioInfo);
 #line 55
  testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
-  testRunner.And("I am not part of review SomeOtherReview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I have a started review with two categories", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
- testRunner.When("I visit the Provide review url for SomeOtherReview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 58
+  testRunner.And("I select 5 for each category", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+  testRunner.And("I save the review", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 60
+ testRunner.When("I visit the Provide review url", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 61
+ testRunner.Then("I am on the \"Dashboard\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 62
+  testRunner.And("I see the message \"You have already completed the review\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Deny user access to review they\'re not invited to")]
+        public virtual void DenyUserAccessToReviewTheyReNotInvitedTo()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deny user access to review they\'re not invited to", ((string[])(null)));
+#line 64
+this.ScenarioSetup(scenarioInfo);
+#line 65
+ testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 66
+  testRunner.And("I am not part of review SomeOtherReview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 67
+ testRunner.When("I visit the Provide review url for SomeOtherReview", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 68
  testRunner.Then("access is denied", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

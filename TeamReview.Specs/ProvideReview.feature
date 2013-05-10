@@ -51,6 +51,16 @@ Scenario: Providing partial Review is not allowed
 	Then the feedback is not saved
 		And I see the message "Please fill out all ratings"
 
+Scenario: Cannot provide the same review twice
+	Given I am logged in
+		And I have a started review with two categories
+	When I visit the Provide review url
+		And I select 5 for each category
+		And I save the review
+	When I visit the Provide review url
+	Then I am on the "Dashboard"
+		And I see the message "You have already completed the review"
+
 Scenario: Deny user access to review they're not invited to
 	Given I am logged in
 		And I am not part of review SomeOtherReview
