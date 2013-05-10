@@ -27,5 +27,12 @@ namespace TeamReview.Web.ViewModels {
 			name = string.IsNullOrWhiteSpace(name) ? null : name;
 			return name;
 		}
+
+		internal string GetNameDetails() {
+			return
+				(string.IsNullOrWhiteSpace(LastName) ? "[no last name]" : LastName.Trim())
+				+ ", " +
+				(string.IsNullOrWhiteSpace(FirstName) ? "[no first name]" : FirstName.Trim());
+		}
 	}
 }

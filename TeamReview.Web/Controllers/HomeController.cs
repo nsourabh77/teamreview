@@ -1,4 +1,5 @@
-﻿using System.Net.Mail;
+﻿using System;
+using System.Net.Mail;
 using System.Web.Mvc;
 using TeamReview.Web.ViewModels;
 
@@ -45,9 +46,11 @@ namespace TeamReview.Controllers {
 				return View();
 			}
 
+			var messageBody = string.Format("{0}{1}---{1}Sent by: {2}", userdata.Message,
+			                                Environment.NewLine, userdata.GetNameDetails());
 			var message = new MailMessage("teamreview@teamaton.com", "hello@teamreview.net")
 			              	{
-			              		Body = userdata.Message,
+			              		Body = messageBody,
 			              		Subject = "TeamReview.net - contact form"
 			              	};
 			var displayName = userdata.GetDisplayName();
