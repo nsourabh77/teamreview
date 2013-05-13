@@ -83,6 +83,11 @@
     </Compile>
     <Compile Include="HtmlUnitTest.cs" />
     <Compile Include="IisExpressProcess.cs" />
+    <Compile Include="OptionalParameter.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OptionalParameter.feature</DependentUpon>
+    </Compile>
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="RegisterAndLogin.feature.cs">
       <AutoGen>True</AutoGen>
@@ -102,6 +107,7 @@
       <DependentUpon>ShowReviewResults.feature</DependentUpon>
     </Compile>
     <Compile Include="Steps.cs" />
+    <Compile Include="TestSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -114,6 +120,10 @@
     <None Include="HtmlUnit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>HtmlUnit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="OptionalParameter.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>OptionalParameter.feature.cs</LastGenOutput>
     </None>
     <None Include="RegisterAndLogin.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
